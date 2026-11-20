@@ -1,0 +1,44 @@
+
+/* Dalalnama newsdesk layout: independent design inspired by broad Marathi news navigation */
+.nav{background:#3562f6!important;color:#fff!important;box-shadow:0 2px 8px #002b8930}
+.nav .wrap{width:calc(100% - 20px)!important;max-width:none!important;justify-content:space-between;gap:0;overflow-x:auto;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav .wrap>a{font-weight:800;color:#fff;white-space:nowrap;font-size:clamp(13px,.9vw,16px);padding:11px clamp(8px,.85vw,17px) 9px;border-bottom:3px solid transparent;line-height:25px}
+.nav .wrap>a.home{background:#b80f1c;color:#fff;border-bottom-color:#ffd629}
+.nav .wrap>a:hover,.nav .wrap>a.active:not(.home){background:#234ed8;color:#fff;border-bottom-color:#ffd629}
+.nav .hamburger{display:block;flex:0 0 auto;color:white;border:0;background:transparent;font-size:22px;padding:8px 14px;cursor:pointer}
+.nav .search-link{display:block;margin-left:0;padding:9px 15px;border:0;color:#fff;background:transparent;font-size:22px}
+.nav .wrap>a:focus-visible,.nav .wrap>button:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+.dn-story-layout{display:grid;grid-template-columns:minmax(0,2.35fr) minmax(290px,.93fr);gap:32px;align-items:start}
+.dn-story-main{min-width:0}
+.dn-story-layout .article-hero,.dn-story-layout .article-body,.dn-story-layout .article-tags,.dn-story-layout .article-share-footer{max-width:none;width:100%}
+.dn-story-layout .article-hero h1{font-size:clamp(28px,3.1vw,41px);line-height:1.35}
+.dn-story-layout .article-topmeta{align-items:flex-start}
+.dn-related{position:sticky;top:86px;min-width:0;border:1px solid var(--line);border-radius:12px;padding:20px 18px;background:var(--paper);box-shadow:0 4px 20px #00000008}
+.dn-related h2{margin:0 0 16px;font-size:21px;line-height:1.3;font-weight:800}
+.dn-related h2:after{content:'';display:block;width:43px;height:4px;background:#be0f1b;margin-top:9px}
+.dn-related-item{display:grid;grid-template-columns:95px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:start}
+.dn-related-item:last-child{border-bottom:0}
+.dn-related-image{display:block;width:95px;height:70px;overflow:hidden;border-radius:7px;background:#ddd}
+.dn-related-image img{width:100%;height:100%;object-fit:cover}
+.dn-related-item h3{font-size:15px;line-height:1.42;margin:1px 0 6px;font-weight:800}
+.dn-related-item .dn-related-cat{font-size:11px;color:#b20e1b;font-weight:800}
+.dn-related-item .dn-related-date{display:block;font-size:11px;color:var(--mute)}
+.dn-related-footer{display:block;text-align:center;color:#b20e1b;font-weight:800;margin-top:16px;border-top:1px solid var(--line);padding-top:13px;font-size:13px}
+@media(max-width:1160px){.nav .wrap{justify-content:flex-start}.nav .wrap>a{padding-inline:12px}}
+@media(max-width:1000px){.dn-story-layout{grid-template-columns:minmax(0,1fr) 280px;gap:18px}.dn-related{padding:16px 12px}.dn-related-item{grid-template-columns:80px 1fr;gap:9px}.dn-related-image{width:80px;height:66px}}
+@media(max-width:830px){.dn-story-layout{grid-template-columns:1fr}.dn-related{position:static;margin-top:10px}.dn-related-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}}
+@media(max-width:600px){
+.nav .wrap{width:100%!important;padding:0 7px}
+.nav .wrap>a{display:none;font-size:14px;padding:9px 14px!important}
+.nav .wrap>a.home,.nav .wrap>a.active:not(.home){display:flex}
+.nav .wrap.open>a{display:flex;width:50%;font-size:13px}
+.nav .wrap.open .search-link{order:3}
+.nav .hamburger{display:block}
+.nav .search-link{display:block;margin-left:auto}
+.dn-related{padding:15px}
+.dn-related-grid{display:block}
+.dn-related-item{grid-template-columns:105px minmax(0,1fr)}
+.dn-related-image{width:105px;height:76px}
+.dn-related-item h3{font-size:15px}
+}
