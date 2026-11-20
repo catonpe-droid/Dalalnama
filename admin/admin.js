@@ -176,7 +176,7 @@
     if(columns.length!==3||columns.some(a=>a.length!==2||!a[0]||!a[1]))return message('तीन कॉलमसाठी नेमक्या ३ ओळी लिहा. स्वरूप: शीर्षक | विभाग','error');
     const featured=lines('featured-slugs');
     if(featured.some(s=>!state.news.some(x=>x.slug===s)))return message('Featured slug मध्ये नसलेली बातमी आहे. आधी बातमी तयार करा.','error');
-    const custom=window.DalalPro?.readCustomization?.()||{};
+    let custom={};try{custom=window.DalalPro?.readCustomization?.()||{}}catch(e){return message('Appearance Settings: '+e.message,'error')}
     const next={...state.layout,...custom,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
       sliderSpeedSeconds:Math.max(3,Math.min(30,parseInt($('slider-speed').value,10)||7)),tagline:$('tagline').value.trim().slice(0,250)};
     if(!next.menu.includes('मुखपृष्ठ'))next.menu.unshift('मुखपृष्ठ');
