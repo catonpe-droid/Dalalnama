@@ -157,6 +157,7 @@
     const o=state.layout||{};
     for(const id of ['menu','subcategories','breaking'])$(id).value=(o[id]||[]).join('\n');
     $('featured-slugs').value=(o.featuredSlugs||[]).join('\n');
+    $('home-columns').value=(o.homeColumns||[{title:'प्रशासननामा',category:'प्रशासननामा'},{title:'जनतेचा सवाल',category:'जनतेचा सवाल'},{title:'दलालनामा',category:'दलालनामा'}]).map(x=>(x.title||'')+' | '+(x.category||'')).join('\n');
     $('slider-speed').value=o.sliderSpeedSeconds||7;
     $('tagline').value=o.tagline||'दलाली, भ्रष्टाचार आणि सत्तेच्या काळ्या व्यवहारांचा लेखाजोखा!';
     categories($('category').value||'दलालनामा');
@@ -164,9 +165,11 @@
   async function saveLayout(){
     if(state.busy)return;
     const lines=id=>[...new Set($(id).value.split(/\n/g).map(s=>s.trim()).filter(Boolean))].slice(0,35);
+    const columns=$('home-columns').value.split(/\r?\n/).map(row=>row.split('|').map(x=>x.trim())).filter(a=>a.some(Boolean));
+    if(columns.length!==3||columns.some(a=>a.length!==2||!a[0]||!a[1]))return message('तीन कॉलमसाठी नेमक्या ३ ओळी लिहा. स्वरूप: शीर्षक | विभाग','error');
     const featured=lines('featured-slugs');
     if(featured.some(s=>!state.news.some(x=>x.slug===s)))return message('Featured slug मध्ये नसलेली बातमी आहे. आधी बातमी तयार करा.','error');
-    const next={...state.layout,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,
+    const next={...state.layout,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
       sliderSpeedSeconds:Math.max(3,Math.min(30,parseInt($('slider-speed').value,10)||7)),tagline:$('tagline').value.trim().slice(0,250)};
     if(!next.menu.includes('मुखपृष्ठ'))next.menu.unshift('मुखपृष्ठ');
     if(!confirm('वेबसाइटवरील मेनू आणि Breaking News अपडेट करायचे?'))return;
