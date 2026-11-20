@@ -167,4 +167,44 @@ if(body&&article.summary){
   const desc=document.createElement('p');desc.textContent=article.summary;
   brief.append(heading,desc);body.prepend(brief);
 }
+})();</script><script id="dalalnama-final-js">
+(function(){
+'use strict';
+const dateNode=document.getElementById('dateText');
+if(dateNode){
+ try{dateNode.textContent=new Intl.DateTimeFormat('mr-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'}).format(new Date())}catch(e){}
+ const container=dateNode.parentElement;
+ container.style.display='flex';container.style.flexWrap='wrap';container.style.alignItems='center';container.style.gap='7px';
+ const weather=document.createElement('span');weather.className='dalal-weather';
+ const icon=document.createElement('span');icon.className='weather-dot';icon.textContent='☀';
+ const value=document.createElement('span');value.className='dalal-weather-status';value.textContent='पुणे हवामान';
+ weather.append(icon,value);container.append(weather);
+ fetch('https://api.open-meteo.com/v1/forecast?latitude=18.5204&longitude=73.8567&current=temperature_2m,weather_code&timezone=Asia%2FKolkata')
+ .then(r=>{if(!r.ok)throw Error('Weather unavailable');return r.json()})
+ .then(v=>{const n=v?.current?.temperature_2m;if(!Number.isFinite(n))return;
+ const code=v?.current?.weather_code;icon.textContent=code<=1?'☀':code<=3?'⛅':(code>=51?'☂':'☁');
+ value.textContent='पुणे '+Math.round(n)+'°C';
+ }).catch(()=>{value.textContent='पुणे हवामान';});
+}
+const side=document.querySelector('.mast-left');
+if(side){const title=side.querySelector('.small-red');if(title)title.textContent='सत्याचा लेखाजोखा';const text=side.querySelector('strong');if(text)text.innerHTML='सत्तेला प्रश्न.<br>जनतेला माहिती.'}
+const tagline=document.querySelector('.mast-right>span');if(tagline)tagline.textContent='दलाली • भ्रष्टाचार • जनहित';
+const slug=document.documentElement.dataset.article||new URLSearchParams(location.search).get('article');
+const posts=window.DALALNAMA_ARTICLES;
+const a=Array.isArray(posts)?posts.find(x=>x.slug===slug):null;
+if(!a)return;
+const article=document.querySelector('#app article'),photo=article?.querySelector('.article-pic');
+if(photo){const caption=document.createElement('div');caption.className='article-ai-caption';caption.textContent='चित्र : AI-निर्मित प्रातिनिधिक दृश्य';photo.insertAdjacentElement('afterend',caption)}
+const tags=article?.querySelector('.article-tags');if(!tags)return;
+const url=location.href,t=encodeURIComponent(a.title+' | दलालनामा'),u=encodeURIComponent(url);
+const panel=document.createElement('section');panel.className='article-share-footer';panel.setAttribute('aria-label','Share this news');
+panel.innerHTML='<h2>Share this news</h2><div class="dalal-share-items">'+
+'<a class="dalal-wa" href="https://wa.me/?text='+t+'%20'+u+'" target="_blank" rel="noopener">WhatsApp</a>'+
+'<a class="dalal-fb" href="https://www.facebook.com/sharer/sharer.php?u='+u+'" target="_blank" rel="noopener">Facebook</a>'+
+'<a class="dalal-tg" href="https://t.me/share/url?url='+u+'&text='+t+'" target="_blank" rel="noopener">Telegram</a>'+
+'<a class="dalal-x" href="https://twitter.com/intent/tweet?text='+t+'&url='+u+'" target="_blank" rel="noopener">X</a>'+
+'<button type="button" class="native-share">शेअर</button><button type="button" class="copy-link">लिंक कॉपी</button></div>';
+tags.before(panel);
+panel.querySelector('.copy-link').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(url);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){window.prompt('बातमीची लिंक:',url)}});
+panel.querySelector('.native-share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}catch(e){}});
 })();</script></body></html>
