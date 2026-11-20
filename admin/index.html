@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=3" rel="stylesheet"></head><body>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=4" rel="stylesheet"></head><body>
 <header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
 <div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
 <aside class="admin-navigation" aria-label="Admin sections">
@@ -115,6 +115,11 @@
 <label class="field">News Density<select id="news-density"><option value="normal">Comfortable</option><option value="compact">Compact / eSakal-style</option></select></label></div>
 <div class="columns"><label class="field">Base Font Scale<select id="font-scale"><option value="1">Normal (100%)</option><option value="1.06">Large (106%)</option><option value="1.12">Extra Large (112%)</option></select></label>
 <label class="field">Logo Width<input type="range" id="logo-width" min="210" max="450" step="10" value="340"><small><span id="logo-width-label">340</span> px</small></label></div>
+<div class="brand-logo-upload">
+<img id="brand-logo-preview" src="../assets/logo.png" alt="दलालनामा लोगो">
+<div><label class="field">HD Site Logo (PNG / WebP)<input id="brand-logo-file" type="file" accept="image/png,image/webp,image/jpeg"></label>
+<button id="upload-brand-logo" type="button" class="btn mini">⇧ Upload Brand Logo</button>
+<p class="aside-hint">नवीन लोगो Publish करण्यासाठी आधी Upload करा, मग “Save & Publish Appearance” वापरा. मूळ लोगो कायम ठेवण्यासाठी हे रिकामे ठेवा.</p></div></div>
 </details>
 <details class="settings-group" open><summary>▦ Homepage Sections</summary>
 <div class="settings-checks">
@@ -146,5 +151,5 @@
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
 <script src="./admin.js?v=4" defer></script>
-<script src="./admin-pro.js?v=1" defer></script>
+<script src="./admin-pro.js?v=2" defer></script>
 </body></html>
