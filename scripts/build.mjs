@@ -43,7 +43,7 @@ function socialMeta(source,story=null,url=SITE){
  if(story){
   source=source.replace('<meta property="og:type" content="website">','<meta property="og:type" content="article">');
   const date=String(story.date||'').slice(0,10);
-  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(date))source=source.replace('</head>','<meta property="article:published_time" content="'+date+'T12:00:00+05:30"></head>');
+  if(/^\d{4}-\d{2}-\d{2}$/.test(date))source=source.replace('</head>','<meta property="article:published_time" content="'+date+'T12:00:00+05:30"></head>');
   const keywords=Array.isArray(story.seoKeywords)?story.seoKeywords.filter(x=>typeof x==='string').slice(0,18).join(', '):(story.tags||[]).join(', ');
   if(keywords)source=source.replace('</head>','<meta name="keywords" content="'+safe(keywords).slice(0,250)+'"></head>');
   const structured={"@context":"https://schema.org","@type":"NewsArticle",headline:story.title,
