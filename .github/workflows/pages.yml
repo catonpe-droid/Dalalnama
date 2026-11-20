@@ -29,6 +29,16 @@ jobs:
           node-version: '22'
       - name: Build mobile news portal
         run: node scripts/build.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image and Marathi font support
+        run: |
+          python -m pip install --disable-pip-version-check pillow
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-core
+      - name: Generate individual news thumbnails (1200 x 630)
+        run: python scripts/generate_images.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
