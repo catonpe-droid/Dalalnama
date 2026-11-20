@@ -10,7 +10,9 @@
  const fontScale=Math.min(1.12,Math.max(1,Number(a.fontScale)||1));
  body.style.setProperty('--dn-scale',String(fontScale));
  const logo=document.querySelector('.mast .brand img');
- if(logo){const n=Math.min(450,Math.max(210,Number(a.logoWidth)||340));logo.style.maxWidth=n+'px';logo.style.width='100%'}
+ if(logo){const n=Math.min(450,Math.max(210,Number(a.logoWidth)||340));logo.style.maxWidth=n+'px';logo.style.width='100%';
+  const logoPath=String(a.logoPath||'');if(/^assets\/branding\/[a-z0-9_.-]+\.(png|jpg|jpeg|webp)$/i.test(logoPath))logo.src='https://catonpe-droid.github.io/Dalalnama/'+logoPath;
+ }
  if(a.showBreaking===false)document.querySelector('.ticker')?.setAttribute('hidden','');
  if(a.showWeather===false)document.body.classList.add('dn-hide-weather');
  if(a.showColumns===false)body.classList.add('dn-hide-columns');
