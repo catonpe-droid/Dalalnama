@@ -9,12 +9,14 @@
  if(nav&&Array.isArray(layout.menu)&&layout.menu.length){
    const all=[...nav.querySelectorAll('a[data-nav]')];
    const map=new Map(all.map(a=>[a.dataset.nav,a]));
+   if(map.has('all'))map.set('मुखपृष्ठ',map.get('all'));
    const button=nav.querySelector('.search-link');
    let placed=new Set();
    for(const item of layout.menu){
      if(typeof item!=='string'||placed.has(item))continue;
      let node=map.get(item);
      if(!node){node=document.createElement('a');node.textContent=item;node.href=SITE+'?category='+encodeURIComponent(item);node.dataset.nav=item;}
+     if(item==='मुखपृष्ठ'){node.href=SITE;node.dataset.nav='all';node.classList.add('home');placed.add('all');}
      nav.insertBefore(node,button);placed.add(item);
    }
    for(const a of all){if(!placed.has(a.dataset.nav))a.remove();}
