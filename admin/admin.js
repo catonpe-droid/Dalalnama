@@ -353,6 +353,7 @@
   }
   window.DalalCMS={getNews:()=>state.news.slice(),getLayout:()=>structuredClone(state.layout),getSite:()=>SITE,
     hasToken:()=>!!state.token,uploadMedia:async(file,path)=>uploadPhoto(file,path),
+    loadMedia:async()=>readJSON('data/media.json'),saveMedia:async(media,sha)=>writeJSON('data/media.json',media,sha,'Update Dalalnama media library'),
     openPost:(slug)=>openPost(slug),newPost:()=>reset(),refresh:()=>load(),
     status:(messageText,kind)=>message(messageText,kind),
     goto:(id)=>{const tab=[...document.querySelectorAll('.tab')].find(t=>t.dataset.target===id);tab?.click()}};
