@@ -40,3 +40,8 @@ body.dn-hide-weather .dalal-weather{display:none!important}
 .dn-video figcaption{font-size:12px;color:var(--mute);margin-top:8px}
 body.dn-preset-night .dn-rich-content blockquote{background:#332a2a}
 @media(max-width:600px){.dn-rich-content h2{font-size:1.23em}.dn-rich-content blockquote{padding:12px 14px}.dn-video{margin:22px 0}}
+
+/* Theme typography control */
+body{font-size:calc(16px * var(--dn-scale,1))}
+body .article-body{font-size:calc(19px * var(--dn-scale,1))}
+@media(max-width:600px){body .article-body{font-size:calc(17px * var(--dn-scale,1))}}
