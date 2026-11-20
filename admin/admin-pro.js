@@ -4,7 +4,7 @@ const CMS=window.DalalCMS;
 const $=id=>document.getElementById(id);
 if(!CMS)return;
 const SITE=CMS.getSite();
-let quill=null,plain=false,active=null,coverPath='',mediaMode='cover',extraMedia=[],mediaSha='',uploaded=[],initDone=false;
+let quill=null,plain=false,active=null,coverPath='',mediaMode='cover',extraMedia=[],mediaSha='',uploaded=[],initDone=false,brandLogoPath='';
 const text=(value)=>String(value??'');
 const imagePattern=/^assets\/uploads\/[a-z0-9_.-]+\.(?:png|jpg|jpeg|webp)$/i;
 function cleanHtml(html){
@@ -196,6 +196,8 @@ async function uploadMedia(){
 function renderCustomization(o){
  const a=o.appearance||{},s=o.site||{},social=s.social||{};
  const set=(id,value,defaultValue='')=>{const el=$(id);if(el)el.value=value??defaultValue};
+ brandLogoPath=/^assets\/branding\/[a-z0-9_.-]+\.(png|jpg|jpeg|webp)$/i.test(a.logoPath||'')?a.logoPath:'';
+ $('brand-logo-preview').src=brandLogoPath?SITE+brandLogoPath:SITE+'assets/logo.png';
  set('theme-preset',a.themePreset,'classic');set('news-density',a.density,'normal');
  set('font-scale',String(a.fontScale??1));set('logo-width',String(a.logoWidth??340));
  $('logo-width-label').textContent=$('logo-width').value;
@@ -215,7 +217,7 @@ function readCustomization(){
  const checks=['showBreaking','showWeather','showColumns','showRelated','showCategorySections'];
  const appearance={
   themePreset:val('theme-preset'),density:val('news-density'),fontScale:pos('font-scale',1,1,1.12),
-  logoWidth:pos('logo-width',340,210,450),columnItems:pos('column-items',5,2,8),
+  logoWidth:pos('logo-width',340,210,450),logoPath:brandLogoPath,columnItems:pos('column-items',5,2,8),
   tickerSeconds:pos('ticker-seconds',7,3,15),columnsTitle:val('columns-title').slice(0,90)
  };
  for(const key of checks){
@@ -236,6 +238,13 @@ function readCustomization(){
  return {appearance,site:{title:val('site-title').slice(0,110),description:val('site-description').slice(0,350),
  footerStatement:val('footer-statement').slice(0,500),footerLabel:val('footer-label').slice(0,180),social}};
 }
+function renderPreview(root){
+ if(!quill||plain)return;
+ const html=getRichHTML();if(!html)return;
+ for(const child of [...root.children].slice(1))child.remove();
+ const rich=document.createElement('div');rich.className='dn-admin-preview-rich';
+ rich.innerHTML=html;root.append(rich);
+}
 function init(){
  if(initDone)return;initDone=true;
  initEditor();
@@ -248,6 +257,21 @@ function init(){
  $('insert-photo').addEventListener('click',()=>openMedia('insert'));
  $('dashboard-refresh').addEventListener('click',()=>dashboard(CMS.getNews()));
  $('logo-width').addEventListener('input',()=>$('logo-width-label').textContent=$('logo-width').value);
+ $('upload-brand-logo').addEventListener('click',async()=>{
+  const file=$('brand-logo-file').files[0];
+  if(!file)return CMS.status('अपलोड करण्यासाठी HD Logo निवडा.','error');
+  if(!CMS.hasToken())return CMS.status('लोगो बदलण्यासाठी GitHub token जोडणे आवश्यक आहे.','error');
+  const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':file.type==='image/jpeg'?'jpg':'';
+  if(!ext)return CMS.status('PNG, JPG किंवा WebP लोगो निवडा.','error');
+  const button=$('upload-brand-logo');button.disabled=true;
+  try{
+   const path='assets/branding/logo-'+Date.now().toString(36)+'.'+ext;
+   await CMS.uploadBrand(file,path);brandLogoPath=path;
+   $('brand-logo-preview').src=URL.createObjectURL(file);
+   CMS.status('✅ HD लोगो Upload झाला. आता “Save & Publish Appearance” दाबा.','success');
+  }catch(e){CMS.status('Logo Upload अयशस्वी: '+e.message,'error')}
+  finally{button.disabled=false}
+ });
  for(const button of document.querySelectorAll('[data-jump]'))button.addEventListener('click',()=>{
    if(button.dataset.jump==='news-panel')CMS.newPost();
    CMS.goto(button.dataset.jump);
@@ -260,7 +284,7 @@ function init(){
  dashboard(CMS.getNews());renderCustomization(CMS.getLayout());loadMediaIndex();updateSEO();
 }
 window.DalalPro={
- loadPost,clearCoverPath:()=>{coverPath=''},getCoverPath:()=>coverPath,getRichHTML,
+ loadPost,clearCoverPath:()=>{coverPath=''},getCoverPath:()=>coverPath,getRichHTML,renderPreview,
  renderCustomization,readCustomization,
  onTab:id=>{if(id==='media-panel')renderMedia();if(id==='dashboard-panel')dashboard(CMS.getNews())}
 };
