@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="mr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="./admin.css?v=1" rel="stylesheet"></head><body>
+<header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
+<div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
+<main class="wrap">
+<div class="heading"><div><h1>बातमी व्यवस्थापन</h1><p>बातम्या, मसुदे, फोटो, Custom URL आणि वेबसाइटचा लेआउट.</p></div><div class="notice" id="status" role="status" aria-live="polite">प्रकाशन जोडणी आवश्यक आहे.</div></div>
+<section class="card connect">
+ <div><b>🔐 स्वतंत्र GitHub Publishing</b><p>फक्त Dalalnama repository साठी <strong>Contents: Read and write</strong> परवानगी असलेला GitHub fine-grained token या पानावर वापरा. Token फक्त उघडलेल्या टॅबच्या memory मध्ये राहील; तो वेबसाइटवर जतन होणार नाही.</p></div>
+ <div class="connect-fields"><input id="token" type="password" spellcheck="false" autocomplete="off" placeholder="Paste GitHub fine-grained token"><button id="connect" type="button" class="btn primary">Connect</button><button id="disconnect" type="button" class="btn">Disconnect</button></div>
+</section>
+<nav class="tabs"><button class="tab active" data-target="news-panel" type="button">📰 News Studio</button><button class="tab" data-target="layout-panel" type="button">⚙️ Layout Settings</button></nav>
+<section class="workspace" id="news-panel">
+ <aside class="card listing">
+  <div class="panel-head"><h2>सर्व बातम्या</h2><span class="counter" id="total">0</span></div>
+  <div class="panel-body"><input type="search" id="search" placeholder="शीर्षक / विभाग / Slug शोधा">
+   <div class="filters"><button type="button" class="filter active" data-status="all">सर्व</button><button type="button" class="filter" data-status="published">Published</button><button type="button" class="filter" data-status="draft">Draft</button></div>
+   <div class="check-row"><label><input id="select-all" type="checkbox"> दिसणाऱ्या सर्व निवडा</label><button id="clear-selected" type="button" class="btn mini">Clear</button></div>
+   <div id="post-list" class="post-list"></div>
+   <div class="bulk-actions"><span id="selected-count">0 selected</span><button type="button" id="bulk-delete" class="btn danger" disabled>🗑 Bulk Delete</button></div>
+  </div>
+ </aside>
+ <section class="card editor">
+  <div class="panel-head"><h2 id="editor-title">📰 नवीन बातमी</h2><button id="new" type="button" class="btn mini">+ नवीन</button></div>
+  <form id="post-form" class="panel-body">
+   <label class="field">बातमीचे शीर्षक *<input id="title" maxlength="180" minlength="8" required placeholder="अचूक बातमीचा मथळा"></label>
+   <label class="field">बातमी URL (Custom Slug) *<input id="slug" maxlength="100" required spellcheck="false" placeholder="my-special-news-title"><small>इंग्रजी लहान अक्षरे, अंक व hyphen; उदा. <code>pune-news-update</code>. आधी प्रकाशित URL बदलल्यास जुने links तुटू शकतात.</small></label>
+   <div class="columns"><label class="field">विभाग *<select id="category" required></select></label><label class="field">बातमीदार / लेखक<input id="author" maxlength="100" placeholder="दलालनामा न्यूज डेस्क"></label></div>
+   <label class="field">बातमीचा सारांश (SEO / WhatsApp) *<textarea id="summary" rows="3" maxlength="500" required></textarea></label>
+   <label class="field">संपूर्ण बातमी *<textarea id="body" rows="15" required placeholder="बातमी लिहा. रिकामी ओळ म्हणजे नवीन परिच्छेद; ## मथळा म्हणजे उपशीर्षक."></textarea><small>Heading साठी <code>## उपशीर्षक</code>, नवीन paragraph साठी रिकामी ओळ.</small></label>
+   <div class="columns"><label class="field">मुख्य फोटो / Thumbnail<input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><small>1200×630 JPEG; आधीचा फोटो बदलायचा नसेल तर रिकामे ठेवा.</small></label><label class="field">बातमीतले फोटो (कमाल 4)<input id="gallery" type="file" accept="image/jpeg,image/png,image/webp" multiple><small>नवीन gallery निवडल्यास जुनी gallery बदलेल.</small></label></div>
+   <img class="cover-preview hidden" id="cover-preview" alt="मुख्य फोटोचे पूर्वावलोकन">
+   <div class="columns"><label class="field">Tags (स्वल्पविरामाने वेगळे)<input id="tags" placeholder="राजकारण, जनहित"></label><label class="field">वाचन वेळ (मिनिटे)<input id="minutes" type="number" min="1" max="30" value="3"></label></div>
+   <div class="columns"><label class="field">मूळ स्रोत<input id="source" maxlength="120"></label><label class="field">मूळ स्रोत लिंक<input id="source-url" type="url" placeholder="https://example.com"></label></div>
+   <div class="columns"><label class="field">प्रकाशन तारीख<input id="date" type="date"></label><label class="field">स्थिती<select id="post-status"><option value="published">Published</option><option value="draft">Draft</option></select></label></div>
+   <label class="checkbox-field"><input id="featured" type="checkbox"> Featured / मुख्य बातमी</label>
+   <div class="actions"><button id="preview" type="button" class="btn">👁 Preview</button><button id="draft" type="button" class="btn">📝 Save Draft</button><button id="publish" type="submit" class="btn primary">✅ Publish / Update</button><button id="delete" type="button" class="btn danger">🗑 Delete</button></div>
+   <div id="result" class="saved hidden"></div>
+  </form>
+ </section>
+ <aside class="card notes"><div class="panel-head"><h2>⚙️ प्रकाशन सेटिंग्ज</h2></div><div class="panel-body">
+  <p>✅ नवीन बातमीचा Slug तुम्ही स्वतः ठरवू शकता. Duplicate URL आपोआप नाकारली जाईल.</p>
+  <p>✅ एकाच वेळी अनेक बातम्या निवडून Delete करा; Delete करण्यापूर्वी पुष्टी मागितली जाईल.</p>
+  <p>✅ फोटो न निवडल्यास जुनी image कायम राहते; नवीन बातमीसाठी प्रातिनिधिक thumbnail तयार होतो.</p>
+  <p>⚠️ GitHub repository Public आहे. Draft बातमी वेबसाइटवर दिसत नाही; पण repository मधील JSON सार्वजनिक असू शकतो.</p>
+  <p>🔐 येथे लोकहित महाराष्ट्रचे tokens किंवा content वापरले जात नाही.</p>
+  <hr><a id="current-url" href="../" target="_blank" rel="noopener">बातमीची Live Link</a><button id="copy-link" class="btn mini" type="button">Copy Link</button>
+ </div></aside>
+</section>
+<section id="layout-panel" class="card layout-panel hidden"><div class="panel-head"><h2>⚙️ वेबसाइट व्यवस्थापन</h2></div><div class="panel-body">
+ <p>मुख्य मेनू, उपविभाग, ब्रेकिंग न्यूज व मुख्य बातम्या बदलू शकता. प्रत्येक ओळ म्हणजे एक entry.</p>
+ <div class="columns"><label class="field">मुख्य मेनू<textarea id="menu" rows="12"></textarea></label><label class="field">उपविभाग<textarea id="subcategories" rows="12"></textarea></label></div>
+ <div class="columns"><label class="field">Breaking / Scrolling News<textarea id="breaking" rows="8"></textarea></label><label class="field">Featured News Slugs<textarea id="featured-slugs" rows="8" placeholder="एक Slug एका ओळीत"></textarea></label></div>
+ <div class="columns"><label class="field">Slider Speed (seconds)<input id="slider-speed" type="number" min="3" max="30" value="7"></label><label class="field">टॅगलाइन<input id="tagline"></label></div>
+ <div class="actions"><button id="save-layout" type="button" class="btn primary">💾 Layout Save करा</button></div>
+ </div></section>
+</main>
+<dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
+<script src="./admin.js?v=1" defer></script>
+</body></html>
