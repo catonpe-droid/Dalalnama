@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'data/**'
       - 'assets/**'
+      - 'admin/**'
       - 'scripts/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
