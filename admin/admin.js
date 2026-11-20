@@ -307,6 +307,7 @@
       node.textContent=paragraph.startsWith('## ')?paragraph.slice(3):paragraph;
       root.appendChild(node);
     }
+    window.DalalPro?.renderPreview?.(root);
     if(typeof d.showModal==='function')d.showModal();
   }
   function bind(){
