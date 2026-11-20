@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=4" rel="stylesheet"></head><body>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=5" rel="stylesheet"></head><body>
 <header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
 <div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
 <aside class="admin-navigation" aria-label="Admin sections">
@@ -74,7 +74,7 @@
    <div class="columns"><label class="field">मुख्य फोटो / Thumbnail<input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><button type="button" id="choose-cover" class="btn mini">▧ Media Library मधून निवडा</button><small>1200×630 JPG; आधीचा फोटो बदलायचा नसेल तर रिकामे ठेवा.</small></label><label class="field">बातमीतले फोटो (कमाल 4)<input id="gallery" type="file" accept="image/jpeg,image/png,image/webp" multiple><small>नवीन gallery निवडल्यास जुनी gallery बदलेल.</small></label></div>
    <img class="cover-preview hidden" id="cover-preview" alt="मुख्य फोटोचे पूर्वावलोकन">
    <div class="columns"><label class="field">वाचन वेळ (मिनिटे)<input id="minutes" type="number" min="1" max="30" value="3"></label>
-<label class="field">बातमीचा प्रकार<select id="type"><option>बातमी</option><option>विशेष लेख</option><option>संपादकीय लेख</option><option>मार्गदर्शक</option><option>मुलाखत</option><option>तपास अहवाल</option></select></label></div>
+<label class="field">बातमीचा प्रकार<select id="type"><option>बातमी</option><option>संपादकीय बातमी</option><option>विशेष लेख</option><option>संपादकीय लेख</option><option>मार्गदर्शक</option><option>मुलाखत</option><option>तपास अहवाल</option></select></label></div>
    <div class="columns"><label class="field">मूळ स्रोत<input id="source" maxlength="120"></label><label class="field">मूळ स्रोत लिंक<input id="source-url" type="url" placeholder="https://example.com"></label></div>
    <details class="seo-card"><summary>📈 Search Engine Optimization (SEO)</summary>
 <div class="columns"><label class="field">SEO Title<input id="seo-title" maxlength="150" placeholder="Google साठी स्वतंत्र शीर्षक"></label><label class="field">SEO Keywords<input id="seo-keywords" maxlength="220" placeholder="keyword1, keyword2"></label></div>
@@ -150,6 +150,6 @@
 </main>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-<script src="./admin.js?v=4" defer></script>
-<script src="./admin-pro.js?v=2" defer></script>
+<script src="./admin.js?v=5" defer></script>
+<script src="./admin-pro.js?v=3" defer></script>
 </body></html>
