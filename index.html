@@ -86,7 +86,7 @@ const cats=[["राजकारण","rajkaran"],["भ्रष्टाचा�
 const catSlug=Object.fromEntries(cats);
 const layout=window.DALALNAMA_LAYOUT||{};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const link=a=>`?article=${encodeURIComponent(a.slug)}`;
+const link=a=>`https://catonpe-droid.github.io/Dalalnama/batmi/${encodeURIComponent(a.slug)}/`;
 const catLink=c=>`?category=${encodeURIComponent(c)}`;
 const stamp=a=>new Intl.DateTimeFormat('mr-IN',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'}).format(new Date(a.date+'T12:00:00+05:30'));
 function art(a,large=false){if(a.image&&/^assets\/uploads\/[\w.-]+\.(jpg|jpeg|png|webp)$/i.test(a.image))return `<img class="story-img" src="${root}${esc(a.image)}" loading="lazy" alt="${esc(a.title)}">`;return `<span class="art art-${esc(a.visual||'news')}"><span class="art-top">DALALNAMA | ${esc(a.eyebrow||'SPECIAL REPORT')}</span><span class="art-body"><span class="art-word">${esc(a.artWord||a.category)}</span><span class="art-icon">${esc(a.icon||'▤')}</span></span></span>`}
