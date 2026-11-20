@@ -354,6 +354,12 @@
   window.DalalCMS={getNews:()=>state.news.slice(),getLayout:()=>structuredClone(state.layout),getSite:()=>SITE,
     hasToken:()=>!!state.token,uploadMedia:async(file,path)=>uploadPhoto(file,path),
     loadMedia:async()=>readJSON('data/media.json'),saveMedia:async(media,sha)=>writeJSON('data/media.json',media,sha,'Update Dalalnama media library'),
+    uploadBrand:async(file,path)=>{
+      if(!file||!/image\/(png|jpeg|webp)/.test(file.type)||file.size>5*1024*1024)throw Error('लोगो PNG, JPG किंवा WebP असावा (कमाल 5 MB).');
+      const bytes=new Uint8Array(await file.arrayBuffer());let binary='';
+      for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+      return github(path,'PUT',{branch:'main',message:'Upload Dalalnama brand logo',content:btoa(binary)});
+    },
     openPost:(slug)=>openPost(slug),newPost:()=>reset(),refresh:()=>load(),
     status:(messageText,kind)=>message(messageText,kind),
     goto:(id)=>{const tab=[...document.querySelectorAll('.tab')].find(t=>t.dataset.target===id);tab?.click()}};
