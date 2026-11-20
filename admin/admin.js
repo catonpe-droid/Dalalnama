@@ -113,6 +113,8 @@
     $('date').value=dateNow();$('minutes').value='3';$('post-status').value='published';
     $('featured').checked=false;$('source-url').value='';$('source').value='';
     $('summary').value='';$('body').value='';$('tags').value='';
+    $('type').value='बातमी';$('video').value='';$('seo-title').value='';$('seo-description').value='';$('seo-keywords').value='';
+    window.DalalPro?.loadPost?.(null);
     categories('दलालनामा');clearPhoto();$('editor-title').textContent='📰 नवीन बातमी';
     $('result').classList.add('hidden');$('current-url').href=SITE;$('current-url').textContent='बातमीची Live Link';
     renderList();
@@ -133,6 +135,9 @@
     $('post-status').value=statusOf(item);
     $('source').value=item.source||'';$('source-url').value=item.sourceUrl||'';
     $('featured').checked=!!item.featured||(state.layout.featuredSlugs||[]).includes(slug);
+    $('type').value=item.type||'बातमी';$('video').value=item.videoUrl||item.video||'';
+    $('seo-title').value=item.seoTitle||'';$('seo-description').value=item.seoDescription||'';$('seo-keywords').value=(item.seoKeywords||[]).join?.(', ')||'';
+    window.DalalPro?.loadPost?.(item);
     clearPhoto();const src=String(item.image||'');
     if(/^assets\/uploads\/[a-z0-9_.-]+\.(jpg|jpeg|png|webp)$/i.test(src)){
       $('cover-preview').src=SITE+src;$('cover-preview').classList.remove('hidden');
@@ -151,6 +156,7 @@
       if(state.activeSlug&&state.news.some(a=>a.slug===state.activeSlug))openPost(state.activeSlug);
       else reset();
       message(state.news.length+' बातम्या लोड झाल्या. '+(state.token?'Publishing जोडणी तयार.':'संपादनासाठी GitHub token जोडा.'),state.token?'success':'');
+      window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:state.news,layout:state.layout}}));
     }catch(e){message('लोड करता आले नाही: '+e.message,'error')}
   }
   function renderLayout(){
@@ -161,6 +167,7 @@
     $('slider-speed').value=o.sliderSpeedSeconds||7;
     $('tagline').value=o.tagline||'दलाली, भ्रष्टाचार आणि सत्तेच्या काळ्या व्यवहारांचा लेखाजोखा!';
     categories($('category').value||'दलालनामा');
+    window.DalalPro?.renderCustomization?.(o);
   }
   async function saveLayout(){
     if(state.busy)return;
@@ -169,7 +176,8 @@
     if(columns.length!==3||columns.some(a=>a.length!==2||!a[0]||!a[1]))return message('तीन कॉलमसाठी नेमक्या ३ ओळी लिहा. स्वरूप: शीर्षक | विभाग','error');
     const featured=lines('featured-slugs');
     if(featured.some(s=>!state.news.some(x=>x.slug===s)))return message('Featured slug मध्ये नसलेली बातमी आहे. आधी बातमी तयार करा.','error');
-    const next={...state.layout,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
+    const custom=window.DalalPro?.readCustomization?.()||{};
+    const next={...state.layout,...custom,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
       sliderSpeedSeconds:Math.max(3,Math.min(30,parseInt($('slider-speed').value,10)||7)),tagline:$('tagline').value.trim().slice(0,250)};
     if(!next.menu.includes('मुखपृष्ठ'))next.menu.unshift('मुखपृष्ठ');
     if(!confirm('वेबसाइटवरील मेनू आणि Breaking News अपडेट करायचे?'))return;
@@ -224,7 +232,11 @@
       tags:[...new Set($('tags').value.split(',').map(x=>x.trim()).filter(Boolean))].slice(0,15),
       source:$('source').value.trim(),sourceUrl:$('source-url').value.trim(),
       featured:$('featured').checked,published:mode==='published',status:mode,
-      image:img,type:old?.type||'संपादकीय बातमी',isSample:false,updated:new Date().toISOString()
+      image:window.DalalPro?.getCoverPath?.()||img,type:$('type').value||'बातमी',isSample:false,
+      bodyHtml:window.DalalPro?.getRichHTML?.()||'',
+      seoTitle:$('seo-title').value.trim().slice(0,150),seoDescription:$('seo-description').value.trim().slice(0,350),
+      seoKeywords:[...new Set($('seo-keywords').value.split(',').map(x=>x.trim()).filter(Boolean))].slice(0,18),
+      videoUrl:$('video').value.trim(),updated:new Date().toISOString()
     };
     const files=[...$('gallery').files];
     if(files.length>4)return message('बातमीतील जास्तीत जास्त ४ फोटो निवडा.','error');
@@ -239,6 +251,7 @@
       const next=old?state.news.map(p=>p.slug===old.slug?item:p):[item,...state.news];
       const result=await writeJSON('data/news.json',next,state.newsSha,(old?'Update':'Publish')+' Dalalnama news '+slug);
       state.news=next;state.newsSha=result.content.sha;state.activeSlug=slug;
+      window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:next,layout:state.layout}}));
       const featured=new Set((state.layout.featuredSlugs||[]).filter(x=>!old||x!==old.slug));
       if(mode==='published'&&item.featured)featured.add(slug);else featured.delete(slug);
       const nextFeatured=[...featured];
@@ -279,6 +292,7 @@
         const o={...state.layout,featuredSlugs:newFeatured};
         try{const b=await writeJSON('data/layout.json',o,state.layoutSha,'Remove deleted posts from featured stories');state.layout=o;state.layoutSha=b.content.sha}catch(e){message('Delete झाले; Featured यादीसाठी पुन्हा Layout Save करा.','error')}
       }
+      window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:next,layout:state.layout}}));
       state.selected.clear();const deletedActive=excluded.has(state.activeSlug);state.activeSlug='';
       if(deletedActive)reset();renderList();
       message('✅ '+chosen.length+' बातम्या GitHub मधून काढल्या. GitHub Pages Build झाल्यावर त्या सार्वजनिक साइटवर दिसणार नाहीत.','success');
@@ -323,6 +337,7 @@
     $('preview').addEventListener('click',preview);
     $('close-preview').addEventListener('click',()=>$('preview-dialog').close());
     $('photo').addEventListener('change',e=>{
+      window.DalalPro?.clearCoverPath?.();
       if(state.photoUrl){URL.revokeObjectURL(state.photoUrl);state.photoUrl=''}
       if(e.target.files[0]){state.photoUrl=URL.createObjectURL(e.target.files[0]);$('cover-preview').src=state.photoUrl;$('cover-preview').classList.remove('hidden')}
     });
@@ -330,10 +345,16 @@
     $('copy-link').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('current-url').href);message('✅ Live URL कॉपी झाली.','success')}catch(e){prompt('URL:', $('current-url').href)}});
     $('save-layout').addEventListener('click',saveLayout);
     for(const tab of document.querySelectorAll('.tab'))tab.addEventListener('click',()=>{
-      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===tab));
-      $('news-panel').classList.toggle('hidden',tab.dataset.target!=='news-panel');
-      $('layout-panel').classList.toggle('hidden',tab.dataset.target!=='layout-panel');
+      const target=tab.dataset.target;
+      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.target===target));
+      for(const id of ['news-panel','layout-panel','dashboard-panel','media-panel'])$(id).classList.toggle('hidden',id!==target);
+      window.DalalPro?.onTab?.(target);
     });
   }
+  window.DalalCMS={getNews:()=>state.news.slice(),getLayout:()=>structuredClone(state.layout),getSite:()=>SITE,
+    hasToken:()=>!!state.token,uploadMedia:async(file,path)=>uploadPhoto(file,path),
+    openPost:(slug)=>openPost(slug),newPost:()=>reset(),refresh:()=>load(),
+    status:(messageText,kind)=>message(messageText,kind),
+    goto:(id)=>{const tab=[...document.querySelectorAll('.tab')].find(t=>t.dataset.target===id);tab?.click()}};
   bind();load();
 })();
