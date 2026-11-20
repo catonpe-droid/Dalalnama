@@ -27,7 +27,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/dushkal-taluke-kame-thambavun-pani-chara-pradhanya.png"
   },
   {
     "slug": "marathwada-dushkal-pach-jilhe-sankat",
@@ -57,7 +58,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/marathwada-dushkal-pach-jilhe-sankat.png"
   },
   {
     "slug": "gokul-warana-dudh-dar-vadh-nov-2026",
@@ -85,7 +87,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/gokul-warana-dudh-dar-vadh-nov-2026.png"
   },
   {
     "slug": "kartiki-ekadashi-pandharpur-st-extra-buses",
@@ -111,7 +114,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/kartiki-ekadashi-pandharpur-st-extra-buses.png"
   },
   {
     "slug": "vasai-virar-palghar-narangi-creek-bridge-approval",
@@ -138,7 +142,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/vasai-virar-palghar-narangi-creek-bridge-approval.png"
   },
   {
     "slug": "jalyukt-shivar-3-nov-2026-18000-villages",
@@ -167,7 +172,8 @@
     "readMinutes": 3,
     "type": "स्रोत-आधारित ताजी बातमी",
     "isSample": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/jalyukt-shivar-3-nov-2026-18000-villages.png"
   },
   {
     "slug": "sarkari-nivida-nagarik-margadarshak",
@@ -199,7 +205,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/sarkari-nivida-nagarik-margadarshak.png"
   },
   {
     "slug": "mahiti-adhikar-arj-kasa-karava",
@@ -228,7 +235,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/mahiti-adhikar-arj-kasa-karava.png"
   },
   {
     "slug": "gram-sabha-kamanchi-nondi",
@@ -256,7 +264,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/gram-sabha-kamanchi-nondi.png"
   },
   {
     "slug": "shasakiy-takrari-purave-kase-sankalit",
@@ -285,7 +294,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/shasakiy-takrari-purave-kase-sankalit.png"
   },
   {
     "slug": "jilhaa-parishad-nidhi-paradarshakta",
@@ -311,7 +321,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/jilhaa-parishad-nidhi-paradarshakta.png"
   },
   {
     "slug": "online-takrar-konakade-karavi",
@@ -339,7 +350,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/online-takrar-konakade-karavi.png"
   },
   {
     "slug": "gavatil-paniyojana-nirikshan",
@@ -366,7 +378,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/gavatil-paniyojana-nirikshan.png"
   },
   {
     "slug": "janpratinidhi-jababdari-prashna",
@@ -394,7 +407,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/janpratinidhi-jababdari-prashna.png"
   },
   {
     "slug": "pardarshak-bachat-gat-nidhi",
@@ -420,7 +434,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/pardarshak-bachat-gat-nidhi.png"
   },
   {
     "slug": "digital-purave-photovideo-padtalni",
@@ -448,7 +463,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/digital-purave-photovideo-padtalni.png"
   },
   {
     "slug": "gaon-rasta-kam-gunvatta",
@@ -475,7 +491,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/gaon-rasta-kam-gunvatta.png"
   },
   {
     "slug": "sarkari-yojaneche-link-tapasa",
@@ -501,7 +518,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/sarkari-yojaneche-link-tapasa.png"
   },
   {
     "slug": "jilha-stariya-yogana-gharoghari-mahiti",
@@ -528,7 +546,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/jilha-stariya-yogana-gharoghari-mahiti.png"
   },
   {
     "slug": "lokseva-seva-hakk-marg",
@@ -555,7 +574,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/lokseva-seva-hakk-marg.png"
   },
   {
     "slug": "nivadnuk-jahirnama-tapasni",
@@ -581,7 +601,8 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/nivadnuk-jahirnama-tapasni.png"
   },
   {
     "slug": "marathwada-public-records-checklist",
@@ -608,6 +629,7 @@
     "type": "मार्गदर्शक / माहिती",
     "isSample": true,
     "featured": false,
-    "published": true
+    "published": true,
+    "image": "assets/uploads/marathwada-public-records-checklist.png"
   }
 ]
