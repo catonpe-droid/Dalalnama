@@ -21,6 +21,20 @@
    }
    for(const a of all){if(!placed.has(a.dataset.nav))a.remove();}
  }
+ const submenu=document.querySelector('.subnav .wrap');
+ if(submenu&&Array.isArray(layout.subcategories)&&layout.subcategories.length){
+  const existing=[...submenu.querySelectorAll('a')];
+  const currentSub=new Map(existing.map(el=>[el.dataset.nav,el]));
+  for(const element of existing)element.remove();
+  const added=new Set();
+  for(const item of layout.subcategories){
+    if(typeof item!=='string'||!item.trim()||added.has(item))continue;
+    const node=currentSub.get(item)||document.createElement('a');
+    node.dataset.nav=item;node.textContent=item;
+    if(!currentSub.has(item))node.href=SITE+'?category='+encodeURIComponent(item);
+    submenu.append(node);added.add(item);
+  }
+ }
  const current=published.find(a=>a.slug===section);
  const article=document.querySelector('#app > article');
  if(!article||!current)return;
