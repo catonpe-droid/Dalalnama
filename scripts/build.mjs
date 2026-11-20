@@ -15,12 +15,12 @@ function inject(name,data){
 inject('DALALNAMA_ARTICLES',news);inject('DALALNAMA_LAYOUT',layout);
 const write=(p,s)=>{const f=path.join('site',p);fs.mkdirSync(path.dirname(f),{recursive:true});fs.writeFileSync(f,s)};
 fs.rmSync('site',{recursive:true,force:true});
-const baseTitle='दलालनामा | जनतेचा आवाज';
-const intro='दलालनामा मराठी डिजिटल न्यूज पोर्टल — महाराष्ट्रातील बातम्या, विश्लेषण व जनतेचे प्रश्न.';
+const baseTitle=String(layout.site?.title||'दलालनामा | जनतेचा आवाज');
+const intro=String(layout.site?.description||'दलालनामा मराठी डिजिटल न्यूज पोर्टल — महाराष्ट्रातील बातम्या, विश्लेषण व जनतेचे प्रश्न.');
 function socialMeta(source,story=null,url=SITE){
  let image=SITE+'assets/share.png';
  let title=baseTitle,description=intro;
- if(story){image=SITE+story.image;title=story.title+' | दलालनामा';description=story.summary||intro}
+ if(story){image=SITE+(story.image||'assets/share.png');title=(story.seoTitle||story.title)+' | दलालनामा';description=story.seoDescription||story.summary||intro}
  const map=[
  ['og:title',title],['og:description',description],['og:image',image],['og:url',url],
  ['og:image:width','1200'],['og:image:height','630']
@@ -40,6 +40,18 @@ function socialMeta(source,story=null,url=SITE){
   else source=source.replace('</head>',replacement+'</head>');
  }
  source=source.replace('</head>','<link rel="canonical" href="'+safe(url)+'"></head>');
+ if(story){
+  source=source.replace('<meta property="og:type" content="website">','<meta property="og:type" content="article">');
+  const date=String(story.date||'').slice(0,10);
+  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(date))source=source.replace('</head>','<meta property="article:published_time" content="'+date+'T12:00:00+05:30"></head>');
+  const keywords=Array.isArray(story.seoKeywords)?story.seoKeywords.filter(x=>typeof x==='string').slice(0,18).join(', '):(story.tags||[]).join(', ');
+  if(keywords)source=source.replace('</head>','<meta name="keywords" content="'+safe(keywords).slice(0,250)+'"></head>');
+  const structured={"@context":"https://schema.org","@type":"NewsArticle",headline:story.title,
+    description,image:[image],datePublished:date||undefined,author:{"@type":"Person",name:story.author||'दलालनामा न्यूज डेस्क'},
+    mainEntityOfPage:url,publisher:{"@type":"Organization",name:"दलालनामा",url:SITE}};
+  const data=JSON.stringify(structured).replace(/</g,'\\u003c');
+  source=source.replace('</head>','<script type="application/ld+json">'+data+'</script></head>');
+ }
  return source;
 }
 write('.nojekyll','');
