@@ -46,7 +46,8 @@
   if(!label||!category)continue;
   const matches=posts.filter(a=>safeSlug(a.slug)&&(a.category===category||Array.isArray(a.tags)&&a.tags.includes(category)));
   matches.sort((a,b)=>(b.category===category?1:0)-(a.category===category?1:0)||String(b.date||'').localeCompare(String(a.date||'')));
-  const chosen=matches.filter(a=>!allUsed.has(a.slug)).slice(0,5);
+  const maxStories=Math.max(2,Math.min(8,Number(layout.appearance?.columnItems)||5));
+  const chosen=matches.filter(a=>!allUsed.has(a.slug)).slice(0,maxStories);
   for(const p of chosen)allUsed.add(p.slug);
   const column=document.createElement('section');column.className='dn-news-column';
   const top=document.createElement('div');top.className='dn-news-colhead';
