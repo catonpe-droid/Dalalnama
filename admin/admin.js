@@ -143,7 +143,8 @@
       $('cover-preview').src=SITE+src;$('cover-preview').classList.remove('hidden');
     }
     $('editor-title').textContent='✏️ बातमी संपादन';
-    $('current-url').href=publicURL(slug);$('current-url').textContent=publicURL(slug);
+    $('current-url').href=isDraft(item)?SITE:publicURL(slug);
+    $('current-url').textContent=isDraft(item)?'Draft — Publish झाल्यावर '+publicURL(slug)+' सक्रिय होईल':publicURL(slug);
     $('result').classList.add('hidden');renderList();window.scrollTo({top:0,behavior:'smooth'});
   }
   async function load(){
@@ -214,11 +215,13 @@
   }
   async function savePost(mode){
     if(state.busy)return;
-    if(!$('post-form').reportValidity())return;
+    if(mode==='published'&&!$('post-form').reportValidity())return;
+    if(mode==='draft'&&!$('slug').value.trim())makeAutoSlug();
     const slug=$('slug').value.trim().toLowerCase();
     if(!allowedSlug.test(slug))return message('Slug: 3–96 इंग्रजी लहान अक्षरे, अंक, underscore किंवा hyphen वापरा.','error');
     const title=$('title').value.trim(),summary=$('summary').value.trim(),body=splitBody($('body').value);
-    if(title.length<8||body.join(' ').length<30||summary.length<15)return message('शीर्षक, किमान ३० अक्षरांची बातमी आणि १५ अक्षरांचा सारांश आवश्यक.','error');
+    if(mode==='published'&&(title.length<8||body.join(' ').length<30||summary.length<15))return message('प्रकाशनासाठी शीर्षक, ३० अक्षरांची बातमी आणि १५ अक्षरांचा सारांश आवश्यक.','error');
+    if(mode==='draft'&&title.length<3)return message('Draft साठी किमान ३ अक्षरांचे शीर्षक लिहा.','error');
     if(state.news.some(p=>p.slug===slug&&p.slug!==state.activeSlug))return message('ही URL आधीच दुसऱ्या बातमीसाठी वापरली आहे. दुसरा Slug द्या.','error');
     const old=state.news.find(p=>p.slug===state.activeSlug)||null;
     const isRename=old&&old.slug!==slug;
@@ -265,8 +268,8 @@
       $('result').classList.remove('hidden');
       $('result').replaceChildren();
       const strong=document.createElement('strong');strong.textContent=mode==='draft'?'📝 Draft जतन झाला':'✅ बातमी GitHub मध्ये जतन झाली';
-      const link=document.createElement('a');link.href=publicURL(slug);link.target='_blank';link.rel='noopener';
-      link.textContent=publicURL(slug);
+      const link=document.createElement('a');link.href=mode==='draft'?SITE:publicURL(slug);link.target='_blank';link.rel='noopener';
+      link.textContent=mode==='draft'?'Draft — Live URL प्रकाशनानंतर दिसेल':publicURL(slug);
       $('result').append(strong,document.createElement('br'),link);
       state.selected.clear();openPost(slug);$('result').classList.remove('hidden');
       $('result').append(strong,document.createElement('br'),link);
