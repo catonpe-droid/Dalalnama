@@ -69,4 +69,5 @@ for(const [category,slug] of cats){
 write('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls.map(u=>'<url><loc>'+u+'</loc></url>').join('')+'</urlset>');
 write('robots.txt','User-agent: *\nAllow: /\nSitemap: '+SITE+'sitemap.xml\n');
 if(fs.existsSync('assets'))fs.cpSync('assets','site/assets',{recursive:true});
+if(fs.existsSync('admin'))fs.cpSync('admin','site/admin',{recursive:true});
 console.log('Dalalnama built:',news.length,'stories /',cats.length,'categories');
