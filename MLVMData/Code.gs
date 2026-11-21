@@ -53,7 +53,7 @@ function saveNgo(raw) {
     const lock=LockService.getScriptLock(); lock.waitLock(25000);
     try {
       const sh=SpreadsheetApp.openById(MLVM_SHEET_ID).getSheetByName(MLVM_TAB);
-      if (!sh) return failure_('Google Sheet जोडणी उपलब्ध नाही.');
+      if (!sh) return failure_('सध्या नोंदणी सेवा उपलब्ध नाही. कृपया नंतर पुन्हा प्रयत्न करा.');
       const last=sh.getLastRow();
       const n=norm_(d.name),r=norm_(d.reg);
       if(last>1) {
