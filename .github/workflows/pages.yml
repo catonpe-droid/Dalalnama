@@ -8,6 +8,7 @@ on:
       - 'assets/**'
       - 'admin/**'
       - 'scripts/**'
+      - 'MLVMData/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 permissions:
