@@ -78,3 +78,43 @@ if logo:
 # Shared main thumbnail
 if news:
  (site/'assets'/'share.png').write_bytes((out/(news[0]['slug']+'.png')).read_bytes())
+
+
+# MLVMData WhatsApp / Open Graph image, published inside the Pages artifact.
+# Use the logo already supplied by MLVM, without rebranding the news portal.
+mlvm_logo = root / 'MLVMData' / 'logo.svg'
+if mlvm_logo.exists():
+ svg_source = mlvm_logo.read_text('utf8')
+ match = re.search(r'data:image/webp;base64,([^"\s<]+)', svg_source)
+ if not match:
+  raise RuntimeError('MLVM source logo not found in SVG')
+ emblem = Image.open(io.BytesIO(base64.b64decode(match.group(1)))).convert('RGBA')
+ W, H = 1200, 630
+ artwork = Image.new('RGB', (W, H))
+ ad = ImageDraw.Draw(artwork)
+ start, end = (253, 249, 239), (244, 235, 211)
+ for yy in range(H):
+  t = yy / (H - 1)
+  ad.line((0, yy, W, yy),
+          fill=tuple(round(a * (1 - t) + b * t) for a, b in zip(start, end)))
+ ad.rectangle((0, 0, W, 17), fill=(139, 39, 35))
+ ad.rectangle((0, 17, W, 25), fill=(232, 173, 60))
+ ad.rounded_rectangle((44, 104, 454, 524), radius=34,
+                      fill=(255, 255, 255), outline=(216, 197, 150), width=4)
+ emblem = emblem.resize((366, 366), Image.Resampling.LANCZOS)
+ artwork.paste(emblem, (66, 131), emblem)
+ ad.rounded_rectangle((489, 98, 1150, 167), radius=19, fill=(139, 39, 35))
+ ad.text((509, 111), 'महाराष्ट्र लोक विकास मंच', font=font(40), fill=(255, 255, 255))
+ ad.text((491, 228), 'ड्राऊट वॉरियर', font=font(58), fill=(77, 42, 31))
+ ad.text((491, 313), 'संस्था नोंदणी', font=font(58), fill=(77, 42, 31))
+ ad.rounded_rectangle((491, 415, 1139, 472), radius=16,
+                      fill=(251, 243, 215), outline=(216, 189, 130), width=2)
+ ad.text((512, 425), 'सर्व जिल्ह्यांतील संस्थांसाठी ऑनलाइन नोंदणी',
+         font=font(26), fill=(112, 73, 40))
+ ad.rectangle((0, 555, W, H), fill=(108, 39, 33))
+ ad.text((54, 574), 'महाराष्ट्र लोक विकास मंच  •  MLVM',
+         font=font(27), fill=(255, 239, 194))
+ output_dir = site / 'MLVMData'
+ output_dir.mkdir(parents=True, exist_ok=True)
+ artwork.save(output_dir / 'share-preview.png', format='PNG', optimize=True)
+ print('Generated MLVMData 1200 x 630 social share image')
