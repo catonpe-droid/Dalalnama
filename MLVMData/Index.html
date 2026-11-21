@@ -39,7 +39,7 @@ footer{padding:20px 10px;text-align:center;font-size:13px;color:#7b837a}
 <header><div class="top"><img class="logo" src="https://catonpe-droid.github.io/Dalalnama/MLVMData/logo.svg" alt="महाराष्ट्र लोक विकास मंचचा लोगो" onerror="this.style.display='none'"><div><div class="brand">महाराष्ट्र लोक विकास मंच</div><div class="subbrand">ड्राऊट वॉरियर ऑर्गनायझेशन • संस्था माहिती संकलन</div></div></div></header>
 <main class="wrap">
 <section class="hero"><span class="eyebrow">महाराष्ट्रातील सर्व जिल्ह्यांसाठी</span><h1>ड्राऊट वॉरियर संस्था नोंदणी</h1><p>दुष्काळ निवारणाच्या उपक्रमांसाठी आपल्या जिल्ह्यातील महाराष्ट्र लोक विकास मंच संलग्न संस्थांची माहिती नोंदवा. जिल्हानिहाय समन्वय आणि शासनाशी प्रस्तावित संवादासाठी हे संकलन आहे.</p></section>
-<div id="offline" class="offline">सध्या Google Sheet जोडणी सुरू झालेली नाही. कृपया फॉर्म भरून सबमिट करू नका.</div>
+<div id="offline" class="offline">ऑनलाइन नोंदणी सध्या उपलब्ध नाही. कृपया नंतर पुन्हा प्रयत्न करा.</div>
 <div class="layout"><section class="panel" id="formPanel"><div id="entry">
 <div class="panelhead"><h2>संस्थेची माहिती भरा</h2><p><span class="star">*</span> असलेली माहिती आवश्यक आहे. एका संस्थेची नोंदणी एकदाच होईल.</p></div>
 <form id="ngoForm" novalidate><input type="text" class="hp" name="honeypot" tabindex="-1" autocomplete="off">
@@ -76,7 +76,7 @@ if(window.ResizeObserver) new ResizeObserver(notifyParent).observe(document.body
 const districts='अहिल्यानगर|अकोला|अमरावती|छत्रपती संभाजीनगर|बीड|भंडारा|बुलढाणा|चंद्रपूर|धाराशिव|धुळे|गडचिरोली|गोंदिया|हिंगोली|जळगाव|जालना|कोल्हापूर|लातूर|मुंबई शहर|मुंबई उपनगर|नागपूर|नांदेड|नंदुरबार|नाशिक|पालघर|परभणी|पुणे|रायगड|रत्नागिरी|सांगली|सातारा|सिंधुदुर्ग|सोलापूर|ठाणे|वर्धा|वाशिम|यवतमाळ'.split('|');
 const select=document.querySelector('#district');districts.forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;select.append(o)});
 const form=document.querySelector('#ngoForm');const started=Date.now();const alertBox=document.querySelector('#alert');const btn=document.querySelector('#submitBtn');
-if(!window.google?.script?.run){document.querySelector('#offline').style.display='block';btn.disabled=true;btn.textContent='Google Sheet जोडणी प्रलंबित';}
+if(!window.google?.script?.run){document.querySelector('#offline').style.display='block';btn.disabled=true;btn.textContent='नोंदणी लवकरच सुरू होईल';}
 function fail(s){alertBox.textContent=s;alertBox.style.display='block';btn.disabled=false;btn.textContent='संस्थेची नोंदणी पूर्ण करा';alertBox.scrollIntoView({block:'center',behavior:'smooth'})}
 form.addEventListener('submit',e=>{e.preventDefault();alertBox.style.display='none';if(!form.reportValidity())return;const d=Object.fromEntries(new FormData(form).entries());d.consent=document.querySelector('#consent').checked;d.formStarted=started;btn.disabled=true;btn.textContent='नोंदणी साठवत आहे...';
 google.script.run.withSuccessHandler(x=>{if(!x?.ok){fail(x?.message||'नोंदणी अयशस्वी.');return;}document.querySelector('#entry').style.display='none';document.querySelector('#success').style.display='block';document.querySelector('#receiptId').textContent=x.id;document.querySelector('#receiptName').textContent=x.organization+' • '+x.district;document.querySelector('#successMsg').textContent=x.message;window.scrollTo({top:0,behavior:'smooth'});}).withFailureHandler(e=>fail('जोडणीमध्ये अडथळा आला. इंटरनेट तपासून पुन्हा प्रयत्न करा.')).saveNgo(d);
