@@ -82,4 +82,6 @@ write('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http:/
 write('robots.txt','User-agent: *\nAllow: /\nSitemap: '+SITE+'sitemap.xml\n');
 if(fs.existsSync('assets'))fs.cpSync('assets','site/assets',{recursive:true});
 if(fs.existsSync('admin'))fs.cpSync('admin','site/admin',{recursive:true});
+// Keep the separate MLVMData registration microsite intact in the Pages artifact.
+if(fs.existsSync('MLVMData'))fs.cpSync('MLVMData','site/MLVMData',{recursive:true});
 console.log('Dalalnama built:',news.length,'stories /',cats.length,'categories');
