@@ -66,7 +66,7 @@ body.dark .news-brief{background:#332b15;border-color:#665722}
 body.dark .source-note{background:none;color:#ddd}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://catonpe-droid.github.io/Dalalnama/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://catonpe-droid.github.io/Dalalnama/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-<link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/site-customizer.css?v=6"><style id="dalalnama-policy-pages-css">
+<link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/site-customizer.css?v=7"><style id="dalalnama-policy-pages-css">
 .policy-page{max-width:940px;margin-left:auto;margin-right:auto}
 .policy-page .policy-body{max-width:850px;line-height:1.9}
 .policy-page .policy-body p{margin:0 0 17px}
@@ -300,8 +300,6 @@ body.dark .source-note{background:none;color:#ddd}
     <a data-nav="पोस्टमॉर्टम" href="?category=%E0%A4%AA%E0%A5%8B%E0%A4%B8%E0%A5%8D%E0%A4%9F%E0%A4%AE%E0%A5%89%E0%A4%B0%E0%A5%8D%E0%A4%9F%E0%A4%AE">पोस्टमॉर्टम</a>
     <a data-nav="विशेष लेख" href="?category=%E0%A4%B5%E0%A4%BF%E0%A4%B6%E0%A5%87%E0%A4%B7%20%E0%A4%B2%E0%A5%87%E0%A4%96">विशेष लेख</a>
     <button id="navOther" class="other-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="navOtherPanel">अन्य <span class="other-chevron" aria-hidden="true">⌄</span></button>
-    <button id="navSearch" class="search-link" aria-label="शोधा" title="बातमी शोधा"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button>
-  </div>
   <div class="other-panel" id="navOtherPanel" aria-label="अन्य बातमी विभाग" hidden>
     <div class="other-panel-content">
       <div class="other-panel-links">
@@ -313,6 +311,8 @@ body.dark .source-note{background:none;color:#ddd}
         <a data-nav="जनतेचा सवाल" href="?category=%E0%A4%9C%E0%A4%A8%E0%A4%A4%E0%A5%87%E0%A4%9A%E0%A4%BE%20%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2">जनतेचा सवाल</a>
       </div>
     </div>
+  </div>
+    <button id="navSearch" class="search-link" aria-label="शोधा" title="बातमी शोधा"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button>
   </div>
 </nav>
 <div class="ticker"><div class="wrap"><span class="ticklabel">● लाईव्ह न्यूज</span><div class="ticker-window"><div class="ticker-track" id="dalalTicker"></div></div></div></div>
@@ -394,31 +394,29 @@ const setMainOpen=isOpen=>{
   hamburger.setAttribute('aria-expanded',String(isOpen));
   hamburger.setAttribute('aria-label',isOpen?'मेनू बंद करा':'मेनू उघडा');
   hamburger.textContent=isOpen?'✕':'☰';
+  if(!isOpen){otherPanel.hidden=true;otherToggle.setAttribute('aria-expanded','false');}
 };
 const setOtherOpen=isOpen=>{
   otherPanel.hidden=!isOpen;
   otherToggle.setAttribute('aria-expanded',String(isOpen));
 };
 hamburger.addEventListener('click',()=>{
-  const show=!mobileNav.classList.contains('open');
-  setOtherOpen(false);
-  setMainOpen(show);
+  setMainOpen(!mobileNav.classList.contains('open'));
 });
 otherToggle.addEventListener('click',()=>{
-  const show=otherPanel.hidden;
-  setMainOpen(false);
-  setOtherOpen(show);
+  setOtherOpen(otherPanel.hidden);
 });
 document.addEventListener('click',ev=>{
-  if(!mobileNav.contains(ev.target)&&mobileNav.classList.contains('open'))setMainOpen(false);
-  if(!otherToggle.contains(ev.target)&&!otherPanel.contains(ev.target)&&!otherPanel.hidden)setOtherOpen(false);
+  if(!mobileNav.contains(ev.target)){
+    if(mobileNav.classList.contains('open'))setMainOpen(false);
+    else if(!otherPanel.hidden)setOtherOpen(false);
+  }
 });
 document.addEventListener('keydown',ev=>{
   if(ev.key==='Escape'){
     const hadOther=!otherPanel.hidden;
     const hadMain=mobileNav.classList.contains('open');
     setMainOpen(false);
-    setOtherOpen(false);
     if(hadOther)otherToggle.focus();
     else if(hadMain)hamburger.focus();
   }
