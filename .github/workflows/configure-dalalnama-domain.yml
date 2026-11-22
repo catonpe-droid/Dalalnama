@@ -1,0 +1,59 @@
+name: Connect dalalnama.com to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/configure-dalalnama-domain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  configure-custom-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set custom domain on GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          status=$(curl --silent --show-error --output /tmp/pages-update.json --write-out '%{http_code}' \
+            --request PUT \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --data '{"cname":"dalalnama.com"}' \
+            "https://api.github.com/repos/${GH_REPOSITORY}/pages")
+          if [[ "$status" != 204 && "$status" != 200 ]]; then
+            echo "GitHub Pages domain update failed (HTTP $status):"
+            cat /tmp/pages-update.json
+            exit 1
+          fi
+          echo "Set custom domain to dalalnama.com" >> "${GITHUB_STEP_SUMMARY}"
+
+      - name: Verify GitHub Pages configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            --header 'Accept: application/vnd.github+json' \
+            --header 'X-GitHub-Api-Version: 2022-11-28' \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/${GH_REPOSITORY}/pages" \
+            -o /tmp/pages-verify.json
+          python - <<'PY'
+          import json
+          p = json.load(open('/tmp/pages-verify.json'))
+          value = p.get('cname')
+          print('Configured GitHub Pages custom domain:', value)
+          if value != 'dalalnama.com':
+              raise SystemExit('GitHub Pages custom domain not yet confirmed')
+          PY
