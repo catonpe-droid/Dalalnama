@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
- const SITE='https://catonpe-droid.github.io/Dalalnama/';
+ const SITE='https://dalalnama.com/';
  const layout=window.DALALNAMA_LAYOUT||{};
  const a=layout.appearance||{},site=layout.site||{};
  const body=document.body;
@@ -11,7 +11,7 @@
  body.style.setProperty('--dn-scale',String(fontScale));
  const logo=document.querySelector('.mast .brand img');
  if(logo){const n=Math.min(450,Math.max(210,Number(a.logoWidth)||340));logo.style.maxWidth=n+'px';logo.style.width='100%';
-  const logoPath=String(a.logoPath||'');if(/^assets\/branding\/[a-z0-9_.-]+\.(png|jpg|jpeg|webp)$/i.test(logoPath))logo.src='https://catonpe-droid.github.io/Dalalnama/'+logoPath;
+  const logoPath=String(a.logoPath||'');if(/^assets\/branding\/[a-z0-9_.-]+\.(png|jpg|jpeg|webp)$/i.test(logoPath))logo.src='https://dalalnama.com/'+logoPath;
  }
  if(a.showBreaking===false)document.querySelector('.ticker')?.setAttribute('hidden','');
  if(a.showWeather===false)document.body.classList.add('dn-hide-weather');
