@@ -8,7 +8,7 @@
   const rawSecret=location.hash.startsWith('#key=')?location.hash.slice(5):'';
   let publishKey='';
   try{publishKey=decodeURIComponent(rawSecret).trim()}catch{publishKey=rawSecret.trim()}
-  let workerURL='',workerMode=false;
+  let workerURL='',workerMode=false,lastLoadError='';
   const connected=()=>workerMode||!!state.token;
   const $=id=>document.getElementById(id);
   const state={token:'',news:[],newsSha:'',layout:{},layoutSha:'',activeSlug:'',filter:'all',selected:new Set(),busy:false,ready:false,photoUrl:''};
@@ -41,6 +41,9 @@
     // Cloudflare Worker holds the repository-scoped GitHub token in a Worker Secret.
     // The user's short publication key is a bearer credential, never a GitHub token.
     if(workerMode){
+      // Browser CORS: the Worker preflight does not allow GitHub-only version header.
+      // Worker itself supplies X-GitHub-Api-Version when contacting GitHub.
+      delete headers['X-GitHub-Api-Version'];
       headers.Authorization='Bearer '+publishKey;
       headers['Cache-Control']='no-store';
     }
@@ -163,6 +166,7 @@
     $('result').classList.add('hidden');renderList();window.scrollTo({top:0,behavior:'smooth'});
   }
   async function load(){
+    lastLoadError='';
     message('बातम्या आणि Layout लोड होत आहे…');
     try{
       const [a,b]=await Promise.all([readJSON('data/news.json'),readJSON('data/layout.json')]);
@@ -174,7 +178,7 @@
       message(state.news.length+' बातम्या लोड झाल्या. '+(connected()?'✅ सुरक्षित Publishing जोडणी तयार.':'संपादनासाठी GitHub token किंवा Key Link जोडा.'),connected()?'success':'');
       window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:state.news,layout:state.layout}}));
     return true;
-    }catch(e){state.ready=false;message('लोड करता आले नाही: '+e.message,'error');return false}
+    }catch(e){state.ready=false;lastLoadError=String(e.message||e);message('लोड करता आले नाही: '+lastLoadError,'error');return false}
   }
   function renderLayout(){
     const o=state.layout||{};
@@ -429,12 +433,18 @@
       workerURL=url.href.replace(/\/$/,'');
       workerMode=true;
       const ok=await load(); // Validates the key by reading private authenticated Worker endpoint.
-      if(!ok){workerMode=false;throw Error('Key Link ची पडताळणी झाली नाही.')}
+      if(!ok){workerMode=false;throw Error(lastLoadError||'Key Link ची पडताळणी झाली नाही.')}
       const section=document.querySelector('.connect');
       if(section)section.classList.add('key-link-connected');
       message('✅ लोकहितसारखी सुरक्षित Key Link जोडली आहे. बातम्या प्रकाशित करू शकता.','success');
     }catch(e){
-      workerMode=false;message('🔒 Key Link अजून सक्रिय नाही: '+e.message+' Cloudflare Worker Deploy/Secrets तपासा.','error');
+      workerMode=false;
+      const errorText=String(e.message||e);
+      // No secrets are ever echoed; make CORS, key mismatch and config faults actionable.
+      const detail=/Failed to fetch|NetworkError/i.test(errorText)
+        ?'Worker कडे ब्राउझर विनंती पोहोचत नाही (CORS/नेटवर्क).'
+        :errorText;
+      message('🔒 Key Link जोडता आली नाही: '+detail,'error');
     }
   }
   bind();startSecureKeyLink();
