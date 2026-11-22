@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
-  "live": false,
-  "snapshotAt": "2026-11-22 15:48:34",
+  "snapshotAt": "2026-11-22 15:53:12",
   "generatedOn": "2026-11-22",
+  "live": false,
+  "sourceMode": "published_csv",
   "source": "महाराष्ट्र लोक विकास मंच — प्राप्त संस्था नोंदणी (स्वयंघोषित माहिती)",
   "totals": {
-    "organizations": 119,
+    "organizations": 120,
     "districtsWithRegistrations": 20,
     "districtsTotal": 36,
-    "workers": 1989,
-    "villages": 8557,
+    "workers": 2000,
+    "villages": 8908,
     "verified": 0
   },
   "districts": [
@@ -66,17 +67,17 @@
     },
     {
       "name": "छत्रपती संभाजीनगर",
-      "count": 18,
-      "workers": 252,
-      "villages": 795,
+      "count": 19,
+      "workers": 263,
+      "villages": 1146,
       "verified": 0,
       "activities": {
-        "water": 11,
-        "livestock": 5,
-        "survey": 6,
+        "water": 12,
+        "livestock": 6,
+        "survey": 7,
         "scheme": 1,
-        "awareness": 6,
-        "relief": 4,
+        "awareness": 7,
+        "relief": 5,
         "livelihood": 1,
         "community": 3
       }
@@ -630,17 +631,17 @@
     {
       "key": "water",
       "label": "जलसंधारण व पाणी",
-      "count": 77
+      "count": 78
     },
     {
       "key": "livestock",
       "label": "चारा व पशुधन",
-      "count": 62
+      "count": 63
     },
     {
       "key": "survey",
       "label": "सर्वेक्षण व लाभार्थी",
-      "count": 62
+      "count": 63
     },
     {
       "key": "scheme",
@@ -650,12 +651,12 @@
     {
       "key": "awareness",
       "label": "जनजागृती व प्रशिक्षण",
-      "count": 50
+      "count": 51
     },
     {
       "key": "relief",
       "label": "मदत व साहित्य वितरण",
-      "count": 37
+      "count": 38
     },
     {
       "key": "livelihood",
@@ -675,12 +676,12 @@
     },
     {
       "date": "2026-11-22",
-      "count": 46
+      "count": 47
     }
   ],
   "quality": {
-    "notYetVerified": 119,
+    "notYetVerified": 120,
     "noMatchedCapacityCategory": 7,
-    "taggedCapacity": 112
+    "taggedCapacity": 113
   }
 }
