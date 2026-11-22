@@ -55,11 +55,19 @@
     });
     const data=await response.json().catch(()=>({}));
     if(!response.ok){
-      if(response.status===401)throw Error(workerMode?'गुप्त Publishing Key जुळत नाही. Cloudflare मध्ये PUBLISH_KEY तपासा.':'GitHub token चुकीचा किंवा कालबाह्य झाला आहे.');
+      if(response.status===401){
+        if(workerMode&&data.error==='Invalid publishing key')
+          throw Error('Cloudflare PUBLISH_KEY जुळत नाही. गुप्त Bookmark मधील Key तपासा.');
+        if(workerMode)throw Error('Cloudflare Worker मधील GITHUB_TOKEN GitHub ने नाकारला. Token परवानगी तपासा.');
+        throw Error('GitHub token चुकीचा किंवा कालबाह्य झाला आहे.');
+      }
       if(response.status===403)throw Error(workerMode?'Cloudflare Worker/GitHub Secret ची परवानगी तपासा.':'GitHub repository साठी Contents: Read and write परवानगी तपासा.');
       if(response.status===404)throw Error('GitHub मध्ये फाइल किंवा Repository सापडली नाही.');
       if(response.status===409||response.status===422)throw Error('GitHub वर एकाच वेळी बदल झाला किंवा Slug/फाइल आधीच अस्तित्वात आहे. Refresh करा.');
-      throw Error('GitHub: '+String(data.message||response.status).slice(0,150));
+      // Worker responses describe the cause in "error", not GitHub's "message".
+      // Using the HTTP status alone previously hid the real cause as "GitHub: 502".
+      const detail=String(data.error||data.message||response.status).slice(0,240);
+      throw Error((workerMode?'Cloudflare Worker: ':'GitHub: ')+detail);
     }
     return data;
   }
@@ -433,7 +441,13 @@
       workerURL=url.href.replace(/\/$/,'');
       workerMode=true;
       const ok=await load(); // Validates the key by reading private authenticated Worker endpoint.
-      if(!ok){workerMode=false;throw Error(lastLoadError||'Key Link ची पडताळणी झाली नाही.')}
+      if(!ok){
+        // Read-only fallback: still show existing news if the protected publishing API fails.
+        const cause=lastLoadError||'Key Link ची पडताळणी झाली नाही.';
+        workerMode=false;
+        await load();
+        throw Error(cause);
+      }
       const section=document.querySelector('.connect');
       if(section)section.classList.add('key-link-connected');
       message('✅ लोकहितसारखी सुरक्षित Key Link जोडली आहे. बातम्या प्रकाशित करू शकता.','success');
