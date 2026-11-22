@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
- const SITE='https://catonpe-droid.github.io/Dalalnama/';
+ const SITE='https://dalalnama.com/';
  const escSafeSlug=s=>/^[a-z0-9][a-z0-9_-]{2,115}$/.test(s||'')?s:'';
  const published=(Array.isArray(window.DALALNAMA_ARTICLES)?window.DALALNAMA_ARTICLES:[]).filter(a=>a&&a.published!==false);
  const layout=window.DALALNAMA_LAYOUT||{};
