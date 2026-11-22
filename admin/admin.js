@@ -4,6 +4,12 @@
   const REPO='catonpe-droid/Dalalnama';
   const API='https://api.github.com/repos/'+REPO+'/contents/';
   const SITE='https://dalalnama.com/';
+  // Same private-link flow as Lokhit: #key is never sent in the page request.
+  const rawSecret=location.hash.startsWith('#key=')?location.hash.slice(5):'';
+  let publishKey='';
+  try{publishKey=decodeURIComponent(rawSecret).trim()}catch{publishKey=rawSecret.trim()}
+  let workerURL='',workerMode=false;
+  const connected=()=>workerMode||!!state.token;
   const $=id=>document.getElementById(id);
   const state={token:'',news:[],newsSha:'',layout:{},layoutSha:'',activeSlug:'',filter:'all',selected:new Set(),busy:false,ready:false,photoUrl:''};
   const allowedSlug=/^[a-z0-9][a-z0-9_-]{2,95}$/;
@@ -28,17 +34,26 @@
     return btoa(result);
   }
   async function github(path,method='GET',payload=null){
-    if(method!=='GET'&&!state.token)throw Error('प्रकाशनासाठी GitHub token जोडणे आवश्यक आहे.');
+    if(method!=='GET'&&!connected())throw Error('प्रकाशनासाठी GitHub token किंवा सुरक्षित Key Link आवश्यक आहे.');
     const headers={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
     if(state.token)headers.Authorization='Bearer '+state.token;
     if(payload)headers['Content-Type']='application/json';
-    const response=await fetch(API+path+(method==='GET'?'?ref=main':''),{
-      method,headers,cache:'no-store',...(payload?{body:JSON.stringify(payload)}:{})
+    // Cloudflare Worker holds the repository-scoped GitHub token in a Worker Secret.
+    // The user's short publication key is a bearer credential, never a GitHub token.
+    if(workerMode){
+      headers.Authorization='Bearer '+publishKey;
+      headers['Cache-Control']='no-store';
+    }
+    const url=workerMode?workerURL+'/github?path='+encodeURIComponent(path):
+      API+path+(method==='GET'?'?ref=main':'');
+    const response=await fetch(url,{
+      method,headers,cache:'no-store',referrerPolicy:'no-referrer',
+      ...(payload?{body:JSON.stringify(payload)}:{})
     });
     const data=await response.json().catch(()=>({}));
     if(!response.ok){
-      if(response.status===401)throw Error('GitHub token चुकीचा किंवा कालबाह्य झाला आहे.');
-      if(response.status===403)throw Error('GitHub repository साठी Contents: Read and write परवानगी तपासा.');
+      if(response.status===401)throw Error(workerMode?'गुप्त Publishing Key जुळत नाही. Cloudflare मध्ये PUBLISH_KEY तपासा.':'GitHub token चुकीचा किंवा कालबाह्य झाला आहे.');
+      if(response.status===403)throw Error(workerMode?'Cloudflare Worker/GitHub Secret ची परवानगी तपासा.':'GitHub repository साठी Contents: Read and write परवानगी तपासा.');
       if(response.status===404)throw Error('GitHub मध्ये फाइल किंवा Repository सापडली नाही.');
       if(response.status===409||response.status===422)throw Error('GitHub वर एकाच वेळी बदल झाला किंवा Slug/फाइल आधीच अस्तित्वात आहे. Refresh करा.');
       throw Error('GitHub: '+String(data.message||response.status).slice(0,150));
@@ -66,7 +81,7 @@
   }
   function updateSelectedUI(){
     $('selected-count').textContent=state.selected.size+' selected';
-    $('bulk-delete').disabled=state.busy||!state.token||!state.selected.size;
+    $('bulk-delete').disabled=state.busy||!connected()||!state.selected.size;
     const visible=filteredNews();
     $('select-all').checked=visible.length>0&&visible.every(p=>state.selected.has(p.slug));
     $('select-all').indeterminate=visible.some(p=>state.selected.has(p.slug))&&!$('select-all').checked;
@@ -156,7 +171,7 @@
       state.selected.clear();renderList();renderLayout();
       if(state.activeSlug&&state.news.some(a=>a.slug===state.activeSlug))openPost(state.activeSlug);
       else reset();
-      message(state.news.length+' बातम्या लोड झाल्या. '+(state.token?'Publishing जोडणी तयार.':'संपादनासाठी GitHub token जोडा.'),state.token?'success':'');
+      message(state.news.length+' बातम्या लोड झाल्या. '+(connected()?'✅ सुरक्षित Publishing जोडणी तयार.':'संपादनासाठी GitHub token किंवा Key Link जोडा.'),connected()?'success':'');
       window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:state.news,layout:state.layout}}));
     return true;
     }catch(e){state.ready=false;message('लोड करता आले नाही: '+e.message,'error');return false}
@@ -285,7 +300,7 @@
   }
   async function deleteSlugs(slugs){
     if(state.busy||!slugs.length)return;
-    if(!state.token)return message('Delete साठी GitHub token जोडणे आवश्यक आहे.','error');
+    if(!connected())return message('Delete साठी Publishing Key Link किंवा GitHub token आवश्यक आहे.','error');
     const chosen=[...new Set(slugs)].filter(slug=>state.news.some(x=>x.slug===slug));
     if(!chosen.length)return;
     if(!confirm(chosen.length+' बातम्या कायमच्या वेबसाइटवरून काढायच्या? ही कृती पुढील Build नंतर सार्वजनिक साइटवरही लागू होईल.'))return;
@@ -331,7 +346,11 @@
       $('token').value='';
       message('✅ GitHub जोडणी पडताळली. Published / Draft आणि Delete करता येईल.','success');
     });
-    $('disconnect').addEventListener('click',()=>{state.token='';$('token').value='';message('GitHub publishing token या टॅबमधून काढला.');updateSelectedUI()});
+    $('disconnect').addEventListener('click',()=>{
+      state.token='';workerMode=false;publishKey='';workerURL='';$('token').value='';
+      if(location.hash.startsWith('#key='))history.replaceState(null,'',location.pathname+location.search);
+      message('Publishing जोडणी बंद केली.');updateSelectedUI();
+    });
     $('refresh').addEventListener('click',load);
     for(const id of ['new','new-top'])$(id).addEventListener('click',reset);
     $('search').addEventListener('input',renderList);
@@ -366,7 +385,7 @@
     });
   }
   window.DalalCMS={getNews:()=>state.news.slice(),getLayout:()=>structuredClone(state.layout),getSite:()=>SITE,
-    hasToken:()=>!!state.token,uploadMedia:async(file,path)=>uploadPhoto(file,path),
+    hasToken:()=>connected(),uploadMedia:async(file,path)=>uploadPhoto(file,path),
     loadMedia:async()=>readJSON('data/media.json'),saveMedia:async(media,sha)=>writeJSON('data/media.json',media,sha,'Update Dalalnama media library'),
     uploadBrand:async(file,path)=>{
       if(!file||!/image\/(png|jpeg|webp)/.test(file.type)||file.size>5*1024*1024)throw Error('लोगो PNG, JPG किंवा WebP असावा (कमाल 5 MB).');
@@ -377,5 +396,30 @@
     openPost:(slug)=>openPost(slug),newPost:()=>reset(),refresh:()=>load(),
     status:(messageText,kind)=>message(messageText,kind),
     goto:(id)=>{const tab=[...document.querySelectorAll('.tab')].find(t=>t.dataset.target===id);tab?.click()}};
-  bind();load();
+  async function startSecureKeyLink(){
+    if(!publishKey)return load();
+    if(publishKey.length<32){message('गुप्त Key किमान ३२ अक्षरांची असावी.','error');return}
+    message('🔒 Cloudflare सुरक्षित Key Link तपासत आहे…');
+    try{
+      const res=await fetch('./config.json',{cache:'no-store',referrerPolicy:'no-referrer'});
+      if(!res.ok)throw Error('Admin Worker config उपलब्ध नाही.');
+      const config=await res.json();
+      const url=new URL(String(config.worker_url||'').trim());
+      if(url.protocol!=='https:'||url.origin===location.origin||!url.hostname.endsWith('.workers.dev'))
+        throw Error('Cloudflare Worker URL अजून सेट केलेला नाही.');
+      const health=await fetch(url.href.replace(/\/$/,'')+'/health',{cache:'no-store',referrerPolicy:'no-referrer'});
+      const info=await health.json().catch(()=>({}));
+      if(!health.ok||info.ready!==true)throw Error('Cloudflare Worker मध्ये PUBLISH_KEY/GITHUB_TOKEN Secrets अजून जोडलेले नाहीत.');
+      workerURL=url.href.replace(/\/$/,'');
+      workerMode=true;
+      const ok=await load(); // Validates the key by reading private authenticated Worker endpoint.
+      if(!ok){workerMode=false;throw Error('Key Link ची पडताळणी झाली नाही.')}
+      const section=document.querySelector('.connect');
+      if(section)section.classList.add('key-link-connected');
+      message('✅ लोकहितसारखी सुरक्षित Key Link जोडली आहे. बातम्या प्रकाशित करू शकता.','success');
+    }catch(e){
+      workerMode=false;message('🔒 Key Link अजून सक्रिय नाही: '+e.message+' Cloudflare Worker Deploy/Secrets तपासा.','error');
+    }
+  }
+  bind();startSecureKeyLink();
 })();
