@@ -13,6 +13,30 @@ function inject(name,data){
  html=html.slice(0,start)+begin+value+';\n'+html.slice(end);
 }
 inject('DALALNAMA_ARTICLES',news);inject('DALALNAMA_LAYOUT',layout);
+// Generate the actual public navigation from Admin > Appearance & Layout.
+// "जनतेचा सवाल" always belongs under the final "अन्य" menu, per editorial layout.
+const navCategories=['राजकारण','भ्रष्टाचार','प्रशासननामा','घोटाळे','दलालनामा','पर्दाफाश','इनसाइड स्टोरी','पोस्टमॉर्टम','विशेष लेख','जनतेचा सवाल','समाजसेवेचा मुखवटा','भूमाफिया','सहकारनामा','कंत्राटदारांचे कारनामे','शासकीय योजना'];
+const knownCategories=new Set(navCategories);
+const unique=(items)=>[...new Set(items.filter(v=>typeof v==='string'&&knownCategories.has(v)))];
+const primary=unique(Array.isArray(layout.menu)?layout.menu:navCategories.slice(0,9)).filter(v=>v!=='जनतेचा सवाल');
+const secondary=unique(Array.isArray(layout.subcategories)?layout.subcategories:navCategories.slice(10)).filter(v=>v!=='जनतेचा सवाल');
+secondary.push('जनतेचा सवाल');
+const navHTML=html.slice(html.indexOf('<nav class="nav nav-unified"'),html.indexOf('</nav>',html.indexOf('<nav class="nav nav-unified"'))+6);
+if(!navHTML.includes('id="navOtherDetails"')||!navHTML.includes('id="navSearch"'))throw Error('Main news nav not found');
+const navLink=v=>'<a data-nav="'+safe(v)+'" href="?category='+encodeURIComponent(v)+'">'+safe(v)+'</a>';
+const first=navHTML.indexOf('    <a data-nav="राजकारण"'), last=navHTML.indexOf('    <details class="nav-other-details"',first);
+if(first<0||last<0)throw Error('Main nav links not found');
+let navUpdated=navHTML.slice(0,first)+primary.map(v=>'    '+navLink(v)).join('\n')+'\n'+navHTML.slice(last);
+navUpdated=navUpdated.replace(/(<div class="other-panel-links">)[\s\S]*?(<\/div>)/,
+ (_,open,close)=>open+'\n'+secondary.map(v=>'            '+navLink(v)).join('\n')+'\n          '+close);
+html=html.replace(navHTML,navUpdated);
+if(html.includes('grid-template-columns: repeat(11, minmax(0, 1fr)) 48px;')){
+ html=html.replace('grid-template-columns: repeat(11, minmax(0, 1fr)) 48px;',
+                    'grid-template-columns: repeat('+String(primary.length+2)+', minmax(0, 1fr)) 48px;');
+ html=html.replace('grid-column: 12;','grid-column: '+String(primary.length+3)+';');
+}
+// After applying the menu, the last two controls remain "अन्य" and Search.
+
 const write=(p,s)=>{const f=path.join('site',p);fs.mkdirSync(path.dirname(f),{recursive:true});fs.writeFileSync(f,s)};
 fs.rmSync('site',{recursive:true,force:true});
 const baseTitle=String(layout.site?.title||'दलालनामा | जनतेचा आवाज');
