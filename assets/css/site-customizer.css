@@ -515,3 +515,175 @@ body:not(.dark):not(.dn-preset-night) .stories-section .section-title{
   margin-top:26px;
  }
 }
+
+
+/* Dalalnama navigation alignment & responsive fix — 2026-11-22 */
+/* Isolated navigation layout only. Preserves menu labels, routes, color presets,
+   page sections and the existing hamburger/search JavaScript. */
+.nav #navLinks{
+  width:min(1380px,calc(100% - 32px))!important;
+  max-width:1380px!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  gap:0;
+  min-height:52px;
+  overflow:visible;
+  flex-wrap:nowrap;
+}
+.nav #navLinks > a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  width:auto;
+  min-height:52px;
+  font-size:clamp(13px,.93vw,15px);
+  line-height:1.35;
+  white-space:nowrap;
+  padding:11px clamp(7px,.7vw,12px) 9px;
+  text-align:center;
+}
+.nav #navLinks > .hamburger{
+  display:none;
+  flex:0 0 44px;
+}
+.nav #navLinks > .search-link{
+  display:grid;
+  place-items:center;
+  flex:0 0 44px;
+  width:44px;
+  height:auto;
+  min-height:52px;
+  margin:0;
+  padding:0;
+  line-height:1;
+  font-size:25px;
+}
+.nav #navLinks > a:focus-visible,
+.nav #navLinks > button:focus-visible{
+  outline-offset:-3px;
+}
+/* Tablet and narrower laptop: accessible 2/3/4-column expanded menu rather
+   than clipping links or pushing the hamburger outside the viewport. */
+@media(max-width:1200px){
+ .nav #navLinks{
+   width:calc(100% - 28px)!important;
+   max-width:100%!important;
+   min-height:50px;
+   justify-content:flex-start;
+   flex-wrap:wrap;
+   align-items:stretch;
+   overflow:visible;
+ }
+ .nav #navLinks > .hamburger{
+   display:grid;
+   place-items:center;
+   order:0;
+   flex:0 0 44px;
+   width:44px;
+   min-height:50px;
+   padding:0;
+   margin:0 8px 0 0;
+   font-size:23px;
+   line-height:1;
+ }
+ .nav #navLinks > a{
+   display:none;
+   min-height:50px;
+   font-size:14px;
+   padding:10px 13px;
+   line-height:1.4;
+ }
+ .nav #navLinks > a.home{
+   display:inline-flex;
+   flex:0 0 auto;
+   order:1;
+ }
+ .nav #navLinks > a.active:not(.home){
+   display:inline-flex;
+   order:2;
+ }
+ .nav #navLinks > .search-link{
+   order:3;
+   flex:0 0 44px;
+   min-height:50px;
+   margin-left:auto;
+ }
+ .nav #navLinks.open::before{
+   content:"";
+   flex:0 0 100%;
+   height:0;
+   order:4;
+ }
+ .nav #navLinks.open > a:not(.home){
+   display:inline-flex;
+   align-items:center;
+   justify-content:flex-start;
+   order:5;
+   flex:0 0 25%;
+   width:25%;
+   max-width:25%;
+   min-height:46px;
+   padding:10px 14px;
+   white-space:normal;
+   text-align:left;
+   border-bottom:1px solid var(--line);
+ }
+ .nav #navLinks.open > a.home{
+   order:1;
+ }
+ body:not(.dark):not(.dn-preset-night) .nav #navLinks.open > a:not(.home){
+   background:#fff;
+ }
+ body.dark .nav #navLinks.open > a:not(.home),
+ body.dn-preset-night .nav #navLinks.open > a:not(.home){
+   background:#202020;
+ }
+}
+@media(max-width:850px){
+ .nav #navLinks.open > a:not(.home){
+   flex-basis:33.3333%;
+   width:33.3333%;
+   max-width:33.3333%;
+ }
+}
+@media(max-width:600px){
+ .nav #navLinks{
+   width:calc(100% - 20px)!important;
+   padding:0!important;
+   min-height:48px;
+ }
+ .nav #navLinks > .hamburger{
+   flex-basis:42px;
+   width:42px;
+   margin-right:4px;
+   min-height:48px;
+ }
+ .nav #navLinks > a.home,
+ .nav #navLinks > a.active:not(.home){
+   font-size:13px;
+   padding:9px 10px!important;
+   min-height:48px;
+ }
+ .nav #navLinks > .search-link{
+   flex-basis:40px;
+   width:40px;
+   min-height:48px;
+   font-size:23px;
+ }
+ .nav #navLinks.open > a:not(.home){
+   flex:0 0 50%;
+   width:50%;
+   max-width:50%;
+   min-height:44px;
+   padding:11px 12px!important;
+   font-size:13px;
+ }
+}
+@media(max-width:380px){
+ .nav #navLinks > a.active:not(.home){display:none}
+ .nav #navLinks.open > a.active:not(.home){display:inline-flex}
+}
