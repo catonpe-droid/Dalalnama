@@ -7,13 +7,14 @@
  const section=String(document.documentElement.dataset.article||new URLSearchParams(location.search).get('article')||'');
  const nav=document.getElementById('navLinks');
  if(nav&&Array.isArray(layout.menu)&&layout.menu.length){
-   const all=[...nav.querySelectorAll('a[data-nav]')];
+   // Only top-level links belong to the main bar. Never move/remove nested "अन्य" links.
+   const all=[...nav.querySelectorAll(':scope > a[data-nav]')];
    const map=new Map(all.map(a=>[a.dataset.nav,a]));
    if(map.has('all'))map.set('मुखपृष्ठ',map.get('all'));
-   const button=nav.querySelector('.search-link');
+   const button=nav.querySelector(':scope > .nav-other-details')||nav.querySelector(':scope > .search-link');
    let placed=new Set();
    for(const item of layout.menu){
-     if(typeof item!=='string'||placed.has(item))continue;
+     if(typeof item!=='string'||placed.has(item)||item==='जनतेचा सवाल')continue;
      let node=map.get(item);
      if(!node){node=document.createElement('a');node.textContent=item;node.href=SITE+'?category='+encodeURIComponent(item);node.dataset.nav=item;}
      if(item==='मुखपृष्ठ'){node.href=SITE;node.dataset.nav='all';node.classList.add('home');placed.add('all');}
