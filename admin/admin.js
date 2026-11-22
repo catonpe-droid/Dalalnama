@@ -339,6 +339,7 @@
     $('make-private-link')?.addEventListener('click',async()=>{
       const input=$('private-link-key');
       const secret=input?.value.trim()||'';
+      if(secret.startsWith('github_pat_')||secret.startsWith('ghp_'))return message('GitHub Token नव्हे! Cloudflare मधील वेगळी PUBLISH_KEY वापरा.','error');
       if(secret.length<32)return message('Cloudflare PUBLISH_KEY किमान ३२ अक्षरांची असली पाहिजे. GitHub Token येथे टाकू नका.','error');
       const privateURL=location.origin+location.pathname+'#key='+encodeURIComponent(secret);
       try{
@@ -417,7 +418,9 @@
       const res=await fetch('./config.json',{cache:'no-store',referrerPolicy:'no-referrer'});
       if(!res.ok)throw Error('Admin Worker config उपलब्ध नाही.');
       const config=await res.json();
-      const url=new URL(String(config.worker_url||'').trim());
+      const configured=String(config.worker_url||'').trim();
+      if(!configured)throw Error('Cloudflare Worker URL अजून admin/config.json मध्ये जोडलेला नाही.');
+      const url=new URL(configured);
       if(url.protocol!=='https:'||url.origin===location.origin||!url.hostname.endsWith('.workers.dev'))
         throw Error('Cloudflare Worker URL अजून सेट केलेला नाही.');
       const health=await fetch(url.href.replace(/\/$/,'')+'/health',{cache:'no-store',referrerPolicy:'no-referrer'});
