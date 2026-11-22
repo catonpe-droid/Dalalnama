@@ -93,7 +93,7 @@ function updateSEO(){
  const summary=text($('seo-description').value||$('summary').value).slice(0,350);
  $('seo-preview-title').textContent=title||'दलालनामा';
  $('seo-preview-desc').textContent=summary||'बातमीचा सारांश येथे दिसेल.';
- $('seo-preview-url').textContent=SITE+'batmi/'+text($('slug').value||'your-news-url')+'/';
+ $('seo-preview-url').textContent=SITE+'batmi/'+encodeURIComponent(text($('slug').value||'your-news-url'))+'/';
  const sum=$('summary');if(sum){let status=$('summary-count');if(!status){status=document.createElement('small');status.id='summary-count';sum.insertAdjacentElement('afterend',status)}status.textContent=sum.value.length+' / 500 अक्षरे'}
 }
 function dashboard(posts){
@@ -134,7 +134,7 @@ function setCoverPath(path){
  if(!imagePattern.test(path))return;
  coverPath=path;
  $('photo').value='';$('cover-preview').src=SITE+path;$('cover-preview').classList.remove('hidden');
- CMS.status('मुख्य Thumbnail निवडले. Publish/Update केल्यावर जतन होईल.','success');
+ CMS.status('✅ मुख्य फोटो निवडला. Publish/Update केल्यावर बातमीच्या शेअरिंगमध्ये हाच फोटो वापरला जाईल.','success');
 }
 function insertPhoto(path){
  if(!imagePattern.test(path))return;
