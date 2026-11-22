@@ -3,7 +3,7 @@
 (()=>{
   const REPO='catonpe-droid/Dalalnama';
   const API='https://api.github.com/repos/'+REPO+'/contents/';
-  const SITE='https://catonpe-droid.github.io/Dalalnama/';
+  const SITE='https://dalalnama.com/';
   const $=id=>document.getElementById(id);
   const state={token:'',news:[],newsSha:'',layout:{},layoutSha:'',activeSlug:'',filter:'all',selected:new Set(),busy:false,ready:false,photoUrl:''};
   const allowedSlug=/^[a-z0-9][a-z0-9_-]{2,95}$/;
@@ -158,7 +158,8 @@
       else reset();
       message(state.news.length+' बातम्या लोड झाल्या. '+(state.token?'Publishing जोडणी तयार.':'संपादनासाठी GitHub token जोडा.'),state.token?'success':'');
       window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:state.news,layout:state.layout}}));
-    }catch(e){message('लोड करता आले नाही: '+e.message,'error')}
+    return true;
+    }catch(e){state.ready=false;message('लोड करता आले नाही: '+e.message,'error');return false}
   }
   function renderLayout(){
     const o=state.layout||{};
@@ -317,9 +318,12 @@
     $('connect').addEventListener('click',async()=>{
       const token=$('token').value.trim();
       if(!/^(github_pat_|ghp_)[A-Za-z0-9_]+$/.test(token))return message('वैध GitHub fine-grained token वापरा.','error');
-      state.token=token;$('token').value='';
-      try{await load();message('✅ GitHub जोडणी तयार. Published / Draft आणि Delete करता येईल.','success')}
-      catch(e){message(e.message,'error')}
+      const previous=state.token;
+      state.token=token;
+      const verified=await load(); // A bad or expired token must not be accepted.
+      if(!verified){state.token=previous;return;}
+      $('token').value='';
+      message('✅ GitHub जोडणी पडताळली. Published / Draft आणि Delete करता येईल.','success');
     });
     $('disconnect').addEventListener('click',()=>{state.token='';$('token').value='';message('GitHub publishing token या टॅबमधून काढला.');updateSelectedUI()});
     $('refresh').addEventListener('click',load);
@@ -336,7 +340,7 @@
     $('clear-selected').addEventListener('click',()=>{state.selected.clear();renderList()});
     $('bulk-delete').addEventListener('click',()=>deleteSlugs([...state.selected]));
     $('delete').addEventListener('click',()=>state.activeSlug?deleteSlugs([state.activeSlug]):message('Delete करण्यासाठी आधी बातमी निवडा.','error'));
-    $('post-form').addEventListener('submit',e=>{e.preventDefault();savePost('published')});
+    $('post-form').addEventListener('submit',e=>{e.preventDefault();savePost($('post-status').value==='draft'?'draft':'published')});
     $('draft').addEventListener('click',()=>savePost('draft'));
     $('preview').addEventListener('click',preview);
     $('close-preview').addEventListener('click',()=>$('preview-dialog').close());
