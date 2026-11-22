@@ -6,7 +6,7 @@
  if(!article)return;
  const body=document.querySelector('#app article .article-body');
  if(!body)return;
- const SITE='https://catonpe-droid.github.io/Dalalnama/';
+ const SITE='https://dalalnama.com/';
  const forbidden=new Set(['SCRIPT','STYLE','IFRAME','SVG','OBJECT','EMBED','META','LINK','FORM','INPUT','VIDEO','AUDIO']);
  const allowed=new Set(['P','BR','B','STRONG','EM','I','U','S','H2','H3','BLOCKQUOTE','UL','OL','LI','A','IMG','PRE','CODE']);
  function addNodes(from,to){
