@@ -1,0 +1,4 @@
+{
+  "worker_url": "",
+  "note": "After creating and deploying the Dalalnama Cloudflare Worker, paste only its HTTPS workers.dev URL here. NEVER commit PUBLISH_KEY or GITHUB_TOKEN."
+}
