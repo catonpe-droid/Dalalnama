@@ -23,3 +23,6 @@
 .market-card a:hover{text-decoration:underline}.market-card a span{color:#60dfff;font-size:18px}
 @media(max-width:1090px){.market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.market-card{min-height:280px}}
 @media(max-width:600px){.market-grid{grid-template-columns:1fr}.market-card{min-height:0;padding:24px}.market-quote{font-size:22px}}
+
+/* Named portfolio concept brands */
+.demo-brand{border-top:1px solid rgba(168,221,255,.17);border-bottom:1px solid rgba(168,221,255,.17);padding:13px 0;margin:-12px 0 20px;display:flex;flex-direction:column;gap:6px}.demo-brand-name{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.025em}.demo-brand-sub{font-size:11px;color:#b4d9ee;line-height:1.5}.demo-tag{font-size:10px;letter-spacing:.02em;color:#6de2ff;white-space:nowrap;margin-left:5px}
