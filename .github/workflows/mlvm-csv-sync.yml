@@ -1,6 +1,10 @@
 name: MLVM published CSV dashboard sync
 
 on:
+  push:
+    paths:
+      - ".github/workflows/mlvm-csv-sync.yml"
+      - "MLVMData/dashboard/sync_live_csv.py"
   schedule:
     # GitHub Actions cron is best-effort (usually every ~5 minutes, sometimes delayed).
     - cron: "*/5 * * * *"
