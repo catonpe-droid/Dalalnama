@@ -374,6 +374,7 @@
     });
     $('disconnect').addEventListener('click',()=>{
       state.token='';workerMode=false;publishKey='';workerURL='';$('token').value='';
+      document.body.classList.remove('admin-key-verified');
       if(location.hash.startsWith('#key='))history.replaceState(null,'',location.pathname+location.search);
       message('Publishing जोडणी बंद केली.');updateSelectedUI();
     });
@@ -448,11 +449,13 @@
         await load();
         throw Error(cause);
       }
-      const section=document.querySelector('.connect');
-      if(section)section.classList.add('key-link-connected');
-      message('✅ लोकहितसारखी सुरक्षित Key Link जोडली आहे. बातम्या प्रकाशित करू शकता.','success');
+      // Once the protected Worker has authenticated the bookmark key AND the news
+      // files load successfully, show the newsroom directly with no setup boxes.
+      document.body.classList.add('admin-key-verified');
+      message('✅ Admin तयार आहे. बातम्या प्रकाशित करू शकता.','success');
     }catch(e){
       workerMode=false;
+      document.body.classList.remove('admin-key-verified');
       const errorText=String(e.message||e);
       // No secrets are ever echoed; make CORS, key mismatch and config faults actionable.
       const detail=/Failed to fetch|NetworkError/i.test(errorText)
