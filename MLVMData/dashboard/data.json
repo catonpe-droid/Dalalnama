@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "snapshotAt": "2026-11-22 15:53:12",
+  "snapshotAt": "2026-11-22 16:41:14",
   "generatedOn": "2026-11-22",
   "live": false,
   "sourceMode": "published_csv",
   "source": "महाराष्ट्र लोक विकास मंच — प्राप्त संस्था नोंदणी (स्वयंघोषित माहिती)",
   "totals": {
-    "organizations": 120,
+    "organizations": 124,
     "districtsWithRegistrations": 20,
     "districtsTotal": 36,
-    "workers": 2000,
-    "villages": 8908,
+    "workers": 2040,
+    "villages": 9073,
     "verified": 0
   },
   "districts": [
@@ -152,18 +152,18 @@
     },
     {
       "name": "धाराशिव",
-      "count": 15,
-      "workers": 293,
-      "villages": 1200,
+      "count": 19,
+      "workers": 333,
+      "villages": 1365,
       "verified": 0,
       "activities": {
-        "water": 8,
-        "livestock": 11,
-        "survey": 10,
+        "water": 10,
+        "livestock": 15,
+        "survey": 13,
         "scheme": 4,
         "awareness": 4,
-        "relief": 2,
-        "livelihood": 2,
+        "relief": 4,
+        "livelihood": 3,
         "community": 2
       }
     },
@@ -631,17 +631,17 @@
     {
       "key": "water",
       "label": "जलसंधारण व पाणी",
-      "count": 78
+      "count": 80
     },
     {
       "key": "livestock",
       "label": "चारा व पशुधन",
-      "count": 63
+      "count": 67
     },
     {
       "key": "survey",
       "label": "सर्वेक्षण व लाभार्थी",
-      "count": 63
+      "count": 66
     },
     {
       "key": "scheme",
@@ -656,12 +656,12 @@
     {
       "key": "relief",
       "label": "मदत व साहित्य वितरण",
-      "count": 38
+      "count": 40
     },
     {
       "key": "livelihood",
       "label": "शेती व उपजीविका",
-      "count": 10
+      "count": 11
     },
     {
       "key": "community",
@@ -676,12 +676,12 @@
     },
     {
       "date": "2026-11-22",
-      "count": 47
+      "count": 51
     }
   ],
   "quality": {
-    "notYetVerified": 120,
+    "notYetVerified": 124,
     "noMatchedCapacityCategory": 7,
-    "taggedCapacity": 113
+    "taggedCapacity": 117
   }
 }
