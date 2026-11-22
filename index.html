@@ -66,7 +66,7 @@ body.dark .news-brief{background:#332b15;border-color:#665722}
 body.dark .source-note{background:none;color:#ddd}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://catonpe-droid.github.io/Dalalnama/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://catonpe-droid.github.io/Dalalnama/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-<link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/site-customizer.css?v=7"><style id="dalalnama-policy-pages-css">
+<link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/site-customizer.css?v=8"><style id="dalalnama-policy-pages-css">
 .policy-page{max-width:940px;margin-left:auto;margin-right:auto}
 .policy-page .policy-body{max-width:850px;line-height:1.9}
 .policy-page .policy-body p{margin:0 0 17px}
@@ -299,22 +299,64 @@ body.dark .source-note{background:none;color:#ddd}
     <a data-nav="इनसाइड स्टोरी" href="?category=%E0%A4%87%E0%A4%A8%E0%A4%B8%E0%A4%BE%E0%A4%87%E0%A4%A1%20%E0%A4%B8%E0%A5%8D%E0%A4%9F%E0%A5%8B%E0%A4%B0%E0%A5%80">इनसाइड स्टोरी</a>
     <a data-nav="पोस्टमॉर्टम" href="?category=%E0%A4%AA%E0%A5%8B%E0%A4%B8%E0%A5%8D%E0%A4%9F%E0%A4%AE%E0%A5%89%E0%A4%B0%E0%A5%8D%E0%A4%9F%E0%A4%AE">पोस्टमॉर्टम</a>
     <a data-nav="विशेष लेख" href="?category=%E0%A4%B5%E0%A4%BF%E0%A4%B6%E0%A5%87%E0%A4%B7%20%E0%A4%B2%E0%A5%87%E0%A4%96">विशेष लेख</a>
-    <button id="navOther" class="other-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="navOtherPanel">अन्य <span class="other-chevron" aria-hidden="true">⌄</span></button>
-  <div class="other-panel" id="navOtherPanel" aria-label="अन्य बातमी विभाग" hidden>
-    <div class="other-panel-content">
-      <div class="other-panel-links">
-        <a data-nav="समाजसेवेचा मुखवटा" href="?category=%E0%A4%B8%E0%A4%AE%E0%A4%BE%E0%A4%9C%E0%A4%B8%E0%A5%87%E0%A4%B5%E0%A5%87%E0%A4%9A%E0%A4%BE%20%E0%A4%AE%E0%A5%81%E0%A4%96%E0%A4%B5%E0%A4%9F%E0%A4%BE">समाजसेवेचा मुखवटा</a>
-        <a data-nav="भूमाफिया" href="?category=%E0%A4%AD%E0%A5%82%E0%A4%AE%E0%A4%BE%E0%A4%AB%E0%A4%BF%E0%A4%AF%E0%A4%BE">भूमाफिया</a>
-        <a data-nav="सहकारनामा" href="?category=%E0%A4%B8%E0%A4%B9%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE%E0%A4%AE%E0%A4%BE">सहकारनामा</a>
-        <a data-nav="कंत्राटदारांचे कारनामे" href="?category=%E0%A4%95%E0%A4%82%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%9F%E0%A4%A6%E0%A4%BE%E0%A4%B0%E0%A4%BE%E0%A4%82%E0%A4%9A%E0%A5%87%20%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE%E0%A4%AE%E0%A5%87">कंत्राटदारांचे कारनामे</a>
-        <a data-nav="शासकीय योजना" href="?category=%E0%A4%B6%E0%A4%BE%E0%A4%B8%E0%A4%95%E0%A5%80%E0%A4%AF%20%E0%A4%AF%E0%A5%8B%E0%A4%9C%E0%A4%A8%E0%A4%BE">शासकीय योजना</a>
-        <a data-nav="जनतेचा सवाल" href="?category=%E0%A4%9C%E0%A4%A8%E0%A4%A4%E0%A5%87%E0%A4%9A%E0%A4%BE%20%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2">जनतेचा सवाल</a>
+    <details class="nav-other-details" id="navOtherDetails">
+      <summary id="navOther" aria-controls="navOtherPanel">अन्य <span class="other-chevron" aria-hidden="true">⌄</span></summary>
+      <div class="other-panel" id="navOtherPanel" aria-label="अन्य बातमी विभाग">
+        <div class="other-panel-content">
+          <div class="other-panel-links">
+            <a data-nav="समाजसेवेचा मुखवटा" href="?category=%E0%A4%B8%E0%A4%AE%E0%A4%BE%E0%A4%9C%E0%A4%B8%E0%A5%87%E0%A4%B5%E0%A5%87%E0%A4%9A%E0%A4%BE%20%E0%A4%AE%E0%A5%81%E0%A4%96%E0%A4%B5%E0%A4%9F%E0%A4%BE">समाजसेवेचा मुखवटा</a>
+            <a data-nav="भूमाफिया" href="?category=%E0%A4%AD%E0%A5%82%E0%A4%AE%E0%A4%BE%E0%A4%AB%E0%A4%BF%E0%A4%AF%E0%A4%BE">भूमाफिया</a>
+            <a data-nav="सहकारनामा" href="?category=%E0%A4%B8%E0%A4%B9%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE%E0%A4%AE%E0%A4%BE">सहकारनामा</a>
+            <a data-nav="कंत्राटदारांचे कारनामे" href="?category=%E0%A4%95%E0%A4%82%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%9F%E0%A4%A6%E0%A4%BE%E0%A4%B0%E0%A4%BE%E0%A4%82%E0%A4%9A%E0%A5%87%20%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE%E0%A4%AE%E0%A5%87">कंत्राटदारांचे कारनामे</a>
+            <a data-nav="शासकीय योजना" href="?category=%E0%A4%B6%E0%A4%BE%E0%A4%B8%E0%A4%95%E0%A5%80%E0%A4%AF%20%E0%A4%AF%E0%A5%8B%E0%A4%9C%E0%A4%A8%E0%A4%BE">शासकीय योजना</a>
+            <a data-nav="जनतेचा सवाल" href="?category=%E0%A4%9C%E0%A4%A8%E0%A4%A4%E0%A5%87%E0%A4%9A%E0%A4%BE%20%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2">जनतेचा सवाल</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </details>
     <button id="navSearch" class="search-link" aria-label="शोधा" title="बातमी शोधा"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button>
   </div>
 </nav>
+<script id="dalalnama-mobile-menu">
+(()=>{
+  'use strict';
+  const menu=document.getElementById('navLinks');
+  const button=document.getElementById('hamburger');
+  const more=document.getElementById('navOtherDetails');
+  if(!menu||!button||!more)return;
+  const sync=()=>{
+    const expanded=menu.classList.contains('open');
+    button.setAttribute('aria-expanded',String(expanded));
+    button.setAttribute('aria-label',expanded?'मेनू बंद करा':'मेनू उघडा');
+    button.textContent=expanded?'✕':'☰';
+  };
+  button.addEventListener('click',()=>{
+    const showing=!menu.classList.contains('open');
+    menu.classList.toggle('open',showing);
+    if(!showing)more.open=false;
+    sync();
+  });
+  document.addEventListener('click',event=>{
+    if(!menu.contains(event.target)&&menu.classList.contains('open')){
+      menu.classList.remove('open');
+      more.open=false;
+      sync();
+    }
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){
+      const open=menu.classList.contains('open')||more.open;
+      more.open=false;
+      menu.classList.remove('open');
+      sync();
+      if(open)button.focus();
+    }
+  });
+  if(more.querySelector('a.active'))more.classList.add('has-active');
+  sync();
+})();
+</script>
+
 <div class="ticker"><div class="wrap"><span class="ticklabel">● लाईव्ह न्यूज</span><div class="ticker-window"><div class="ticker-track" id="dalalTicker"></div></div></div></div>
 <main class="wrap" id="app"><section class="no-script"><h1>दलालनामा</h1><p>सत्याचा लेखाजोखा · महाराष्ट्रातील जनहिताच्या बातम्या</p></section></main>
 <footer class="footer" id="footer">
@@ -385,43 +427,6 @@ if(query){app.innerHTML=searchView(query)}else if(slug){app.innerHTML=storyView(
 document.querySelectorAll('[data-nav]').forEach(el=>{if((!cat&&!slug&&el.dataset.nav==='all')||(cat&&el.dataset.nav===cat))el.classList.add('active')});
 document.getElementById('year').textContent=new Date().getFullYear();try{document.getElementById('dateText').textContent=new Intl.DateTimeFormat('mr-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'}).format(new Date())}catch(e){}
 const overlay=document.getElementById('searchOverlay'),input=document.getElementById('searchInput');const open=()=>{overlay.hidden=false;setTimeout(()=>input.focus(),10)};const close=()=>overlay.hidden=true;document.getElementById('openSearch')?.addEventListener('click',open);document.getElementById('navSearch')?.addEventListener('click',open);document.getElementById('closeSearch')?.addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();let q=input.value.trim();if(q)location.href='?q='+encodeURIComponent(q)});
-const mobileNav=document.getElementById('navLinks');
-const hamburger=document.getElementById('hamburger');
-const otherToggle=document.getElementById('navOther');
-const otherPanel=document.getElementById('navOtherPanel');
-const setMainOpen=isOpen=>{
-  mobileNav.classList.toggle('open',isOpen);
-  hamburger.setAttribute('aria-expanded',String(isOpen));
-  hamburger.setAttribute('aria-label',isOpen?'मेनू बंद करा':'मेनू उघडा');
-  hamburger.textContent=isOpen?'✕':'☰';
-  if(!isOpen){otherPanel.hidden=true;otherToggle.setAttribute('aria-expanded','false');}
-};
-const setOtherOpen=isOpen=>{
-  otherPanel.hidden=!isOpen;
-  otherToggle.setAttribute('aria-expanded',String(isOpen));
-};
-hamburger.addEventListener('click',()=>{
-  setMainOpen(!mobileNav.classList.contains('open'));
-});
-otherToggle.addEventListener('click',()=>{
-  setOtherOpen(otherPanel.hidden);
-});
-document.addEventListener('click',ev=>{
-  if(!mobileNav.contains(ev.target)){
-    if(mobileNav.classList.contains('open'))setMainOpen(false);
-    else if(!otherPanel.hidden)setOtherOpen(false);
-  }
-});
-document.addEventListener('keydown',ev=>{
-  if(ev.key==='Escape'){
-    const hadOther=!otherPanel.hidden;
-    const hadMain=mobileNav.classList.contains('open');
-    setMainOpen(false);
-    if(hadOther)otherToggle.focus();
-    else if(hadMain)hamburger.focus();
-  }
-});
-if(otherPanel.querySelector('a.active'))otherToggle.classList.add('has-active');
 
 try{if(localStorage.getItem('dalalnama-theme')==='dark')document.body.classList.add('dark')}catch(e){}document.getElementById('themeToggle')?.addEventListener('click',()=>{document.body.classList.toggle('dark');try{localStorage.setItem('dalalnama-theme',document.body.classList.contains('dark')?'dark':'light')}catch(e){}});
 document.getElementById('copyNews')?.addEventListener('click',async e=>{try{await navigator.clipboard.writeText(location.href);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){prompt('बातमीची लिंक:',location.href)}});
