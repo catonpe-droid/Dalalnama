@@ -8,7 +8,7 @@
 - Public, **anonymous** dataset: [data.json](./data.json)
 - Dashboard page: [live dashboard](https://catonpe-droid.github.io/Dalalnama/MLVMData/dashboard/)
 
-Every five minutes GitHub Actions attempts to download the CSV, validates the registration column names, computes the counts for all 36 districts, topic summaries, verification statuses and date trend, then commits **only changed aggregates** to `data.json`. No names, phone numbers, registration IDs or email addresses are copied to GitHub. The browser checks for new aggregated data every minute while the dashboard is open. GitHub schedule and GitHub Pages propagation may be delayed; this is a **near-live** sync rather than a sub-minute realtime connection.
+Every five minutes GitHub Actions attempts to download the CSV, validates the registration column names, computes the counts for all 36 districts, topic summaries, verification statuses and date trend, then commits **only changed aggregates** to `data.json`. No names, phone numbers, registration IDs or email addresses are copied to GitHub. The browser reads the latest available aggregate snapshot on page load and when the visitor clicks **⟳ अपडेट करा**. No automatic refresh runs while the page stays open. GitHub schedule and GitHub Pages propagation may be delayed; this is a **near-live** sync rather than a sub-minute realtime connection.
 
 ## First test / troubleshooting
 
