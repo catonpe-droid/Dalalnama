@@ -65,8 +65,8 @@
 body.dark .news-brief{background:#332b15;border-color:#665722}
 body.dark .source-note{background:none;color:#ddd}
 </style>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://catonpe-droid.github.io/Dalalnama/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://catonpe-droid.github.io/Dalalnama/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-<link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://catonpe-droid.github.io/Dalalnama/assets/css/site-customizer.css?v=8"><style id="dalalnama-policy-pages-css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://dalalnama.com/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://dalalnama.com/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
+<link rel="stylesheet" href="https://dalalnama.com/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://dalalnama.com/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://dalalnama.com/assets/css/site-customizer.css?v=8"><style id="dalalnama-policy-pages-css">
 .policy-page{max-width:940px;margin-left:auto;margin-right:auto}
 .policy-page .policy-body{max-width:850px;line-height:1.9}
 .policy-page .policy-body p{margin:0 0 17px}
@@ -500,7 +500,7 @@ body.dark .source-note{background:none;color:#ddd}
 <nav class="nav nav-unified" aria-label="बातम्यांचे विभाग">
   <div class="wrap" id="navLinks">
     <button id="hamburger" class="hamburger" aria-label="मेनू उघडा" aria-expanded="false">☰</button>
-    <a class="home" data-nav="all" href="https://catonpe-droid.github.io/Dalalnama/">मुखपृष्ठ</a>
+    <a class="home" data-nav="all" href="https://dalalnama.com/">मुखपृष्ठ</a>
     <a data-nav="राजकारण" href="?category=%E0%A4%B0%E0%A4%BE%E0%A4%9C%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%A3">राजकारण</a>
     <a data-nav="भ्रष्टाचार" href="?category=%E0%A4%AD%E0%A5%8D%E0%A4%B0%E0%A4%B7%E0%A5%8D%E0%A4%9F%E0%A4%BE%E0%A4%9A%E0%A4%BE%E0%A4%B0">भ्रष्टाचार</a>
     <a data-nav="प्रशासननामा" href="?category=%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B6%E0%A4%BE%E0%A4%B8%E0%A4%A8%E0%A4%A8%E0%A4%BE%E0%A4%AE%E0%A4%BE">प्रशासननामा</a>
@@ -603,7 +603,7 @@ const cats=[["राजकारण","rajkaran"],["भ्रष्टाचा�
 const catSlug=Object.fromEntries(cats);
 const layout=window.DALALNAMA_LAYOUT||{};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const link=a=>`https://catonpe-droid.github.io/Dalalnama/batmi/${encodeURIComponent(a.slug)}/`;
+const link=a=>`https://dalalnama.com/batmi/${encodeURIComponent(a.slug)}/`;
 const catLink=c=>`?category=${encodeURIComponent(c)}`;
 const stamp=a=>new Intl.DateTimeFormat('mr-IN',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'}).format(new Date(a.date+'T12:00:00+05:30'));
 function art(a,large=false){if(a.image&&/^assets\/uploads\/[\w.-]+\.(jpg|jpeg|png|webp)$/i.test(a.image))return `<img class="story-img" src="${root}${esc(a.image)}" loading="lazy" alt="${esc(a.title)}">`;return `<span class="art art-${esc(a.visual||'news')}"><span class="art-top">DALALNAMA | ${esc(a.eyebrow||'SPECIAL REPORT')}</span><span class="art-body"><span class="art-word">${esc(a.artWord||a.category)}</span><span class="art-icon">${esc(a.icon||'▤')}</span></span></span>`}
@@ -653,7 +653,7 @@ const track=document.getElementById('dalalTicker');
 if(track){
   const all=[];
   (layout.breaking||[]).slice(0,4).forEach(t=>all.push({title:t,url:null}));
-  data.filter(p=>p.published!==false).slice(0,10).forEach(a=>all.push({title:a.title,url:'https://catonpe-droid.github.io/Dalalnama/batmi/'+encodeURIComponent(a.slug)+'/'}));
+  data.filter(p=>p.published!==false).slice(0,10).forEach(a=>all.push({title:a.title,url:'https://dalalnama.com/batmi/'+encodeURIComponent(a.slug)+'/'}));
   const fragment=document.createElement('div');
   fragment.className='ticker-group';
   all.forEach((item,i)=>{
@@ -731,7 +731,7 @@ panel.innerHTML='<h2>Share this news</h2><div class="dalal-share-items">'+
 tags.before(panel);
 panel.querySelector('.copy-link').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(url);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){window.prompt('बातमीची लिंक:',url)}});
 panel.querySelector('.native-share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}catch(e){}});
-})();</script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/newsroom.js?v=4" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/home-columns.js?v=2" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/article-rich.js?v=1" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
+})();</script><script src="https://dalalnama.com/assets/js/newsroom.js?v=4" defer></script><script src="https://dalalnama.com/assets/js/home-columns.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/article-rich.js?v=1" defer></script><script src="https://dalalnama.com/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
 (()=>{
   'use strict';
   // Run AFTER deferred newsroom.js, which on older cached versions moves nested links.
