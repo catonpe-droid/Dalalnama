@@ -60,6 +60,12 @@ export default {
     if(!authorization.startsWith('Bearer ')||
        !await equalSecrets(authorization.slice(7),env.PUBLISH_KEY))
       return reply({error:'Invalid publishing key'},401,cors);
+    // A copied GitHub PAT may contain a trailing newline from the password field.
+    // Trim it before creating an outbound Authorization header (invalid header characters
+    // otherwise cause fetch() to throw, producing a misleading HTTP 502).
+    const githubToken=String(env.GITHUB_TOKEN||'').trim();
+    if(!/^(?:github_pat_|ghp_)[A-Za-z0-9_]{20,}$/.test(githubToken))
+      return reply({error:'Cloudflare GITHUB_TOKEN Secret has an invalid GitHub PAT format. Recheck the full token value (not just its name).',code:'BAD_GITHUB_TOKEN'},503,cors);
     const p=url.searchParams.get('path')||'';
     if(!isSafePath(p)||p.includes('..')||p.includes('//'))
       return reply({error:'File path not permitted'},400,cors);
@@ -68,10 +74,11 @@ export default {
     const headers={
       'Accept':'application/vnd.github+json',
       'X-GitHub-Api-Version':'2022-11-28',
-      'Authorization':'Bearer '+env.GITHUB_TOKEN,
+      'Authorization':'Bearer '+githubToken,
       'User-Agent':'dalalnama-cloudflare-publisher'
     };
-    const options={method:request.method,headers,redirect:'error'};
+    // Match the working Lokhit publisher: let GitHub resolve any canonical redirects.
+    const options={method:request.method,headers};
     if(request.method==='PUT'){
       if(Number(request.headers.get('Content-Length')||0)>1650000)
         return reply({error:'Upload is too large for the GitHub Contents API'},413,cors);
@@ -93,15 +100,25 @@ export default {
         ...(payload.sha?{sha:payload.sha}:{})
       });
     }
+    let response;
     try{
-      const response=await fetch(ghURL,options);
+      response=await fetch(ghURL,options);
+    }catch(e){
+      // Only return a non-sensitive phase/code; never echo headers, credentials, or input.
+      console.error('Dalalnama GitHub fetch failed:',e?.name||'Error');
+      return reply({error:'GitHub API connection failed inside Cloudflare Worker. Check Worker deployment / outgoing GitHub API access.',code:'GITHUB_FETCH_FAILED'},502,cors);
+    }
+    try{
       const output=await response.text();
+      if(response.status===401||response.status===403)
+        return reply({error:'GitHub rejected the GITHUB_TOKEN Secret. Confirm it belongs to catonpe-droid/Dalalnama and has Contents: Read and write.',code:'GITHUB_TOKEN_REJECTED'},502,cors);
       return new Response(output,{status:response.status,headers:{
         ...cors,'Cache-Control':'no-store','Content-Type':'application/json; charset=utf-8',
         'X-Content-Type-Options':'nosniff'
       }});
-    }catch{
-      return reply({error:'GitHub publisher is temporarily unavailable'},502,cors);
+    }catch(e){
+      console.error('Dalalnama GitHub response processing failed:',e?.name||'Error');
+      return reply({error:'Worker could not read the GitHub API response. Try Deploy again.',code:'GITHUB_RESPONSE_FAILED'},502,cors);
     }
   }
 };
