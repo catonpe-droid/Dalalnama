@@ -1,4 +1,4 @@
 {
-  "worker_url": "",
-  "note": "After creating and deploying the Dalalnama Cloudflare Worker, paste only its HTTPS workers.dev URL here. NEVER commit PUBLISH_KEY or GITHUB_TOKEN."
+  "worker_url": "https://dalalnama-editor.catonpe.workers.dev",
+  "note": "Public Cloudflare Worker URL only. Do not place GITHUB_TOKEN or PUBLISH_KEY in this file. The Worker must report ready:true at /health before private key-link login will function."
 }
