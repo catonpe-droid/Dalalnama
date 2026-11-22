@@ -18,6 +18,40 @@ const aliases={
  'thane':'ठाणे','wardha':'वर्धा','washim':'वाशिम','yavatmal':'यवतमाळ','yeotmal':'यवतमाळ'
 };
 let data=null, mapData=null, selected='', sortBy='count', sortDir=-1;
+const liveApi=String(window.MLVM_PUBLIC_STATS_API||'').trim();
+let loading=false;
+const LIVE_POLL_MS=60000;
+function setConnectionStatus(live,failed=false){
+ const txt=document.querySelector('.top-status'),dot=document.querySelector('.status-dot');
+ if(txt)txt.textContent=live?'LIVE • दर मिनिटाला अपडेट':failed?'Live जोडणी अयशस्वी • स्नॅपशॉट':'स्नॅपशॉट • Live जोडणी प्रलंबित';
+ if(dot){
+  dot.style.background=live?'#26885d':failed?'#bc5855':'#e9b668';
+  dot.style.boxShadow=live?'0 0 0 4px #d9f3e7':failed?'0 0 0 4px #ffe6e1':'0 0 0 4px #fbf0dc';
+ }
+}
+function requestLiveStats(){
+ if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(liveApi))
+  return Promise.reject(Error('Live URL not set'));
+ return new Promise((resolve,reject)=>{
+  const script=document.createElement('script');
+  const old=window.MLVM_LIVE_JSONP;
+  let finished=false;
+  const timer=setTimeout(()=>finish(Error('Live API timeout')),15000);
+  function finish(err,response){
+   if(finished)return;finished=true;clearTimeout(timer);script.remove();
+   if(old===undefined)delete window.MLVM_LIVE_JSONP;else window.MLVM_LIVE_JSONP=old;
+   if(err)reject(err);else resolve(response);
+  }
+  window.MLVM_LIVE_JSONP=response=>{
+   if(!response||response.ok!==true)finish(Error(response?.error||'Invalid API response'));
+   else finish(null,response);
+  };
+  script.onerror=()=>finish(Error('Live API unreachable'));
+  script.src=liveApi+(liveApi.includes('?')?'&':'?')+'t='+Date.now();
+  document.head.append(script);
+ });
+}
+
 const cleanName=s=>String(s||'').toLowerCase().normalize('NFKC').replace(/[^a-z\u0900-\u097f]/g,'');
 const nameFromMap=s=>aliases[cleanName(s)] || sourceNames.find(n=>cleanName(n)===cleanName(s)) || s;
 const district=n=>data?.districts?.find(d=>d.name===n)||{name:n,count:0,workers:0,villages:0,verified:0,activities:{}};
@@ -44,7 +78,7 @@ function updateMetrics(){
  $('qualityProgress').style.width=(t.organizations?t.verified/t.organizations*100:0)+'%';
  const dt=String(data.snapshotAt||'').trim();
  const s=dt?dt.replace('T',' ').slice(0,16):'तारीख उपलब्ध नाही';
- $('updatedStamp').textContent=(data.live?'अद्ययावत: ':'डेटा स्नॅपशॉट: ')+s+' IST';
+ $('updatedStamp').textContent=(data.live?'LIVE • शेवटचा तपास: ':'डेटा स्नॅपशॉट: ')+s+' IST';
  $('footerTime').textContent=' • '+s;
 }
 function drawRanks(){
@@ -179,19 +213,44 @@ function exportCSV(){
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MLVM_District_Dashboard_'+String(data.snapshotAt||'').slice(0,10)+'.csv';document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 async function load(){
+ if(loading)return;loading=true;
  const btn=$('refreshBtn');btn.disabled=true;btn.textContent='⟳ वाचत आहे...';
+ let sourceError=null;
  try{
-  const response=await fetch('./data.json?v='+Date.now(),{cache:'no-store'});
-  if(!response.ok)throw Error('अद्ययावत माहिती उपलब्ध नाही ('+response.status+')');
-  const json=await response.json();
-  if(!Array.isArray(json.districts)||!json.totals||json.districts.length!==36)throw Error('डेटाची रचना चुकीची आहे');
-  data=json;fillDistricts();updateMetrics();drawRanks();drawCapability();drawTrend();drawTable();choose(selected);
-  if(!mapData)try{const m=await fetch('./map.json',{cache:'force-cache'});if(m.ok){const geo=await m.json();if(geo.features?.length>=35)mapData=geo;}}catch(e){console.warn('Map unavailable',e)}
+  let json=null;
+  if(liveApi){
+   try{json=await requestLiveStats();}
+   catch(err){sourceError=err;console.warn('MLVM live statistics unavailable',err);}
+  }
+  if(!json){
+   if(data?.live){
+    $('updatedStamp').textContent='Live जोडणी तात्पुरती बंद • मागील आकडे दाखवत आहोत';
+    setConnectionStatus(false,true);return;
+   }
+   const response=await fetch('./data.json?v='+Date.now(),{cache:'no-store'});
+   if(!response.ok)throw Error('स्नॅपशॉट उपलब्ध नाही ('+response.status+')');
+   json=await response.json();
+  }
+  if(!Array.isArray(json.districts)||!json.totals||json.districts.length!==36)
+   throw Error('डेटाची रचना चुकीची आहे');
+  data=json;
+  fillDistricts();updateMetrics();drawRanks();drawCapability();drawTrend();drawTable();choose(selected);
+  setConnectionStatus(Boolean(json.live),Boolean(sourceError));
+  if(sourceError)$('updatedStamp').textContent+=' • Live जोडणी उपलब्ध नाही';
+  if(!mapData)try{
+   const m=await fetch('./map.json',{cache:'force-cache'});
+   if(m.ok){const geo=await m.json();if(geo.features?.length>=35)mapData=geo;}
+  }catch(e){console.warn('Map unavailable',e);}
   renderMap();
  }catch(err){
-  console.error(err);$('updatedStamp').textContent='डेटा उपलब्ध नाही';$('mahaMap').replaceChildren();
-  const t=svg('text',{x:335,y:210,'text-anchor':'middle',fill:'#a05854'});t.textContent='माहिती वाचताना अडथळा आला.';$('mahaMap').append(t);
- }finally{btn.disabled=false;btn.textContent='⟳ ताजेतवाने करा'}
+  console.error(err);
+  if(data){$('updatedStamp').textContent='नवीन माहिती मिळाली नाही • मागील आकडे दाखवत आहोत';setConnectionStatus(false,true);}
+  else{
+   $('updatedStamp').textContent='डेटा उपलब्ध नाही';setConnectionStatus(false,true);$('mahaMap').replaceChildren();
+   const t=svg('text',{x:335,y:210,'text-anchor':'middle',fill:'#a05854'});
+   t.textContent='माहिती वाचताना अडथळा आला.';$('mahaMap').append(t);
+  }
+ }finally{loading=false;btn.disabled=false;btn.textContent='⟳ ताजेतवाने करा';}
 }
 $('districtSelect').addEventListener('change',e=>choose(e.target.value));
 $('resetDistrict').addEventListener('click',()=>choose(''));
@@ -202,3 +261,5 @@ document.querySelectorAll('th.sortable').forEach(el=>{const act=()=>{const k=el.
 const spy=()=>{let current='overview';document.querySelectorAll('section[id]').forEach(section=>{if(section.getBoundingClientRect().top<180)current=section.id});document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.hash==='#'+current))};
 window.addEventListener('scroll',spy,{passive:true});
 load();
+setInterval(()=>{if(!document.hidden)load();},LIVE_POLL_MS);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
