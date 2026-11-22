@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "snapshotAt": "2026-11-22 15:45:41",
-  "generatedOn": "2026-11-22",
   "live": false,
+  "snapshotAt": "2026-11-22 15:48:34",
+  "generatedOn": "2026-11-22",
   "source": "महाराष्ट्र लोक विकास मंच — प्राप्त संस्था नोंदणी (स्वयंघोषित माहिती)",
   "totals": {
-    "organizations": 117,
+    "organizations": 119,
     "districtsWithRegistrations": 20,
     "districtsTotal": 36,
-    "workers": 1980,
-    "villages": 8546,
+    "workers": 1989,
+    "villages": 8557,
     "verified": 0
   },
   "districts": [
@@ -151,14 +151,14 @@
     },
     {
       "name": "धाराशिव",
-      "count": 14,
-      "workers": 289,
-      "villages": 1190,
+      "count": 15,
+      "workers": 293,
+      "villages": 1200,
       "verified": 0,
       "activities": {
         "water": 8,
-        "livestock": 10,
-        "survey": 9,
+        "livestock": 11,
+        "survey": 10,
         "scheme": 4,
         "awareness": 4,
         "relief": 2,
@@ -219,17 +219,17 @@
     },
     {
       "name": "हिंगोली",
-      "count": 4,
-      "workers": 125,
-      "villages": 50,
+      "count": 5,
+      "workers": 130,
+      "villages": 51,
       "verified": 0,
       "activities": {
-        "water": 3,
-        "livestock": 1,
-        "survey": 2,
-        "scheme": 3,
-        "awareness": 2,
-        "relief": 1,
+        "water": 4,
+        "livestock": 2,
+        "survey": 3,
+        "scheme": 4,
+        "awareness": 3,
+        "relief": 2,
         "livelihood": 0,
         "community": 1
       }
@@ -630,32 +630,32 @@
     {
       "key": "water",
       "label": "जलसंधारण व पाणी",
-      "count": 76
+      "count": 77
     },
     {
       "key": "livestock",
       "label": "चारा व पशुधन",
-      "count": 60
+      "count": 62
     },
     {
       "key": "survey",
       "label": "सर्वेक्षण व लाभार्थी",
-      "count": 60
+      "count": 62
     },
     {
       "key": "scheme",
       "label": "शासकीय योजना व समन्वय",
-      "count": 23
+      "count": 24
     },
     {
       "key": "awareness",
       "label": "जनजागृती व प्रशिक्षण",
-      "count": 49
+      "count": 50
     },
     {
       "key": "relief",
       "label": "मदत व साहित्य वितरण",
-      "count": 36
+      "count": 37
     },
     {
       "key": "livelihood",
@@ -675,12 +675,12 @@
     },
     {
       "date": "2026-11-22",
-      "count": 44
+      "count": 46
     }
   ],
   "quality": {
-    "notYetVerified": 117,
+    "notYetVerified": 119,
     "noMatchedCapacityCategory": 7,
-    "taggedCapacity": 110
+    "taggedCapacity": 112
   }
 }
