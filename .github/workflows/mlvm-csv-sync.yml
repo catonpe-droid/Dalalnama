@@ -1,0 +1,37 @@
+name: MLVM published CSV dashboard sync
+
+on:
+  schedule:
+    # GitHub Actions cron is best-effort (usually every ~5 minutes, sometimes delayed).
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mlvm-dashboard-csv-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-dashboard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out public dashboard
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Aggregate published CSV without storing personal information
+        run: python3 MLVMData/dashboard/sync_live_csv.py
+      - name: Commit only if aggregate data changed
+        run: |
+          if ! git diff --quiet -- MLVMData/dashboard/data.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add MLVMData/dashboard/data.json
+            git commit -m "chore(mlvm): refresh aggregated registration dashboard"
+            git push
+          else
+            echo "No changed aggregate statistics."
+          fi
