@@ -141,3 +141,7 @@ main.wrap{width:calc(100% - 258px);max-width:1740px;margin:0 20px 0 238px;paddin
 .dn-admin-preview-rich img{max-width:95%;height:auto;border-radius:8px}
 .dn-admin-preview-rich blockquote{border-left:4px solid #bc111d;padding-left:20px;margin:17px 0}
 @media(max-width:780px){.brand-logo-upload{grid-template-columns:1fr}.brand-logo-upload img{max-width:280px}}
+
+/* Signed-in editorial view: show the newsroom, not one-time Cloudflare/GitHub setup.
+   Keep the setup available when no authenticated #key= bookmark is present. */
+body.admin-key-verified .admin-onboarding{display:none!important}
