@@ -23,10 +23,10 @@ let loading=false;
 const LIVE_POLL_MS=60000;
 function setConnectionStatus(live,failed=false){
  const txt=document.querySelector('.top-status'),dot=document.querySelector('.status-dot');
- if(txt)txt.textContent=live?'LIVE • दर मिनिटाला अपडेट':failed?'Live जोडणी अयशस्वी • स्नॅपशॉट':'स्नॅपशॉट • Live जोडणी प्रलंबित';
+ if(txt)txt.textContent=data?.sourceMode==='published_csv'?(failed?'CSV जोडणी तात्पुरती बंद':'Published CSV • साधारण ५ मिनिटांनी अपडेट'):live?'LIVE • दर मिनिटाला अपडेट':failed?'Live जोडणी अयशस्वी • स्नॅपशॉट':'डेटा स्नॅपशॉट';
  if(dot){
-  dot.style.background=live?'#26885d':failed?'#bc5855':'#e9b668';
-  dot.style.boxShadow=live?'0 0 0 4px #d9f3e7':failed?'0 0 0 4px #ffe6e1':'0 0 0 4px #fbf0dc';
+  dot.style.background=data?.sourceMode==='published_csv'&&!failed?'#26885d':live?'#26885d':failed?'#bc5855':'#e9b668';
+  dot.style.boxShadow=data?.sourceMode==='published_csv'&&!failed?'0 0 0 4px #d9f3e7':live?'0 0 0 4px #d9f3e7':failed?'0 0 0 4px #ffe6e1':'0 0 0 4px #fbf0dc';
  }
 }
 function requestLiveStats(){
@@ -78,7 +78,7 @@ function updateMetrics(){
  $('qualityProgress').style.width=(t.organizations?t.verified/t.organizations*100:0)+'%';
  const dt=String(data.snapshotAt||'').trim();
  const s=dt?dt.replace('T',' ').slice(0,16):'तारीख उपलब्ध नाही';
- $('updatedStamp').textContent=(data.live?'LIVE • शेवटचा तपास: ':'डेटा स्नॅपशॉट: ')+s+' IST';
+ $('updatedStamp').textContent=(data.sourceMode==='published_csv'?'CSV मधील शेवटचा बदल: ':data.live?'LIVE • शेवटचा तपास: ':'डेटा स्नॅपशॉट: ')+s+' IST';
  $('footerTime').textContent=' • '+s;
 }
 function drawRanks(){
