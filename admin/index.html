@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=5" rel="stylesheet"></head><body>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=6" rel="stylesheet"></head><body>
 <header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
 <div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
 <aside class="admin-navigation" aria-label="Admin sections">
@@ -21,6 +21,10 @@
 </aside>
 <main class="wrap">
 <div class="heading"><div><h1>बातमी व्यवस्थापन</h1><p>बातम्या, मसुदे, फोटो, Custom URL आणि वेबसाइटचा लेआउट.</p></div><div class="notice" id="status" role="status" aria-live="polite">प्रकाशन जोडणी आवश्यक आहे.</div></div>
+<section class="card" style="padding:13px 17px;margin:0 0 14px;border-left:4px solid #d1a10a;background:#fffdf4">
+  <strong>🔒 Admin सुरक्षा व Cloudflare</strong>
+  <p style="margin:5px 0 0;font-size:14px">ही सध्या GitHub Pages वरील सार्वजनिक Admin UI आहे. Editing साठी लागणारा GitHub token <strong>फक्त तुमच्या स्वतःच्या ब्राउझरमध्ये</strong> टाका; WhatsApp किंवा ChatGPT मध्ये पाठवू नका. Cloudflare Access अजून स्वतंत्रपणे सक्रिय करायचा आहे. <a href="https://github.com/catonpe-droid/Dalalnama/blob/main/docs/CLOUDFLARE-ADMIN.md" target="_blank" rel="noopener noreferrer" style="color:#a30d19;text-decoration:underline">Cloudflare सेटअप सूचना</a>.</p>
+ </section>
 <section class="card connect">
  <div><b>🔐 स्वतंत्र GitHub Publishing</b><p>फक्त Dalalnama repository साठी <strong>Contents: Read and write</strong> परवानगी असलेला GitHub fine-grained token या पानावर वापरा. Token फक्त उघडलेल्या टॅबच्या memory मध्ये राहील; तो वेबसाइटवर जतन होणार नाही. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color:#b30b19;text-decoration:underline;font-weight:800">GitHub token तयार करा ↗</a></p></div>
  <div class="connect-fields"><input id="token" type="password" spellcheck="false" autocomplete="off" placeholder="Paste GitHub fine-grained token"><button id="connect" type="button" class="btn primary">Connect</button><button id="disconnect" type="button" class="btn">Disconnect</button></div>
@@ -79,7 +83,7 @@
    <details class="seo-card"><summary>📈 Search Engine Optimization (SEO)</summary>
 <div class="columns"><label class="field">SEO Title<input id="seo-title" maxlength="150" placeholder="Google साठी स्वतंत्र शीर्षक"></label><label class="field">SEO Keywords<input id="seo-keywords" maxlength="220" placeholder="keyword1, keyword2"></label></div>
 <label class="field">SEO Description<textarea id="seo-description" rows="3" maxlength="350" placeholder="शोध परिणाम आणि शेअरिंगसाठी सारांश"></textarea></label>
-<div class="seo-preview"><small>Google preview</small><strong id="seo-preview-title">दलालनामा</strong><span id="seo-preview-url">https://catonpe-droid.github.io/Dalalnama/</span><p id="seo-preview-desc">बातमीचा सारांश येथे दिसेल.</p></div>
+<div class="seo-preview"><small>Google preview</small><strong id="seo-preview-title">दलालनामा</strong><span id="seo-preview-url">https://dalalnama.com/</span><p id="seo-preview-desc">बातमीचा सारांश येथे दिसेल.</p></div>
 </details>
    <div class="actions"><button id="preview" type="button" class="btn">👁 Preview</button><button id="draft" type="button" class="btn">📝 Save Draft</button><button id="publish" type="submit" class="btn primary">✅ Publish / Update</button><button id="delete" type="button" class="btn danger">🗑 Delete</button></div>
    <div id="result" class="saved hidden"></div>
@@ -150,6 +154,6 @@
 </main>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-<script src="./admin.js?v=5" defer></script>
-<script src="./admin-pro.js?v=3" defer></script>
+<script src="./admin.js?v=6" defer></script>
+<script src="./admin-pro.js?v=4" defer></script>
 </body></html>
