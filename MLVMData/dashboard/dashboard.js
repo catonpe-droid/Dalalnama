@@ -20,10 +20,9 @@ const aliases={
 let data=null, mapData=null, selected='', sortBy='count', sortDir=-1;
 const liveApi=String(window.MLVM_PUBLIC_STATS_API||'').trim();
 let loading=false;
-const LIVE_POLL_MS=60000;
 function setConnectionStatus(live,failed=false){
  const txt=document.querySelector('.top-status'),dot=document.querySelector('.status-dot');
- if(txt)txt.textContent=data?.sourceMode==='published_csv'?(failed?'CSV जोडणी तात्पुरती बंद':'Published CSV • साधारण ५ मिनिटांनी अपडेट'):live?'LIVE • दर मिनिटाला अपडेट':failed?'Live जोडणी अयशस्वी • स्नॅपशॉट':'डेटा स्नॅपशॉट';
+ if(txt)txt.textContent=data?.sourceMode==='published_csv'?(failed?'माहिती वाचता आली नाही':'CSV डेटा • Refresh करून पाहा'):live?'थेट अद्ययावत डेटा':failed?'माहिती वाचता आली नाही':'मागील उपलब्ध माहिती';
  if(dot){
   dot.style.background=data?.sourceMode==='published_csv'&&!failed?'#26885d':live?'#26885d':failed?'#bc5855':'#e9b668';
   dot.style.boxShadow=data?.sourceMode==='published_csv'&&!failed?'0 0 0 4px #d9f3e7':live?'0 0 0 4px #d9f3e7':failed?'0 0 0 4px #ffe6e1':'0 0 0 4px #fbf0dc';
@@ -78,7 +77,7 @@ function updateMetrics(){
  $('qualityProgress').style.width=(t.organizations?t.verified/t.organizations*100:0)+'%';
  const dt=String(data.snapshotAt||'').trim();
  const s=dt?dt.replace('T',' ').slice(0,16):'तारीख उपलब्ध नाही';
- $('updatedStamp').textContent=(data.sourceMode==='published_csv'?'CSV मधील शेवटचा बदल: ':data.live?'LIVE • शेवटचा तपास: ':'डेटा स्नॅपशॉट: ')+s+' IST';
+ $('updatedStamp').textContent=(data.sourceMode==='published_csv'?'शेवटचा डेटा अपडेट: ':data.live?'शेवटचा तपास: ':'डेटा स्नॅपशॉट: ')+s+' IST';
  $('footerTime').textContent=' • '+s;
 }
 function drawRanks(){
@@ -214,7 +213,7 @@ function exportCSV(){
 }
 async function load(){
  if(loading)return;loading=true;
- const btn=$('refreshBtn');btn.disabled=true;btn.textContent='⟳ वाचत आहे...';
+ const btn=$('refreshBtn');btn.disabled=true;btn.textContent='⟳ अपडेट होत आहे...';
  let sourceError=null;
  try{
   let json=null;
@@ -250,7 +249,7 @@ async function load(){
    const t=svg('text',{x:335,y:210,'text-anchor':'middle',fill:'#a05854'});
    t.textContent='माहिती वाचताना अडथळा आला.';$('mahaMap').append(t);
   }
- }finally{loading=false;btn.disabled=false;btn.textContent='⟳ ताजेतवाने करा';}
+ }finally{loading=false;btn.disabled=false;btn.textContent='⟳ अपडेट करा';}
 }
 $('districtSelect').addEventListener('change',e=>choose(e.target.value));
 $('resetDistrict').addEventListener('click',()=>choose(''));
@@ -261,5 +260,3 @@ document.querySelectorAll('th.sortable').forEach(el=>{const act=()=>{const k=el.
 const spy=()=>{let current='overview';document.querySelectorAll('section[id]').forEach(section=>{if(section.getBoundingClientRect().top<180)current=section.id});document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.hash==='#'+current))};
 window.addEventListener('scroll',spy,{passive:true});
 load();
-setInterval(()=>{if(!document.hidden)load();},LIVE_POLL_MS);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)load();});
