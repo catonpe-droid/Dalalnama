@@ -1,23 +1,24 @@
-# MLVM Dashboard — Live Google Sheet connection
+# MLVM dashboard — automatic published CSV sync
 
-The registration Sheet (`NGO_नोंदणी`) must remain **private**. This dashboard does **not** publish individual NGOs, registration IDs, names, contacts or email addresses. It fetches only aggregate counts for all 36 districts.
+## Active design (no Apps Script deployment required)
 
-## One-time activation (Google account that can read the MLVM Sheet)
+- Published CSV source: `https://docs.google.com/spreadsheets/d/e/2PACX-1vR9Wl653D8WU3JNusIsfDJapFaKuRnBnBDLjDBWBPBAtDlu7jWrzBDDXqvoUjYE5qqSxWchQ-gt-twM/pub?output=csv`
+- GitHub Actions workflow: [mlvm-csv-sync.yml](../../.github/workflows/mlvm-csv-sync.yml)
+- Aggregator: [sync_live_csv.py](./sync_live_csv.py)
+- Public, **anonymous** dataset: [data.json](./data.json)
+- Dashboard page: [live dashboard](https://catonpe-droid.github.io/Dalalnama/MLVMData/dashboard/)
 
-1. Open https://script.google.com/home/projects/create in that Google account.
-2. Name the Apps Script project **MLVM Public Dashboard Live API**.
-3. Replace the default `Code.gs` text with the **entire** source file [live-aggregates-api.gs](./live-aggregates-api.gs) from this folder. Save the project.
-4. Choose **Deploy → New deployment → Web app**. Select **Execute as: Me**; **Who has access: Anyone**. Grant read access to the Sheet when Google prompts. This publishes only the aggregate output, not the Sheet.
-5. Copy the exact new `https://script.google.com/macros/s/.../exec` URL. Visit it in a private tab: it should show JavaScript starting with `window.MLVM_LIVE_JSONP({` and aggregate keys like `totals`, `districts`, `activities`. **It must not contain names, phone numbers, emails or IDs.**
-6. Edit [live-config.js](./live-config.js) to replace `''` with that **exact /exec URL**, retaining surrounding quotes, then Commit. For example: `window.MLVM_PUBLIC_STATS_API = 'https://script.google.com/macros/s/DEPLOYMENT_ID/exec';`
-7. Open [the public dashboard](https://catonpe-droid.github.io/Dalalnama/MLVMData/dashboard/). The top bar should say **LIVE • दर मिनिटाला अपडेट**. Counts, charts, the map, and downloadable CSV are rebuilt from the latest aggregate API response every 60 seconds while visible, and when returning to the browser tab.
+Every five minutes GitHub Actions attempts to download the CSV, validates the registration column names, computes the counts for all 36 districts, topic summaries, verification statuses and date trend, then commits **only changed aggregates** to `data.json`. No names, phone numbers, registration IDs or email addresses are copied to GitHub. The browser checks for new aggregated data every minute while the dashboard is open. GitHub schedule and GitHub Pages propagation may be delayed; this is a **near-live** sync rather than a sub-minute realtime connection.
 
-The read-only API caches aggregates for 30 seconds to protect Sheet performance. On API failure, the dashboard clearly displays a fallback/stale status rather than claiming the snapshot is live.
+## First test / troubleshooting
 
-## Important
+1. Visit https://github.com/catonpe-droid/Dalalnama/actions/workflows/mlvm-csv-sync.yml and inspect the latest workflow status. If necessary, use the **Run workflow** action to trigger the first sync. GitHub Actions must be enabled with contents write permission.
+2. The script must see these first-sheet CSV headers: `MLVM नोंदणी ID`, `नोंदणी तारीख व वेळ`, `जिल्हा`, `कार्यक्षेत्रातील गावसंख्या`, `दुष्काळ निवारणासाठी योगदान`, `कार्यकर्त्यांची संख्या`, `नोंदणीची स्थिती`.
+3. After a successful run, the JSON has `sourceMode: published_csv`. The browser will display **Published CSV • साधारण ५ मिनिटांनी अपडेट**. After a failure the script preserves the previous public snapshot rather than fabricating new data.
+4. If no new registrations or aggregate changes occurred, the script makes no GitHub commit and leaves the snapshot's last-change time unchanged.
 
-- Updating a `.gs` file in GitHub does **not** deploy Google Apps Script. Steps 1–6 must be completed once to activate the connection.
-- The `dashboard/data.json` snapshot is a **fallback**, not the permanent live data source.
-- To change server-side calculations in the future, edit the Apps Script project code and deploy a **new version**. GitHub changes alone do not update an existing Apps Script deployment.
-- Verification statuses are read from column M of the private Sheet; `प्राप्त` is **not** treated as verified.
-- `villages` is the sum of self-reported organization coverage, which can include overlapping villages.
+## Privacy warning
+
+**Published CSV is publicly downloadable.** If it exposes personal contact numbers, names or email addresses, this is a separate privacy risk even though the dashboard shows only aggregates. For best practice, publish a **separate summary-only worksheet** as CSV and adjust the aggregator to read that schema, or switch to a private-sheet aggregate API.
+
+The older optional `live-aggregates-api.gs` and `live-config.js` are not used when `live-config.js` stays blank; the CSV GitHub Actions flow does not need them.
