@@ -41,6 +41,8 @@ jobs:
           sudo apt-get install -y -qq fonts-noto-core
       - name: Generate individual news thumbnails (1200 x 630)
         run: python scripts/generate_images.py
+      - name: Build MLVM Maharashtra map (36 districts)
+        run: python scripts/build_mlvm_map.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
