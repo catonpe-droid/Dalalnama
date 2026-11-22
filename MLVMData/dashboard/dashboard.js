@@ -33,6 +33,8 @@ function updateMetrics(){
  $('mDistricts').textContent=fmt(t.districtsWithRegistrations);
  $('mWorkers').textContent=fmt(t.workers);
  $('mVillages').textContent=fmt(t.villages);
+ const estimatedPeople=Math.round((Number(t.villages)||0)*700);
+ $('mBeneficiaries').textContent=(estimatedPeople/100000).toFixed(2)+' लाख';
  $('districtCoverage').textContent=Math.round(t.districtsWithRegistrations/t.districtsTotal*100)+'% जिल्ह्यांमधून नोंदणी';
  $('mapCoverage').textContent=fmt(t.districtsWithRegistrations)+' जिल्ह्यांत नोंदणी';
  $('trendTotal').textContent=fmt(t.organizations)+' संस्था';
