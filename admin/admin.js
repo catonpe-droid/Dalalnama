@@ -176,10 +176,16 @@
     const lines=id=>[...new Set($(id).value.split(/\n/g).map(s=>s.trim()).filter(Boolean))].slice(0,35);
     const columns=$('home-columns').value.split(/\r?\n/).map(row=>row.split('|').map(x=>x.trim())).filter(a=>a.some(Boolean));
     if(columns.length!==3||columns.some(a=>a.length!==2||!a[0]||!a[1]))return message('तीन कॉलमसाठी नेमक्या ३ ओळी लिहा. स्वरूप: शीर्षक | विभाग','error');
+    const requestedMain=lines('menu');
+    const requestedOther=lines('subcategories');
+    const invalid=[...requestedMain,...requestedOther].filter(name=>name!=='मुखपृष्ठ'&&!defaultCategories.includes(name));
+    if(invalid.length)return message('अज्ञात विभाग: '+[...new Set(invalid)].join(', ')+'. आधी विभागांची अधिकृत यादी तपासा.','error');
+    const publicMain=['मुखपृष्ठ',...requestedMain.filter(name=>name!=='मुखपृष्ठ'&&name!=='जनतेचा सवाल')];
+    const publicOther=[...requestedOther.filter(name=>name!=='जनतेचा सवाल'),'जनतेचा सवाल'];
     const featured=lines('featured-slugs');
     if(featured.some(s=>!state.news.some(x=>x.slug===s)))return message('Featured slug मध्ये नसलेली बातमी आहे. आधी बातमी तयार करा.','error');
     let custom={};try{custom=window.DalalPro?.readCustomization?.()||{}}catch(e){return message('Appearance Settings: '+e.message,'error')}
-    const next={...state.layout,...custom,menu:lines('menu'),subcategories:lines('subcategories'),breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
+    const next={...state.layout,...custom,menu:publicMain,subcategories:publicOther,breaking:lines('breaking'),featuredSlugs:featured,homeColumns:columns.map(x=>({title:x[0].slice(0,70),category:x[1].slice(0,70)})),
       sliderSpeedSeconds:Math.max(3,Math.min(30,parseInt($('slider-speed').value,10)||7)),tagline:$('tagline').value.trim().slice(0,250)};
     if(!next.menu.includes('मुखपृष्ठ'))next.menu.unshift('मुखपृष्ठ');
     if(!confirm('वेबसाइटवरील मेनू आणि Breaking News अपडेट करायचे?'))return;
