@@ -336,6 +336,19 @@
     if(typeof d.showModal==='function')d.showModal();
   }
   function bind(){
+    $('make-private-link')?.addEventListener('click',async()=>{
+      const input=$('private-link-key');
+      const secret=input?.value.trim()||'';
+      if(secret.length<32)return message('Cloudflare PUBLISH_KEY किमान ३२ अक्षरांची असली पाहिजे. GitHub Token येथे टाकू नका.','error');
+      const privateURL=location.origin+location.pathname+'#key='+encodeURIComponent(secret);
+      try{
+        await navigator.clipboard.writeText(privateURL);
+        input.value='';
+        message('✅ गुप्त Admin Key Link कॉपी झाली. ती तुमच्या खासगी Bookmark मध्ये जतन करा; इतरांना पाठवू नका.','success');
+      }catch(e){
+        message('कॉपी करणे शक्य नाही. HTTPS मध्ये ब्राउझर Clipboard परवानगी तपासा.','error');
+      }
+    });
     $('connect').addEventListener('click',async()=>{
       const token=$('token').value.trim();
       if(!/^(github_pat_|ghp_)[A-Za-z0-9_]+$/.test(token))return message('वैध GitHub fine-grained token वापरा.','error');
