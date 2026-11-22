@@ -29,6 +29,17 @@
  <div><b>🔐 स्वतंत्र GitHub Publishing</b><p>फक्त Dalalnama repository साठी <strong>Contents: Read and write</strong> परवानगी असलेला GitHub fine-grained token या पानावर वापरा. Token फक्त उघडलेल्या टॅबच्या memory मध्ये राहील; तो वेबसाइटवर जतन होणार नाही. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color:#b30b19;text-decoration:underline;font-weight:800">GitHub token तयार करा ↗</a></p></div>
  <div class="connect-fields"><input id="token" type="password" spellcheck="false" autocomplete="off" placeholder="Paste GitHub fine-grained token"><button id="connect" type="button" class="btn primary">Connect</button><button id="disconnect" type="button" class="btn">Disconnect</button></div>
 </section>
+<section class="card connect secret-link-setup" aria-label="गुप्त Admin Key Link" style="margin:0 0 15px;padding:15px 17px">
+  <div>
+    <b>🔗 लोकहितसारखी गुप्त Key Link</b>
+    <p>Cloudflare Worker मध्ये <code>PUBLISH_KEY</code> आणि <code>GITHUB_TOKEN</code> Secrets सेट केल्यानंतर तुमची स्वतंत्र <code>#key=</code> लिंक येथे तयार करा. लिंक Bookmark करा — रोज लांब GitHub Token पेस्ट करण्याची गरज नाही. गुप्त लिंक कोणालाही पाठवू नका.</p>
+  </div>
+  <div class="connect-fields" style="align-items:center">
+    <input id="private-link-key" type="password" spellcheck="false" autocomplete="off" aria-label="Cloudflare Publishing Key" placeholder="Cloudflare PUBLISH_KEY (32+ characters)">
+    <button id="make-private-link" class="btn" type="button">🔐 Key Link कॉपी करा</button>
+  </div>
+  <small>गुप्त Key फक्त या ब्राउझरमध्ये लिंक तयार करण्यासाठी वापरली जाते; वेबसाइटवर जतन होत नाही. GitHub Token इथे टाकू नका.</small>
+</section>
 <nav class="tabs" aria-label="Studio shortcuts">
 <button class="tab" data-target="dashboard-panel" type="button">▦ Dashboard</button>
 <button class="tab active" data-target="news-panel" type="button">📰 News Studio</button>
@@ -154,6 +165,6 @@
 </main>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-<script src="./admin.js?v=6" defer></script>
+<script src="./admin.js?v=7" defer></script>
 <script src="./admin-pro.js?v=4" defer></script>
 </body></html>
