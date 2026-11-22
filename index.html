@@ -493,6 +493,79 @@ body.dark .source-note{background:none;color:#ddd}
   }
 }
 
+
+/* Dalalnama desktop menu alignment v9: equal-width news tabs, no clustering */
+@media (min-width:1201px) {
+  .nav.nav-unified #navLinks {
+    display: grid !important;
+    grid-template-columns: repeat(11, minmax(0, 1fr)) 48px;
+    grid-auto-flow: column;
+    gap: 0 !important;
+    justify-content: stretch !important;
+    align-items: stretch !important;
+    width: min(1380px, calc(100% - 32px)) !important;
+    max-width: 1380px !important;
+    margin-inline: auto !important;
+    padding: 0 !important;
+    min-height: 54px;
+    overflow: visible !important;
+  }
+  .nav.nav-unified #navLinks > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 54px;
+    height: 54px;
+    box-sizing: border-box;
+    padding: 10px 4px 8px !important;
+    font-size: clamp(12px, .95vw, 14px) !important;
+    font-weight: 750;
+    line-height: 1.3;
+    white-space: nowrap;
+    flex: none !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav.nav-unified #navLinks > .nav-other-details {
+    display: block;
+    position: relative;
+    order: 98;
+    width: 100%;
+    min-width: 0;
+    height: 54px;
+    margin: 0;
+  }
+  .nav.nav-unified #navLinks > .nav-other-details > summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 54px;
+    height: 54px;
+    padding: 10px 3px 8px !important;
+    font-size: clamp(12px, .95vw, 14px);
+    box-sizing: border-box;
+  }
+  .nav.nav-unified #navLinks > #navSearch {
+    display: grid;
+    place-items: center;
+    order: 99;
+    grid-column: 12;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 54px;
+    min-height: 54px;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+  }
+}
 </style></head>
 <body>
 <div class="topline"><div class="wrap"><div><span id="dateText">मराठी डिजिटल न्यूज पोर्टल</span> &nbsp; | &nbsp; जनहित प्रथम</div><div class="topright"><a href="?page=about">आमच्याविषयी</a><a href="?page=editorial">संपादकीय धोरण</a><button id="themeToggle" aria-label="डार्क मोड बदला" title="डार्क मोड">◐</button></div></div></div>
