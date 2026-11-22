@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SITE='https://catonpe-droid.github.io/Dalalnama/';
+const SITE='https://dalalnama.com/';
 const news=JSON.parse(fs.readFileSync('data/news.json','utf8')).filter(a=>a&&a.published!==false);
 const layout=JSON.parse(fs.readFileSync('data/layout.json','utf8'));
 let html=fs.readFileSync('index.html','utf8');
@@ -20,10 +20,11 @@ const intro=String(layout.site?.description||'दलालनामा मरा
 function socialMeta(source,story=null,url=SITE){
  let image=SITE+'assets/share.png';
  let title=baseTitle,description=intro;
- if(story){image=SITE+(story.image||'assets/share.png');title=(story.seoTitle||story.title)+' | दलालनामा';description=story.seoDescription||story.summary||intro}
+ if(story){image=SITE+'assets/share-news/'+encodeURIComponent(story.slug)+'.jpg';title=(story.seoTitle||story.title)+' | दलालनामा';description=story.seoDescription||story.summary||intro}
  const map=[
  ['og:title',title],['og:description',description],['og:image',image],['og:url',url],
- ['og:image:width','1200'],['og:image:height','630']
+ ['og:image:secure_url',image],['og:image:type',story?'image/jpeg':'image/png'],
+ ['og:image:width','1200'],['og:image:height','630'],['og:image:alt',story?story.title:'दलालनामा मराठी बातम्या']
  ];
  for(const [key,val] of map){
   const expr=new RegExp('<meta property="'+key+'" content="[^"]*">');
@@ -33,7 +34,7 @@ function socialMeta(source,story=null,url=SITE){
  }
  source=source.replace(/<title>[^<]*<\/title>/,'<title>'+safe(title)+'</title>');
  source=source.replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+safe(description)+'">');
- for(const [key,val] of [['twitter:card','summary_large_image'],['twitter:title',title],['twitter:description',description],['twitter:image',image]]){
+ for(const [key,val] of [['twitter:card','summary_large_image'],['twitter:title',title],['twitter:description',description],['twitter:image',image],['twitter:image:alt',story?story.title:'दलालनामा मराठी बातम्या']]){
   const expr=new RegExp('<meta name="'+key+'" content="[^"]*">');
   const replacement='<meta name="'+key+'" content="'+safe(val)+'">';
   if(expr.test(source))source=source.replace(expr,replacement);
