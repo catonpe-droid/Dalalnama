@@ -1,9 +1,0 @@
-name = "dalalnama-editor"
-main = "dalalnama-editor-worker.js"
-compatibility_date = "2026-11-22"
-workers_dev = true
-
-# Secrets must be set in the Cloudflare dashboard and NEVER committed here:
-#   PUBLISH_KEY  — separate strong random secret (32+ characters)
-#   GITHUB_TOKEN — GitHub fine-grained Contents Read and write for Dalalnama only
-# Cloudflare Worker route on workers.dev needs no DNS nameserver switch.
