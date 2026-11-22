@@ -3,7 +3,7 @@
 Each image is a branded illustration, not an event photograph."""
 import base64, io, json, os, re, textwrap
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 root = Path(__file__).resolve().parent.parent
 site = root / 'site'
@@ -75,6 +75,30 @@ print(f"Generated {len(list(out.glob('*.png')))} illustrated news covers")
 if logo:
  lg=logo.convert('RGBA');lg.thumbnail((820,268))
  lg.save(site/'assets'/'logo.png')
+# Generate per-article Open Graph JPEGs from the SAME photo shown in the article.
+# Use a 1200x630 crop, supported by WhatsApp, Facebook, X and other preview parsers.
+# Fall back to the existing editorial cover only when an uploaded photo is absent.
+share_dir=site/'assets'/'share-news'
+share_dir.mkdir(parents=True,exist_ok=True)
+share_count=0
+for story in news:
+ if story.get('published',True) is False: continue
+ slug=str(story.get('slug',''))
+ if not re.fullmatch(r'[a-z0-9_-]+',slug): continue
+ rel=str(story.get('image',''))
+ source=(root/rel) if rel.startswith('assets/uploads/') else None
+ if source is None or not source.is_file():
+  source=out/(slug+'.png')
+ if not source.is_file():
+  raise RuntimeError(f'No social image available for article {slug}')
+ with Image.open(source) as original:
+  photo=ImageOps.exif_transpose(original)
+  if photo.mode not in ('RGB','RGBA'): photo=photo.convert('RGB')
+  preview=ImageOps.fit(photo.convert('RGB'),(1200,630),method=Image.Resampling.LANCZOS,centering=(0.5,0.45))
+  preview.save(share_dir/(slug+'.jpg'),format='JPEG',quality=88,optimize=True,progressive=True,subsampling=0)
+  share_count+=1
+print(f'Generated {share_count} article-specific OG photo JPEGs (1200x630)')
+
 # Shared main thumbnail
 if news:
  (site/'assets'/'share.png').write_bytes((out/(news[0]['slug']+'.png')).read_bytes())
