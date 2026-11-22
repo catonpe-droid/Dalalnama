@@ -734,4 +734,29 @@ panel.innerHTML='<h2>Share this news</h2><div class="dalal-share-items">'+
 tags.before(panel);
 panel.querySelector('.copy-link').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(url);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){window.prompt('बातमीची लिंक:',url)}});
 panel.querySelector('.native-share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}catch(e){}});
-})();</script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/newsroom.js?v=4" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/home-columns.js?v=2" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/article-rich.js?v=1" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/site-customizer.js?v=1" defer></script></body></html>
+})();</script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/newsroom.js?v=4" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/home-columns.js?v=2" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/article-rich.js?v=1" defer></script><script src="https://catonpe-droid.github.io/Dalalnama/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
+(()=>{
+  'use strict';
+  // Run AFTER deferred newsroom.js, which on older cached versions moves nested links.
+  const repairMenu=()=>{
+    const nav=document.getElementById('navLinks');
+    const host=document.querySelector('#navOtherPanel .other-panel-links');
+    if(!nav||!host)return;
+    const names=['समाजसेवेचा मुखवटा','भूमाफिया','सहकारनामा','कंत्राटदारांचे कारनामे','शासकीय योजना','जनतेचा सवाल'];
+    const active=new URLSearchParams(location.search).get('category')||'';
+    const nodes=names.map(name=>{
+      const link=document.createElement('a');
+      link.dataset.nav=name;
+      link.href='?category='+encodeURIComponent(name);
+      link.textContent=name;
+      if(name===active)link.classList.add('active');
+      return link;
+    });
+    host.replaceChildren(...nodes);
+    nav.querySelectorAll(':scope > a[data-nav="जनतेचा सवाल"]').forEach(el=>el.remove());
+    document.getElementById('navOtherDetails')?.classList.toggle('has-active',names.includes(active));
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',repairMenu,{once:true});
+  else repairMenu();
+})();
+</script></body></html>
