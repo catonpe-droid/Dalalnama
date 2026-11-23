@@ -942,3 +942,90 @@ body:not(.dark):not(.dn-preset-night) .nav #navLinks > .search-link:hover{
     font-size:13px;min-height:42px;padding:10px 12px;
   }
 }
+
+
+/* Dalalnama article content containment 2026-11-23
+   Rich text pasted from Word/WhatsApp must never extend under the sidebar.
+   Cover images show in full; thumbnail card designs remain unchanged. */
+.dn-story-layout,
+.dn-story-layout .dn-story-main,
+.dn-story-layout .dn-story-main > article {
+  min-width:0;
+  max-width:100%;
+}
+.dn-story-layout .article-hero,
+.dn-story-layout .article-body,
+.dn-story-layout .article-body .dn-rich-content,
+.dn-story-layout .article-tags {
+  min-width:0;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.dn-story-layout .article-body :is(p,h2,h3,li,a,blockquote,figcaption),
+.dn-story-layout .article-hero :is(h1,.deck) {
+  overflow-wrap:anywhere;
+}
+.dn-story-layout .article-body :is(img,picture,video,iframe,svg,canvas) {
+  max-width:100%;
+}
+.dn-story-layout .article-body :is(pre,code) {
+  max-width:100%;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+.dn-story-layout .article-body .dn-rich-content img,
+.dn-story-layout .article-body .story-gallery img {
+  display:block;
+  width:auto;
+  max-width:100%;
+  height:auto;
+  max-height:min(75vh,720px);
+  object-fit:contain;
+  margin-left:auto;
+  margin-right:auto;
+}
+.dn-story-layout .article-body .story-gallery {
+  max-width:100%;
+  min-width:0;
+}
+.dn-story-layout .article-pic {
+  width:100%;
+  max-width:100%;
+}
+.dn-story-layout .article-pic .story-img {
+  width:100%;
+  height:100%;
+  max-width:100%;
+  object-fit:contain;
+  object-position:center;
+}
+@supports selector(.article-pic:has(> img)) {
+  .dn-story-layout .article-pic:has(> .story-img) {
+    aspect-ratio:auto;
+    height:auto;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--soft);
+  }
+  .dn-story-layout .article-pic:has(> .story-img) .story-img {
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:min(76vh,720px);
+    object-fit:contain;
+  }
+}
+.dn-related,
+.dn-related-grid,
+.dn-related-item,
+.dn-related-item > div {
+  min-width:0;
+}
+.dn-related-item :is(h3,a) {overflow-wrap:anywhere;}
+@media(max-width:830px){
+  .dn-story-layout {grid-template-columns:minmax(0,1fr);}
+  .dn-story-layout .article-body {font-size:clamp(16px,4vw,19px);}
+}
