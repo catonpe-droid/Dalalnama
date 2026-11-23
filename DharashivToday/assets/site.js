@@ -16,7 +16,7 @@
  const image=(p,full=false)=>{const raw=String((!full&&p.thumbImage)||p.image||'');if(/^assets\/(?:uploads|branding)\/[a-zA-Z0-9_.-]+\.(?:png|jpg|jpeg|webp)$/i.test(raw))return ROOT+raw;try{const u=new URL(raw);if(u.protocol==='https:'&&u.hostname==='dharashivlive.com'&&u.pathname.startsWith('/wp-content/uploads/')&&/\.(png|jpg|jpeg|webp)$/i.test(u.pathname))return u.href}catch{}return ''};
  const cover=p=>{const src=image(p);return '<span class="thumb">'+(src?'<img loading="lazy" src="'+esc(src)+'" alt="'+esc(p.title)+'">':'<span class="placeholder">धाराशिव टुडे</span>')+'</span>'};
  const info=p=>'<div class="post-mini-meta">'+esc(dateFmt(p.date))+'</div>';
- const card=p=>'<article class="news-card"><a href="'+storyUrl(p)+'">'+cover(p)+'</a><div class="category">'+esc(p.category||'बातमी')+'</div><h3><a href="'+storyUrl(p)+'">'+esc(p.title)+'</a></h3>'+(p.summary?'<p>'+esc(p.summary).slice(0,118)+'</p>':'')+info(p)+'</article>';
+ const card=p=>'<a class="news-card" href="'+storyUrl(p)+'">'+cover(p)+'<div class="category">'+esc(p.category||'बातमी')+'</div><h3>'+esc(p.title)+'</h3>'+(p.summary?'<p>'+esc(p.summary).slice(0,100)+'</p>':'')+info(p)+'</a>';
  const filter=(p,cat)=>!cat||cat==='मुख्यपृष्ठ'||cat==='ताज्या बातम्या'||p.category===cat||(cat==='विशेष बातम्या'&&(p.featured||p.category==='विशेष लेख'))||(cat==='जिल्हा'&&(p.category==='जिल्हा'||(p.tags||[]).some(t=>district.includes(t))));
  const inSearch=p=>!query||[p.title,p.summary,p.category,p.author,...(p.tags||[])].join(' ').toLocaleLowerCase('mr-IN').includes(query.toLocaleLowerCase('mr-IN'));
  function nav(){
@@ -31,15 +31,25 @@
   $('tickerNews').innerHTML=[...names,...names,...names].map(h=>'<span class="ticker-item">'+esc(h)+'</span>').join('');
  }
  function homepage(list){
-  const feat=[...list.filter(x=>x.featured),...list.filter(x=>!x.featured)].filter((x,i,ar)=>ar.findIndex(y=>y.slug===x.slug)===i);
-  const p=feat[0];
-  $('heroGrid').innerHTML=p?'<article class="lead-card"><a href="'+storyUrl(p)+'">'+cover(p)+'</a><h2><a href="'+storyUrl(p)+'">'+esc(p.title)+'</a></h2>'+info(p)+'</article>':'<div class="front-empty"><span>धाराशिव टुडे</span><h2>जिल्ह्याच्या ताज्या बातम्या</h2><p>पहिली बातमी प्रकाशित झाल्यावर मुख्य बातमी येथे दिसेल.</p><a href="'+ROOT+'admin/">बातमी प्रसिद्ध करा →</a></div>';
-  $('headlineBrief').innerHTML=feat.slice(1,5).map(x=>'<article class="brief-card"><h3><a href="'+storyUrl(x)+'">'+esc(x.title)+'</a></h3><a href="'+storyUrl(x)+'">'+cover(x)+'</a></article>').join('')||'<div class="brief-empty">जिल्ह्यातील आणखी महत्त्वाच्या बातम्या येथे दिसतील.</div>';
+  const featured=[...list.filter(x=>x.featured),...list.filter(x=>!x.featured)].filter((p,i,a)=>a.findIndex(q=>q.slug===p.slug)===i);
+  const p=featured[0];
+  $('heroGrid').innerHTML=p?'<a class="lead-card" href="'+storyUrl(p)+'">'+cover(p)+'<h2>'+esc(p.title)+'</h2>'+info(p)+'</a>':'<div class="front-empty"><span>धाराशिव टुडे</span><h2>जिल्ह्याच्या ताज्या बातम्या</h2><p>पहिली बातमी प्रकाशित झाल्यावर मुख्य बातमी येथे दिसेल.</p><a href="'+ROOT+'admin/">बातमी प्रसिद्ध करा →</a></div>';
+  $('headlineBrief').innerHTML=featured.slice(1,5).map(x=>'<a class="brief-card" href="'+storyUrl(x)+'"><h3>'+esc(x.title)+'</h3>'+cover(x)+'</a>').join('')||'<div class="brief-empty">जिल्ह्यातील महत्त्वाच्या बातम्या येथे दिसतील.</div>';
   const special=list.filter(x=>x.featured||x.category==='विशेष बातम्या'||x.category==='विशेष लेख');
-  $('specialList').innerHTML=special.slice(0,3).map(x=>'<article class="special-card"><a href="'+storyUrl(x)+'">'+cover(x)+'</a><div class="tag">'+esc(x.category||'विशेष')+'</div><h3><a href="'+storyUrl(x)+'">'+esc(x.title)+'</a></h3></article>').join('')||'<div class="brief-empty">विशेष बातम्या येथे प्रसिद्ध होतील.</div>';
-  $('latestGrid').innerHTML=list.slice(0,15).map(card).join('')||'<div class="empty-results">Admin मधून बातम्या प्रकाशित झाल्यावर येथे दिसतील.</div>';
+  const specialStories=[...special,...list.filter(x=>!special.includes(x))].slice(0,3);
+  $('specialList').innerHTML=specialStories.map(x=>'<a class="special-card" href="'+storyUrl(x)+'"><div class="special-story-copy"><span class="tag">'+esc(x.category||'विशेष')+'</span><h3>'+esc(x.title)+'</h3></div>'+cover(x)+'</a>').join('')||'<div class="brief-empty">विशेष बातम्या येथे प्रसिद्ध होतील.</div>';
+  $('latestGrid').innerHTML=list.slice(0,6).map(card).join('')||'<div class="empty-results">Admin मधून बातम्या प्रकाशित झाल्यावर येथे दिसतील.</div>';
   $('districtGrid').innerHTML=(settings.districts||district).map(x=>'<a href="'+ROOT+'?q='+encodeURIComponent(x)+'">'+esc(x)+' →</a>').join('');
-  $('categoryBand').innerHTML=['राजकारण','शेती','विकास','शिक्षण'].map(cat=>'<div class="category-box"><h3>'+cat+'</h3>'+(list.filter(p=>p.category===cat).slice(0,4).map(p=>'<a href="'+storyUrl(p)+'">'+esc(p.title)+'</a>').join('')||'<p>बातम्या लवकरच.</p>')+'</div>').join('');
+  const sectionCats=['राजकारण','शेती','विकास','शिक्षण','नोकरी','पर्यटन','क्रीडा','मनोरंजन','विशेष लेख','संपादकीय','विशेष बातम्या','जिल्हा'];
+  const compactRow=(p,fallback)=>'<a class="topic-row" href="'+storyUrl(p)+'">'+cover(p)+'<span><strong>'+esc(p.title)+'</strong>'+(fallback?'<small>'+esc(p.category||'बातमी')+'</small>':'')+'</span></a>';
+  const sectionHTML=cat=>{
+   const relevant=list.filter(p=>p.category===cat||(cat==='विशेष बातम्या'&&p.featured));
+   const fallback=list.filter(p=>!relevant.some(r=>r.slug===p.slug));
+   const chosen=[...relevant,...fallback].slice(0,3);
+   const more=ROOT+'?category='+encodeURIComponent(relevant.length?cat:'ताज्या बातम्या');
+   return '<section class="topic-panel"><div class="topic-heading"><h3>'+esc(cat)+'</h3><span class="heading-line"></span><a class="view-more" href="'+more+'">View More →</a></div><div class="topic-stories">'+(chosen.length?chosen.map((p,i)=>i===0?'<a class="topic-main" href="'+storyUrl(p)+'">'+cover(p)+'<strong>'+esc(p.title)+'</strong>'+(relevant.includes(p)?'':'<small>इतर महत्त्वाच्या बातम्या</small>')+'</a>':compactRow(p,!relevant.includes(p))).join(''):'<p>या विभागातील बातम्या लवकरच.</p>')+'</div></section>';
+  };
+  $('categoryBand').innerHTML=sectionCats.map(sectionHTML).join('');
  }
  function listing(cat,list){
   $('homeSections').hidden=true;$('listingSections').hidden=false;$('articleSection').hidden=true;
