@@ -217,7 +217,7 @@
     if(!next.menu.includes('मुखपृष्ठ'))next.menu.unshift('मुखपृष्ठ');
     if(!confirm('वेबसाइटवरील मेनू आणि Breaking News अपडेट करायचे?'))return;
     setBusy(true);try{
-      const r=await writeJSON('data/layout.json',next,state.layoutSha,'Update Dalalnama menus, breaking news and featured layout');
+      const r=await writeJSON('data/layout.json',next,state.layoutSha,'Update Dharashiv Today menus, breaking news and featured layout');
       state.layout=next;state.layoutSha=r.content.sha;renderLayout();message('✅ वेबसाइटचा Layout Server वर जतन झाला. Server अपडेट झाल्यावर Live दिसेल.','success');
     }catch(e){message(e.message,'error')}finally{setBusy(false)}
   }
@@ -418,12 +418,12 @@
   }
   window.DalalCMS={getNews:()=>state.news.slice(),getLayout:()=>structuredClone(state.layout),getSite:()=>SITE,
     hasToken:()=>connected(),uploadMedia:async(file,path)=>uploadPhoto(file,path),
-    loadMedia:async()=>readJSON('data/media.json'),saveMedia:async(media,sha)=>writeJSON('data/media.json',media,sha,'Update Dalalnama media library'),
+    loadMedia:async()=>readJSON('data/media.json'),saveMedia:async(media,sha)=>writeJSON('data/media.json',media,sha,'Update Dharashiv Today media library'),
     uploadBrand:async(file,path)=>{
       if(!file||!/image\/(png|jpeg|webp)/.test(file.type)||file.size>5*1024*1024)throw Error('लोगो PNG, JPG किंवा WebP असावा (कमाल 5 MB).');
       const bytes=new Uint8Array(await file.arrayBuffer());let binary='';
       for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
-      return github(path,'PUT',{branch:'main',message:'Upload Dalalnama brand logo',content:btoa(binary)});
+      return github(path,'PUT',{branch:'main',message:'Upload Dharashiv Today brand logo',content:btoa(binary)});
     },
     openPost:(slug)=>openPost(slug),newPost:()=>reset(),refresh:()=>load(),
     status:(messageText,kind)=>message(messageText,kind),
