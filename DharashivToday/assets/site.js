@@ -79,9 +79,9 @@ $('searchToggle').addEventListener('click',()=>{$('searchPanel').hidden=!$('sear
 $('searchInput').addEventListener('input',e=>{searchValue=e.target.value.trim();const p=new URLSearchParams(location.search);p.delete('category');p.delete('article');if(searchValue)p.set('q',searchValue);else p.delete('q');history.replaceState({},'',BASE+(p.toString()?'?'+p:''));route()});
 $('searchClear').addEventListener('click',()=>{$('searchInput').value='';searchValue='';history.replaceState({},'',BASE);route()});
 try{
- const [a,b]=await Promise.all([fetch(rel('data/news.json')+'?v='+Date.now(),{cache:'no-store'}),fetch(rel('data/settings.json')+'?v='+Date.now(),{cache:'no-store'})]);
+ const [a,b,c]=await Promise.all([fetch(rel('data/news.json')+'?v='+Date.now(),{cache:'no-store'}),fetch(rel('data/settings.json')+'?v='+Date.now(),{cache:'no-store'}),fetch(rel('data/layout.json')+'?v='+Date.now(),{cache:'no-store'})]);
  if(!a.ok||!b.ok)throw Error('डेटा मिळाला नाही');
- stories=await a.json();settings=await b.json();if(!Array.isArray(stories))stories=[];
+ stories=await a.json();settings=await b.json();if(!Array.isArray(stories))stories=[];const layout=c.ok?await c.json():{};if(Array.isArray(layout.menu)&&layout.menu.length)settings.menu=layout.menu;if(Array.isArray(layout.breaking))settings.breaking=layout.breaking;if(Array.isArray(layout.featuredSlugs))stories=stories.map(x=>({...x,featured:!!x.featured||layout.featuredSlugs.includes(x.slug)}));
  if(settings.youtubeChannelId&&/^UC[A-Za-z0-9_-]{22}$/.test(settings.youtubeChannelId))$('liveEmbed').src='https://www.youtube.com/embed/live_stream?channel='+settings.youtubeChannelId;
  if(settings.youtubeHandle&&/^https:\/\/www\.youtube\.com\/@[\w-]+$/.test(settings.youtubeHandle))document.querySelectorAll('a[href*="youtube.com/@dharashivlive"]').forEach(a=>{a.href=settings.youtubeHandle+(a.href.endsWith('/live')?'/live':'')});
 }catch(err){console.warn('Dharashiv Today data:',err)}
