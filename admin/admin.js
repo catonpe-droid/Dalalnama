@@ -253,7 +253,7 @@
     if(mode==='draft'&&!$('slug').value.trim())makeAutoSlug();
     const slug=$('slug').value.trim().toLowerCase();
     if(!allowedSlug.test(slug))return message('Slug: 3–96 इंग्रजी लहान अक्षरे, अंक, underscore किंवा hyphen वापरा.','error');
-    const title=$('title').value.trim(),summary=$('summary').value.trim(),body=splitBody($('body').value);
+    const title=$('title').value.trim(),summary=$('summary').value.trim(),body=splitBody($('body').value.replace(/[\u00a0\u202f\u2007]/g,' '));
     if(mode==='published'&&(title.length<8||body.join(' ').length<30||summary.length<15))return message('प्रकाशनासाठी शीर्षक, ३० अक्षरांची बातमी आणि १५ अक्षरांचा सारांश आवश्यक.','error');
     if(mode==='draft'&&title.length<3)return message('Draft साठी किमान ३ अक्षरांचे शीर्षक लिहा.','error');
     if(state.news.some(p=>p.slug===slug&&p.slug!==state.activeSlug))return message('ही URL आधीच दुसऱ्या बातमीसाठी वापरली आहे. दुसरा Slug द्या.','error');
