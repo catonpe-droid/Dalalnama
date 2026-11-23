@@ -17,13 +17,15 @@ inject('DALALNAMA_ARTICLES',news);inject('DALALNAMA_LAYOUT',layout);
 // "जनतेचा सवाल" always belongs under the final "अन्य" menu, per editorial layout.
 const navCategories=['राजकारण','भ्रष्टाचार','प्रशासननामा','घोटाळे','दलालनामा','पर्दाफाश','इनसाइड स्टोरी','पोस्टमॉर्टम','विशेष लेख','जनतेचा सवाल','समाजसेवेचा मुखवटा','भूमाफिया','सहकारनामा','कंत्राटदारांचे कारनामे','शासकीय योजना'];
 const knownCategories=new Set(navCategories);
+const cats=[['राजकारण','rajkaran'],['भ्रष्टाचार','bhrashtachar'],['प्रशासननामा','prashasannama'],['घोटाळे','ghotale'],['दलालनामा','dalalnama'],['पर्दाफाश','pardafash'],['इनसाइड स्टोरी','inside-story'],['पोस्टमॉर्टम','postmortem'],['विशेष लेख','vishesh-lekh'],['जनतेचा सवाल','jantecha-sawal'],['समाजसेवेचा मुखवटा','samajsevecha-mukhvata'],['भूमाफिया','bhumafia'],['सहकारनामा','sahakarnama'],['कंत्राटदारांचे कारनामे','kantratdaranche-karname'],['शासकीय योजना','shasakiy-yojana']];
+const catSlug=Object.fromEntries([...cats,['ताज्या बातम्या','latest']]);
 const unique=(items)=>[...new Set(items.filter(v=>typeof v==='string'&&knownCategories.has(v)))];
 const primary=unique(Array.isArray(layout.menu)?layout.menu:navCategories.slice(0,9)).filter(v=>v!=='जनतेचा सवाल');
 const secondary=unique(Array.isArray(layout.subcategories)?layout.subcategories:navCategories.slice(10)).filter(v=>v!=='जनतेचा सवाल');
 secondary.push('जनतेचा सवाल');
 const navHTML=html.slice(html.indexOf('<nav class="nav nav-unified"'),html.indexOf('</nav>',html.indexOf('<nav class="nav nav-unified"'))+6);
 if(!navHTML.includes('id="navOtherDetails"')||!navHTML.includes('id="navSearch"'))throw Error('Main news nav not found');
-const navLink=v=>'<a data-nav="'+safe(v)+'" href="?category='+encodeURIComponent(v)+'">'+safe(v)+'</a>';
+const navLink=v=>'<a data-nav="'+safe(v)+'" href="?category='+encodeURIComponent(catSlug[v]||v)+'">'+safe(v)+'</a>';
 const first=navHTML.indexOf('    <a data-nav="राजकारण"'), last=navHTML.indexOf('    <details class="nav-other-details"',first);
 if(first<0||last<0)throw Error('Main nav links not found');
 let navUpdated=navHTML.slice(0,first)+primary.map(v=>'    '+navLink(v)).join('\n')+'\n'+navHTML.slice(last);
@@ -81,7 +83,7 @@ function socialMeta(source,story=null,url=SITE){
 }
 write('.nojekyll','');
 write('index.html',socialMeta(html));
-const cats=[['राजकारण','rajkaran'],['भ्रष्टाचार','bhrashtachar'],['प्रशासननामा','prashasannama'],['घोटाळे','ghotale'],['दलालनामा','dalalnama'],['पर्दाफाश','pardafash'],['इनसाइड स्टोरी','inside-story'],['पोस्टमॉर्टम','postmortem'],['विशेष लेख','vishesh-lekh'],['जनतेचा सवाल','jantecha-sawal'],['समाजसेवेचा मुखवटा','samajsevecha-mukhvata'],['भूमाफिया','bhumafia'],['सहकारनामा','sahakarnama'],['कंत्राटदारांचे कारनामे','kantratdaranche-karname'],['शासकीय योजना','shasakiy-yojana']];
+
 function route(type,value){
  let h=html.replace('data-root="./"','data-root="../../"')
    .replace('data-article=""',type==='article'?'data-article="'+value+'"':'data-article=""')
