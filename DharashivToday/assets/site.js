@@ -29,6 +29,8 @@
   const headlines=(Array.isArray(layout.breaking)&&layout.breaking.filter(Boolean).length?layout.breaking:visible().slice(0,9).map(p=>p.title)).filter(Boolean);
   const names=headlines.length?headlines:[settings.breakingText||'जिल्ह्याचा आवाज... जनतेची बातमी!'];
   $('tickerNews').innerHTML=[...names,...names,...names].map(h=>'<span class="ticker-item">'+esc(h)+'</span>').join('');
+  // Keep longer ticker text readable instead of racing across the screen.
+  $('tickerNews').style.animationDuration=Math.max(40,Math.min(195,Math.round(names.join(' ').length*0.32)))+'s';
  }
  function homepage(list){
   const featured=[...list.filter(x=>x.featured),...list.filter(x=>!x.featured)].filter((p,i,a)=>a.findIndex(q=>q.slug===p.slug)===i);
@@ -46,7 +48,7 @@
    const relevant=list.filter(p=>p.category===cat||(cat==='विशेष बातम्या'&&p.featured));
    const fallback=list.filter(p=>!relevant.some(r=>r.slug===p.slug));
    const chosen=[...relevant,...fallback].slice(0,3);
-   const more=ROOT+'?category='+encodeURIComponent(relevant.length?cat:'ताज्या बातम्या');
+   const more=ROOT+'?category='+encodeURIComponent(cat);
    return '<section class="topic-panel"><div class="topic-heading"><h3>'+esc(cat)+'</h3><span class="heading-line"></span><a class="view-more" href="'+more+'">View More →</a></div><div class="topic-stories">'+(chosen.length?chosen.map((p,i)=>i===0?'<a class="topic-main" href="'+storyUrl(p)+'">'+cover(p)+'<strong>'+esc(p.title)+'</strong>'+(relevant.includes(p)?'':'<small>इतर महत्त्वाच्या बातम्या</small>')+'</a>':compactRow(p,!relevant.includes(p))).join(''):'<p>या विभागातील बातम्या लवकरच.</p>')+'</div></section>';
   };
   $('categoryBand').innerHTML=sectionCats.map(sectionHTML).join('');
@@ -54,8 +56,10 @@
  function listing(cat,list){
   $('homeSections').hidden=true;$('listingSections').hidden=false;$('articleSection').hidden=true;
   const title=query?'शोध : '+query:cat||'ताज्या बातम्या';$('listingHeading').textContent=title;
-  const rows=list.filter(p=>filter(p,cat)&&inSearch(p));
-  $('listingGrid').innerHTML=rows.map(card).join('')||'<div class="empty-results">या विभागात अजून प्रकाशित बातम्या नाहीत.</div>';
+  const exact=list.filter(p=>filter(p,cat)&&inSearch(p));
+  const fallback=!!cat&&cat!=='ताज्या बातम्या'&&!query&&exact.length===0;
+  const rows=fallback?list.slice(0,9):exact;
+  $('listingGrid').innerHTML=(fallback?'<p class="section-fallback-note">या विभागातील स्वतंत्र बातम्या उपलब्ध नसल्यामुळे इतर महत्त्वाच्या बातम्या दाखवत आहोत.</p>':'')+(rows.map(card).join('')||'<div class="empty-results">या विभागात अजून प्रकाशित बातम्या नाहीत.</div>');
   document.title=title+' | धाराशिव टुडे';
  }
  function cleanHtml(raw){
