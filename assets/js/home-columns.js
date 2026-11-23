@@ -52,7 +52,7 @@
   const column=document.createElement('section');column.className='dn-news-column';
   const top=document.createElement('div');top.className='dn-news-colhead';
   const colTitle=document.createElement('h3');colTitle.textContent=label;
-  const more=document.createElement('a');more.href=SITE+'?category='+encodeURIComponent(category);more.textContent='आणखी वाचा ›';
+  const more=document.createElement('a');more.href=SITE+'?category='+encodeURIComponent((window.DALALNAMA_CATEGORY_SLUGS||{})[category]||category);more.textContent='आणखी वाचा ›';
   top.append(colTitle,more);column.appendChild(top);
   if(!chosen.length){
     const empty=document.createElement('p');empty.className='dn-news-empty';empty.textContent='या विभागातील ताज्या बातम्या लवकरच.';
