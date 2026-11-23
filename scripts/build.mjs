@@ -110,3 +110,38 @@ write('robots.txt','User-agent: *\nAllow: /\nSitemap: '+SITE+'sitemap.xml\n');
 if(fs.existsSync('assets'))fs.cpSync('assets','site/assets',{recursive:true});
 if(fs.existsSync('admin'))fs.cpSync('admin','site/admin',{recursive:true});
 console.log('Dalalnama built:',news.length,'stories /',cats.length,'categories');
+
+
+// Publish separate Dharashiv Today microsite, isolated from Dalalnama's news data.
+const dtDir='DharashivToday';
+if(fs.existsSync(dtDir)){
+ fs.cpSync(dtDir,path.join('site',dtDir),{recursive:true});
+ const dtSite='https://dalalnama.com/DharashivToday/';
+ const dtNews=JSON.parse(fs.readFileSync(path.join(dtDir,'data/news.json'),'utf8')).filter(p=>p&&p.published!==false&&p.status!=='draft');
+ const dtHtml=fs.readFileSync(path.join(dtDir,'index.html'),'utf8');
+ const dtUrls=[dtSite];
+ for(const item of dtNews){
+  const slug=String(item.slug||'');
+  if(!/^[a-z0-9][a-z0-9_-]{2,95}$/i.test(slug))continue;
+  const articleUrl=dtSite+'batmi/'+slug+'/';
+  const title=String(item.seoTitle||item.title||'धाराशिव टुडे')+' | धाराशिव टुडे';
+  const description=String(item.seoDescription||item.summary||'धाराशिव टुडे');
+  const image=/^assets\/uploads\/[a-z0-9_.-]+\.(?:jpg|jpeg|webp|png)$/i.test(item.image||'')?dtSite+item.image:dtSite+'assets/logo.svg';
+  let dtArticle=dtHtml.replace('data-story=""','data-story="'+slug+'"')
+    .replace(/<title>[^<]*<\/title>/,'<title>'+safe(title)+'</title>')
+    .replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+safe(description)+'">')
+    .replace(/<meta property="og:title" content="[^"]*">/,'<meta property="og:title" content="'+safe(title)+'">')
+    .replace(/<meta property="og:description" content="[^"]*">/,'<meta property="og:description" content="'+safe(description)+'">')
+    .replace(/<meta property="og:image" content="[^"]*">/,'<meta property="og:image" content="'+safe(image)+'">')
+    .replace('<meta property="og:type" content="website">','<meta property="og:type" content="article">');
+  const structured={"@context":"https://schema.org","@type":"NewsArticle",headline:item.title||'',description,
+    datePublished:String(item.date||'').slice(0,10),image:[image],mainEntityOfPage:articleUrl,
+    author:{"@type":"Person",name:item.author||'धाराशिव टुडे न्यूज डेस्क'},
+    publisher:{"@type":"Organization",name:"धाराशिव टुडे",url:dtSite}};
+  dtArticle=dtArticle.replace('</head>','<link rel="canonical" href="'+safe(articleUrl)+'"><script type="application/ld+json">'+JSON.stringify(structured).replace(/</g,'\\u003c')+'</script></head>');
+  write('DharashivToday/batmi/'+slug+'/index.html',dtArticle);
+  dtUrls.push(articleUrl);
+ }
+ write('DharashivToday/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+dtUrls.map(u=>'<url><loc>'+safe(u)+'</loc></url>').join('')+'</urlset>');
+ console.log('Publish separate Dharashiv Today:',dtNews.length,'stories');
+}
