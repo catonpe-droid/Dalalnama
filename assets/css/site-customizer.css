@@ -1029,3 +1029,34 @@ body:not(.dark):not(.dn-preset-night) .nav #navLinks > .search-link:hover{
   .dn-story-layout {grid-template-columns:minmax(0,1fr);}
   .dn-story-layout .article-body {font-size:clamp(16px,4vw,19px);}
 }
+
+
+/* Article pages without a related-news sidebar use the same safe image sizing. */
+#app > article .article-hero,
+#app > article .article-body,
+#app > article .article-tags {
+  max-width:100%;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+#app > article .article-pic .story-img {
+  max-width:100%;
+  object-fit:contain;
+  object-position:center;
+}
+@supports selector(.article-pic:has(> img)) {
+  #app > article .article-pic:has(> .story-img) {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    aspect-ratio:auto;
+    height:auto;
+    background:var(--soft);
+  }
+  #app > article .article-pic:has(> .story-img) .story-img {
+    width:auto;
+    max-width:100%;
+    height:auto;
+    max-height:min(76vh,720px);
+  }
+}
