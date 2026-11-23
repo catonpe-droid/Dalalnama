@@ -3,7 +3,7 @@
 (()=>{
   const REPO='catonpe-droid/Dalalnama';
   const API='https://api.github.com/repos/'+REPO+'/contents/DharashivToday/';
-  const SITE='https://dalalnama.com/DharashivToday/DharashivToday/';
+  const SITE='https://dalalnama.com/DharashivToday/';
   // Same private-link flow as Lokhit: #key is never sent in the page request.
   const rawSecret=location.hash.startsWith('#key=')?location.hash.slice(5):'';
   let publishKey='';
