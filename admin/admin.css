@@ -207,3 +207,18 @@ body.admin-locked>.preview-dialog{visibility:hidden!important;pointer-events:non
 .admin-login-home{display:block;margin-top:22px;text-align:center;color:#737d87;font-size:13px;text-decoration:none}
 .admin-login-home:hover{color:#c0121c}
 @media(max-width:500px){.admin-login-card{padding:30px 23px}.admin-login-logo{font-size:34px}}
+
+
+/* Password change dialog for the existing visual-only admin login overlay. */
+.admin-change-dialog{width:min(440px,calc(100% - 26px));max-height:90vh;overflow:auto;border:0;border-radius:15px;padding:26px 28px;box-shadow:0 24px 75px #0005;font-family:Mukta,'Noto Sans Devanagari',sans-serif}
+.admin-change-dialog::backdrop{background:#111b26b8}
+.admin-change-dialog form{display:grid;gap:8px}
+.admin-change-dialog h2{margin:0;color:#181c22;font-size:25px}
+.admin-change-dialog p{margin:0 0 11px;color:#65717e;font-size:14px}
+.admin-change-dialog label{font-size:14px;font-weight:800;color:#26313a}
+.admin-change-dialog input{width:100%;border:1px solid #cbd3dd;border-radius:8px;padding:10px 12px;margin-bottom:5px;font-size:16px}
+.admin-change-dialog .admin-change-message{color:#bc1020;min-height:17px;margin:1px 0 0}
+.admin-change-dialog .admin-change-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:5px}
+.admin-change-dialog .admin-change-actions .btn{flex:1;max-width:190px}
+.admin-change-dialog small{color:#647182;font-size:12px;line-height:1.5;margin-top:10px}
+@media(max-width:500px){.admin-change-dialog{padding:22px 20px}}
