@@ -4,3 +4,89 @@
 
 /* Crisp original uploaded news logo and compact no-ad news start */
 #homeSections{padding-top:15px}.nav-home-icon{display:block;width:19px;height:19px}.source-credit{margin:18px 0;border-left:3px solid #dc0010;padding:10px 13px;background:#fff7f7;font-size:14px}.source-credit a{font-weight:800;color:#bf0015}
+
+
+/* Compact editorial refinements — 23 Nov 2026: no unused gaps, 6 latest, 3 per topic */
+.top-news-layout{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}
+.front-lead,.front-brief,.front-right,.live-section{min-width:0}
+.lead-card{display:block}
+.lead-card:hover h2,.brief-card:hover h3,.special-card:hover h3,.news-card:hover h3,.topic-main:hover strong,.topic-row:hover strong{color:#c50011}
+.brief-card{min-height:0}
+.front-right{display:block;grid-column:auto}
+.front-right .section-heading{margin-bottom:10px}
+#specialList{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.special-card{display:grid;grid-template-columns:minmax(0,1fr) 104px;gap:10px;align-items:start;padding:8px 0 10px;margin:0;border-bottom:1px solid #e5e5e5;min-height:94px;min-width:0}
+.special-card:first-child{padding-top:0}
+.special-card:last-child{border-bottom:0}
+.special-story-copy{min-width:0}
+.special-card .thumb{width:104px;height:72px;display:block;overflow:hidden;border-radius:3px;background:#eaf0f5}
+.special-card .thumb img,.special-card .thumb .placeholder{display:block;width:100%;height:100%;margin:0;object-fit:cover;aspect-ratio:auto}
+.special-card .thumb .placeholder{font-size:12px;display:grid;place-items:center;background:#19365d;color:white;text-align:center}
+.special-card h3{font-size:14px;line-height:1.37;overflow-wrap:anywhere;margin:3px 0 0;font-weight:800}
+.special-card .tag{font-size:11px;line-height:1.25}
+.lower-news{display:block;margin-top:24px}
+.latest-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:18px}
+a.news-card{display:block;min-width:0;cursor:pointer;overflow:hidden;padding-bottom:8px;border-bottom:1px solid #ececec}
+.news-card .thumb{border-radius:4px;overflow:hidden}
+.news-card h3{margin-top:5px}
+a.news-card:focus-visible,.topic-panel a:focus-visible,.special-card:focus-visible,.brief-card:focus-visible,.lead-card:focus-visible{outline:3px solid #b90917;outline-offset:3px}
+.news-card:hover .thumb img,.topic-main:hover .thumb img,.topic-row:hover .thumb img{transform:scale(1.03)}
+.news-card .thumb img,.topic-main img,.topic-row img{transition:transform .22s ease}
+.district-aside{margin-top:24px}
+.district-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
+.district-grid a{text-align:center;padding:10px 5px;white-space:nowrap;font-size:13px}
+.category-section{margin-top:30px}
+.category-band{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;column-gap:22px;row-gap:24px}
+.topic-panel{min-width:0}
+.topic-heading{display:flex;align-items:center;gap:8px;margin:0 0 12px;min-width:0}
+.topic-heading h3{font-size:20px;line-height:1.35;white-space:nowrap;font-weight:900;margin:0}
+.topic-heading .heading-line{height:1px;flex:1;min-width:9px;background:#d1d1d1}
+.topic-heading .view-more{font-size:12px;padding:4px 10px;border:1px solid #ddd;border-radius:20px;white-space:nowrap;color:#d10013;line-height:1.25}
+.topic-heading .view-more:hover{background:#d00013;color:white;border-color:#d00013}
+.topic-stories{display:grid;gap:0;min-width:0}
+.topic-main{display:block;border-bottom:1px solid #ededed;padding:0 0 11px;margin-bottom:5px}
+.topic-main .thumb{display:block;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:4px;background:#f2f2f2}
+.topic-main .thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.topic-main .thumb .placeholder,.topic-row .thumb .placeholder{display:grid;place-items:center;width:100%;height:100%;background:#0d345c;color:white;font-weight:700;font-size:14px}
+.topic-main strong{display:block;margin:7px 0 0;font-size:17px;line-height:1.42;font-weight:800;overflow-wrap:anywhere}
+.topic-main small,.topic-row small{display:block;color:#7e7e7e;font-size:11px;font-weight:600;margin-top:4px}
+.topic-row{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid #e4e4e4;min-width:0;min-height:80px}
+.topic-row:last-child{border-bottom:0}
+.topic-row > span:not(.thumb){display:block;min-width:0;flex:1;order:-1}
+.topic-row strong{font-size:14px;line-height:1.42;font-weight:750;display:block;overflow-wrap:anywhere}
+.topic-row .thumb{display:block;width:112px;min-width:112px;height:72px;overflow:hidden;border-radius:3px;background:#f4f4f4}
+.topic-row .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.section-heading .section-more-link{white-space:nowrap;border:1px solid #dedede;padding:3px 11px;border-radius:15px;color:#ca0012;font-size:12px;font-weight:700}
+.section-heading .section-more-link:hover{background:#d00013;color:#fff}
+@media(max-width:1149px){
+ .top-news-layout{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+ .front-right{grid-column:auto;display:block}
+ .front-right .mini{display:flex}
+ .category-band{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+ .district-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ .top-news-layout{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .front-right{grid-column:1/-1;display:block}
+ #specialList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+ .special-card{grid-template-columns:minmax(0,1fr) 88px;min-height:85px;border-bottom:1px solid #e6e6e6}
+ .special-card .thumb{width:88px;height:65px}
+ .latest-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .category-band{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+ .topic-main strong{font-size:15px}
+ .topic-row strong{font-size:13px}
+ .topic-row .thumb{width:86px;min-width:86px;height:61px}
+ .topic-heading h3{font-size:17px}
+ .topic-heading .view-more{font-size:11px;padding:4px 7px}
+}
+@media(max-width:460px){
+ #specialList{grid-template-columns:1fr}
+ .special-card{grid-template-columns:minmax(0,1fr) 105px;min-height:85px}
+ .special-card .thumb{width:105px;height:70px}
+ .category-band{grid-template-columns:1fr}
+ .topic-row .thumb{width:120px;min-width:120px;height:72px}
+ .district-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .district-grid a{font-size:12px;white-space:normal}
+ .topic-heading h3{font-size:19px}
+ .news-card h3{font-size:15px}
+}
