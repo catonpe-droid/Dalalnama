@@ -17,15 +17,22 @@
 .dalal-weather{display:inline-flex;align-items:center;gap:6px;border-radius:8px;padding:4px 9px;background:#fff4d0;border:1px solid #f4df9b;color:#39302c;font-weight:800;font-size:12px;white-space:nowrap}
 .dalal-weather .weather-dot{font-size:15px}
 .dalal-weather-status{color:#4c4040}
-.article-share-footer{max-width:760px;margin:28px auto 25px;padding:18px 0 10px;border-top:1px solid var(--line)}
-.article-share-footer h2{margin:0 0 13px;font:800 19px/1.3 Mukta,'Noto Sans Devanagari',sans-serif;color:var(--text)}
-.article-share-footer .dalal-share-items{display:flex;flex-wrap:wrap;gap:8px}
-.article-share-footer .dalal-share-items a,.article-share-footer .dalal-share-items button{display:inline-flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;padding:9px 13px;border:1px solid #ddd;border-radius:18px;font:800 13px/1.15 Mukta,'Noto Sans Devanagari',sans-serif;background:var(--paper);color:var(--text);cursor:pointer}
-.article-share-footer a.dalal-wa{background:#e7f9e9;border-color:#a9e0b4;color:#075a2d}
-.article-share-footer a.dalal-tg{background:#e7f7fe;border-color:#b3ddea;color:#145b80}
-.article-share-footer a.dalal-fb{background:#eef2ff;border-color:#b9c9ea;color:#1b4f95}
-.article-share-footer a.dalal-x{background:#252525;color:#fff;border-color:#252525}
-.article-share-footer .dalal-share-items a:hover,.article-share-footer .dalal-share-items button:hover{transform:translateY(-1px);box-shadow:0 2px 7px #0002}
+.article-share-footer{max-width:760px;margin:26px auto 24px;padding:20px 0 6px;border-top:1px solid var(--line)}
+.article-share-footer h2{margin:0 0 14px;font:800 17px/1.4 Mukta,'Noto Sans Devanagari',sans-serif;color:var(--text)}
+.article-share-footer .dalal-share-items,.article-topmeta .share.dalal-share-items{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.article-share-footer .dalal-share-items a,.article-share-footer .dalal-share-items button,.article-topmeta .share.dalal-share-items a,.article-topmeta .share.dalal-share-items button{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;width:45px;height:45px;flex:0 0 45px;padding:0;border-radius:50%;border:1px solid #dfe3e9;text-decoration:none;color:#454d59;background:#f4f6f8;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease;border-width:1px;line-height:1}
+.article-share-footer .dalal-share-items svg,.article-topmeta .share.dalal-share-items svg{display:block;width:22px;height:22px;flex:none}
+.article-share-footer .dalal-share-items .dalal-wa,.article-topmeta .share.dalal-share-items .dalal-wa{background:#e6f9ec;border-color:#b7e6c6;color:#168748}
+.article-share-footer .dalal-share-items .dalal-fb,.article-topmeta .share.dalal-share-items .dalal-fb{background:#eaf2ff;border-color:#c3d7fa;color:#1866c8}
+.article-share-footer .dalal-share-items .dalal-tg,.article-topmeta .share.dalal-share-items .dalal-tg{background:#e6f7fd;border-color:#b8e5f5;color:#168cbd}
+.article-share-footer .dalal-share-items .dalal-x,.article-topmeta .share.dalal-share-items .dalal-x{background:#24282e;border-color:#24282e;color:#fff}
+.article-share-footer .dalal-share-items .native-share,.article-topmeta .share.dalal-share-items .native-share{background:#fff0ec;border-color:#ffd3c8;color:#ba3e2e}
+.article-share-footer .dalal-share-items .copy-link,.article-topmeta .share.dalal-share-items .copy-link{background:#f0f1f8;border-color:#d9dcf0;color:#4e598b}
+.article-share-footer .dalal-share-items a:hover,.article-share-footer .dalal-share-items button:hover,.article-topmeta .share.dalal-share-items a:hover,.article-topmeta .share.dalal-share-items button:hover{transform:translateY(-2px);box-shadow:0 5px 14px #0002}
+.article-share-footer .dalal-share-items a:focus-visible,.article-share-footer .dalal-share-items button:focus-visible,.article-topmeta .share.dalal-share-items a:focus-visible,.article-topmeta .share.dalal-share-items button:focus-visible{outline:3px solid #3e82e8;outline-offset:3px}
+.article-share-footer .dalal-share-items .copy-link.copied,.article-topmeta .share.dalal-share-items .copy-link.copied{color:#167a3e;background:#e6f9ec;border-color:#b7e6c6}
+body.dark .article-share-footer .dalal-share-items a,body.dark .article-share-footer .dalal-share-items button,body.dark .article-topmeta .share.dalal-share-items a,body.dark .article-topmeta .share.dalal-share-items button{filter:brightness(1.06)}
+@media(max-width:600px){.article-share-footer h2{font-size:16px}.article-share-footer .dalal-share-items,.article-topmeta .share.dalal-share-items{gap:8px}.article-share-footer .dalal-share-items a,.article-share-footer .dalal-share-items button,.article-topmeta .share.dalal-share-items a,.article-topmeta .share.dalal-share-items button{width:43px;height:43px;flex-basis:43px;padding:0}.article-share-footer .dalal-share-items svg,.article-topmeta .share.dalal-share-items svg{width:21px;height:21px}}
 .article-ai-caption{font-size:12px;color:var(--mute);margin:-19px auto 20px;max-width:810px;text-align:right}
 @media(max-width:850px){.mast .brand img{max-height:74px;max-width:340px}}
 @media(max-width:600px){.mast .brand img{max-width:min(270px,90vw);max-height:78px}.topline .wrap{gap:5px}.dalal-weather{font-size:11px;padding:3px 7px}.dalal-weather .weather-dot{font-size:13px}.article-share-footer h2{font-size:17px}.article-share-footer .dalal-share-items a,.article-share-footer .dalal-share-items button{font-size:12px;padding:7px 10px}}
@@ -53,16 +60,12 @@
 .share .telegram{background:#ebf7ff;border-color:#b9ddf0}
 .share .facebook{background:#eef3ff;border-color:#c8d5f7}
 .share .xtweet{background:#eee}
-.news-brief{padding:17px 20px;background:#fff8e0;border:1px solid #f1dda0;border-radius:9px;margin:0 0 25px;font-size:16px;line-height:1.65}
-.news-brief b{display:block;margin-bottom:7px;color:#9d1018}
-.news-brief p{margin:0}
 .article-note{display:none}
 .source-note{background:none;border:0;border-top:1px solid #e5e5e5;padding:13px 0 0;margin-top:35px;font-size:14px}
 .source-note p{display:none}
 @media(max-width:850px){.mast{grid-template-columns:1fr minmax(240px,320px) 1fr}.mast .brand img{max-height:78px}}
-@media(max-width:600px){.mast{min-height:80px;max-height:95px;padding:10px 0}.mast .brand{width:min(285px,95%)}.mast .brand img{max-height:78px}.ticker .wrap{gap:7px;min-height:39px}.ticker .ticklabel{font-size:11px;padding:5px 8px}.ticker-track{animation-duration:38s}.ticker-group a,.ticker-group span{font-size:12px;padding:0 10px}.share a,.share button{font-size:12px;padding:6px 9px}.news-brief{padding:13px 14px;font-size:15px}}
+@media(max-width:600px){.mast{min-height:80px;max-height:95px;padding:10px 0}.mast .brand{width:min(285px,95%)}.mast .brand img{max-height:78px}.ticker .wrap{gap:7px;min-height:39px}.ticker .ticklabel{font-size:11px;padding:5px 8px}.ticker-track{animation-duration:38s}.ticker-group a,.ticker-group span{font-size:12px;padding:0 10px}.share a,.share button{font-size:12px;padding:6px 9px}}
 @media(prefers-reduced-motion:reduce){.ticker-track{animation:none}}
-body.dark .news-brief{background:#332b15;border-color:#665722}
 body.dark .source-note{background:none;color:#ddd}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://dalalnama.com/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://dalalnama.com/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
@@ -796,13 +799,6 @@ if(share){
     try{await navigator.clipboard.writeText(url);e.target.textContent='लिंक कॉपी झाली ✓'}catch(e){window.prompt('बातमीची लिंक:',url)}
   });
 }
-const body=document.querySelector('.article-body');
-if(body&&article.summary){
-  const brief=document.createElement('div');brief.className='news-brief';
-  const heading=document.createElement('b');heading.textContent='बातमी थोडक्यात';
-  const desc=document.createElement('p');desc.textContent=article.summary;
-  brief.append(heading,desc);body.prepend(brief);
-}
 })();</script><script id="dalalnama-final-js">
 (function(){
 'use strict';
@@ -814,17 +810,40 @@ const article=document.querySelector('#app article'),photo=article?.querySelecto
 if(photo&&!photo.querySelector('img.story-img')){const caption=document.createElement('div');caption.className='article-ai-caption';caption.textContent='चित्र : AI-निर्मित प्रातिनिधिक दृश्य';photo.insertAdjacentElement('afterend',caption)}
 const tags=article?.querySelector('.article-tags');if(!tags)return;
 const url=location.href,t=encodeURIComponent(a.title+' | दलालनामा'),u=encodeURIComponent(url);
-const panel=document.createElement('section');panel.className='article-share-footer';panel.setAttribute('aria-label','Share this news');
-panel.innerHTML='<h2>Share this news</h2><div class="dalal-share-items">'+
-'<a class="dalal-wa" href="https://wa.me/?text='+t+'%20'+u+'" target="_blank" rel="noopener">WhatsApp</a>'+
-'<a class="dalal-fb" href="https://www.facebook.com/sharer/sharer.php?u='+u+'" target="_blank" rel="noopener">Facebook</a>'+
-'<a class="dalal-tg" href="https://t.me/share/url?url='+u+'&text='+t+'" target="_blank" rel="noopener">Telegram</a>'+
-'<a class="dalal-x" href="https://twitter.com/intent/tweet?text='+t+'&url='+u+'" target="_blank" rel="noopener">X</a>'+
-'<button type="button" class="native-share">शेअर</button><button type="button" class="copy-link">लिंक कॉपी</button></div>';
+const svg=(paths,fill=true)=>'<svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" '+(fill?'fill="currentColor"':'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"')+'>'+paths+'</svg>';
+const icons={
+ wa:svg('<path d="M20.2 11.95a8.2 8.2 0 0 1-11.95 7.25L4 20.25l1.1-4.12a8.2 8.2 0 1 1 15.1-4.18Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 8.3c-.35.3-.55.78-.44 1.34.43 2.19 3.2 4.94 5.43 5.34.57.1 1.06-.11 1.37-.47l.55-.72-2.03-1-.85.86c-1.25-.5-2.16-1.41-2.66-2.68l.83-.8-1.05-2.02-.9.15Z"/>'),
+ fb:svg('<path d="M14.6 21v-8.1h2.7l.42-3.5H14.6V7.2c0-.98.3-1.58 1.67-1.58H18V2.5c-.8-.1-1.66-.2-2.5-.2-2.85 0-4.65 1.73-4.65 4.86V9.4H8v3.5h2.85V21h3.75Z"/>'),
+ tg:svg('<path d="M21.2 3.1 2.8 10.45c-1.05.42-1.03 1.2.02 1.53l4.63 1.45 1.77 5.45c.27.78.64.98 1.17.5l2.54-2.45 4.98 3.66c.85.48 1.43.24 1.66-.82l2.62-15.22c.22-1.12-.42-1.61-1.01-1.45ZM9.14 17.6l-.76-4.25 10.9-7.16-8.87 8.85-1.27 2.56Z"/>'),
+ x:svg('<path d="M4.4 3.6h3.3l12 16.8h-3.3L4.4 3.6Zm13.95 0h2.1L5.65 20.4h-2.1L18.35 3.6Z"/>'),
+ share:svg('<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.3 10.8 7.3-4.3M8.3 13.2l7.3 4.3"/>',false),
+ copy:svg('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>',false),
+ check:svg('<path d="m5 12 4.5 4.5L19 7"/>',false)
+};
+const controls=()=>'<a class="dalal-wa" href="https://wa.me/?text='+t+'%20'+u+'" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp वर शेअर करा" title="WhatsApp">'+icons.wa+'</a>'+
+'<a class="dalal-fb" href="https://www.facebook.com/sharer/sharer.php?u='+u+'" target="_blank" rel="noopener noreferrer" aria-label="Facebook वर शेअर करा" title="Facebook">'+icons.fb+'</a>'+
+'<a class="dalal-tg" href="https://t.me/share/url?url='+u+'&text='+t+'" target="_blank" rel="noopener noreferrer" aria-label="Telegram वर शेअर करा" title="Telegram">'+icons.tg+'</a>'+
+'<a class="dalal-x" href="https://twitter.com/intent/tweet?text='+t+'&url='+u+'" target="_blank" rel="noopener noreferrer" aria-label="X वर शेअर करा" title="X">'+icons.x+'</a>'+
+'<button type="button" class="native-share" aria-label="शेअर करा" title="शेअर करा">'+icons.share+'</button>'+
+'<button type="button" class="copy-link" aria-label="लिंक कॉपी करा" title="लिंक कॉपी करा">'+icons.copy+'</button>';
+const panel=document.createElement('section');panel.className='article-share-footer';panel.setAttribute('aria-label','बातमी शेअर करण्याचे पर्याय');
+panel.innerHTML='<h2>बातमी शेअर करा</h2><div class="dalal-share-items">'+controls()+'</div>';
 tags.before(panel);
-panel.querySelector('.copy-link').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(url);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){window.prompt('बातमीची लिंक:',url)}});
-panel.querySelector('.native-share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}catch(e){}});
-})();</script><script src="https://dalalnama.com/assets/js/newsroom.js?v=4" defer></script><script src="https://dalalnama.com/assets/js/home-columns.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/article-rich.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
+const topShare=document.querySelector('.article-topmeta .share');
+if(topShare){topShare.classList.add('dalal-share-items');topShare.innerHTML=controls()}
+for(const group of [panel,topShare].filter(Boolean)){
+  group.querySelector('.copy-link')?.addEventListener('click',async e=>{
+    try{await navigator.clipboard.writeText(url);const btn=e.currentTarget;btn.innerHTML=icons.check;btn.classList.add('copied');btn.setAttribute('aria-label','लिंक कॉपी झाली');btn.title='लिंक कॉपी झाली'}
+    catch(err){window.prompt('बातमीची लिंक:',url)}
+  });
+  group.querySelector('.native-share')?.addEventListener('click',async()=>{
+    try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});
+    else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}
+    catch(err){}
+  });
+}
+})();
+</script><script src="https://dalalnama.com/assets/js/newsroom.js?v=4" defer></script><script src="https://dalalnama.com/assets/js/home-columns.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/article-rich.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
 (()=>{
   'use strict';
   // Run AFTER deferred newsroom.js, which on older cached versions moves nested links.
