@@ -11,7 +11,7 @@
  const allowed=new Set(['P','BR','B','STRONG','EM','I','U','S','H2','H3','BLOCKQUOTE','UL','OL','LI','A','IMG','PRE','CODE']);
  function addNodes(from,to){
   for(const node of [...from.childNodes]){
-   if(node.nodeType===Node.TEXT_NODE){to.append(document.createTextNode(node.textContent||''));continue}
+   if(node.nodeType===Node.TEXT_NODE){to.append(document.createTextNode((node.textContent||'').replace(/[\u00a0\u202f\u2007]/g,' ')));continue}
    if(node.nodeType!==Node.ELEMENT_NODE||forbidden.has(node.tagName))continue;
    if(!allowed.has(node.tagName)){addNodes(node,to);continue}
    if(node.tagName==='IMG'){
