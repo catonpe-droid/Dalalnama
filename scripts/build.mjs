@@ -126,7 +126,7 @@ if(fs.existsSync(dtDir)){
   const articleUrl=dtSite+'batmi/'+slug+'/';
   const title=String(item.seoTitle||item.title||'धाराशिव टुडे')+' | धाराशिव टुडे';
   const description=String(item.seoDescription||item.summary||'धाराशिव टुडे');
-  const image=/^assets\/uploads\/[a-z0-9_.-]+\.(?:jpg|jpeg|webp|png)$/i.test(item.image||'')?dtSite+item.image:dtSite+'assets/logo.svg';
+  const image=/^https:\/\/dharashivlive\.com\/wp-content\/uploads\/[^"'<>?]+\.(?:jpg|jpeg|webp|png)$/i.test(item.image||'')?item.image:(/^assets\/uploads\/[a-z0-9_.-]+\.(?:jpg|jpeg|webp|png)$/i.test(item.image||'')?dtSite+item.image:dtSite+'assets/logo-original.webp');
   let dtArticle=dtHtml.replace('data-story=""','data-story="'+slug+'"')
     .replace(/<title>[^<]*<\/title>/,'<title>'+safe(title)+'</title>')
     .replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+safe(description)+'">')
