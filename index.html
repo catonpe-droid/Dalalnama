@@ -66,7 +66,7 @@ body.dark .news-brief{background:#332b15;border-color:#665722}
 body.dark .source-note{background:none;color:#ddd}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "दलालनामा", "url": "https://dalalnama.com/", "inLanguage": "mr-IN", "potentialAction": {"@type": "SearchAction", "target": "https://dalalnama.com/?q={search_term_string}", "query-input": "required name=search_term_string"}}</script>
-<link rel="stylesheet" href="https://dalalnama.com/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://dalalnama.com/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://dalalnama.com/assets/css/site-customizer.css?v=8"><style id="dalalnama-policy-pages-css">
+<link rel="stylesheet" href="https://dalalnama.com/assets/css/newsroom.css?v=3"><link rel="stylesheet" href="https://dalalnama.com/assets/css/home-columns.css?v=1"><link rel="stylesheet" href="https://dalalnama.com/assets/css/site-customizer.css?v=9"><style id="dalalnama-policy-pages-css">
 .policy-page{max-width:940px;margin-left:auto;margin-right:auto}
 .policy-page .policy-body{max-width:850px;line-height:1.9}
 .policy-page .policy-body p{margin:0 0 17px}
@@ -700,7 +700,7 @@ function safeEditorialHTML(value){
  const target=document.createElement('div');
  const append=(src,out)=>{
   for(const n of src.childNodes){
-   if(n.nodeType===Node.TEXT_NODE){out.append(document.createTextNode(n.textContent||''));continue}
+   if(n.nodeType===Node.TEXT_NODE){out.append(document.createTextNode((n.textContent||'').replace(/[\u00a0\u202f\u2007]/g,' ')));continue}
    if(n.nodeType!==Node.ELEMENT_NODE||blocked.has(n.tagName))continue;
    if(!allowed.has(n.tagName)){append(n,out);continue}
    if(n.tagName==='IMG'){
@@ -833,7 +833,7 @@ panel.innerHTML='<h2>Share this news</h2><div class="dalal-share-items">'+
 tags.before(panel);
 panel.querySelector('.copy-link').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(url);e.currentTarget.textContent='लिंक कॉपी झाली ✓'}catch(err){window.prompt('बातमीची लिंक:',url)}});
 panel.querySelector('.native-share').addEventListener('click',async()=>{try{if(navigator.share)await navigator.share({title:a.title,text:a.summary||'',url});else window.open('https://wa.me/?text='+t+'%20'+u,'_blank','noopener')}catch(e){}});
-})();</script><script src="https://dalalnama.com/assets/js/newsroom.js?v=4" defer></script><script src="https://dalalnama.com/assets/js/home-columns.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/article-rich.js?v=1" defer></script><script src="https://dalalnama.com/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
+})();</script><script src="https://dalalnama.com/assets/js/newsroom.js?v=4" defer></script><script src="https://dalalnama.com/assets/js/home-columns.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/article-rich.js?v=2" defer></script><script src="https://dalalnama.com/assets/js/site-customizer.js?v=1" defer></script><script id="dalalnama-menu-integrity">
 (()=>{
   'use strict';
   // Run AFTER deferred newsroom.js, which on older cached versions moves nested links.
