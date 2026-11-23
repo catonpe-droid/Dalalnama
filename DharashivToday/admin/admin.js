@@ -167,6 +167,8 @@
     clearPhoto();const src=String(item.image||'');
     if(/^assets\/uploads\/[a-z0-9_.-]+\.(jpg|jpeg|png|webp)$/i.test(src)){
       $('cover-preview').src=SITE+src;$('cover-preview').classList.remove('hidden');
+    } else if(/^https:\/\/dharashivlive\.com\/wp-content\/uploads\//i.test(src)){
+      $('cover-preview').src=src;$('cover-preview').classList.remove('hidden');
     }
     $('editor-title').textContent='✏️ बातमी संपादन';
     $('current-url').href=isDraft(item)?SITE:publicURL(slug);
@@ -290,6 +292,7 @@
         item.gallery=[];
         for(let i=0;i<files.length;i++)item.gallery.push(await uploadPhoto(files[i],'assets/uploads/gallery-'+slug+'-'+unique+'-'+(i+1)+'.jpg'));
       }
+      if(old&&item.image!==old.image)delete item.thumbImage;
       const next=old?state.news.map(p=>p.slug===old.slug?item:p):[item,...state.news];
       const result=await writeJSON('data/news.json',next,state.newsSha,(old?'Update':'Publish')+' Dharashiv Today news '+slug);
       state.news=next;state.newsSha=result.content.sha;state.activeSlug=slug;
