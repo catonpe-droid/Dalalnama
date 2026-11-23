@@ -48,7 +48,7 @@
     "density": "compact",
     "fontScale": 1,
     "logoWidth": 340,
-    "logoPath": "assets/logo.svg",
+    "logoPath": "assets/logo-original-hd.png",
     "showBreaking": true,
     "showWeather": false,
     "showColumns": true,
