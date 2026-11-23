@@ -90,3 +90,5 @@ a.news-card:focus-visible,.topic-panel a:focus-visible,.special-card:focus-visib
  .topic-heading h3{font-size:19px}
  .news-card h3{font-size:15px}
 }
+
+.section-fallback-note{grid-column:1/-1;margin:0 0 6px;font-size:14px;color:#5b6472;background:#f8f8fa;padding:10px 12px;border-left:3px solid #cb0015}.topic-main .thumb img,.special-card img{object-position:center}
