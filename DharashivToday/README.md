@@ -28,7 +28,7 @@
 `backend/dharashivtoday-editor-worker.js` हा स्वतंत्र publisher Worker template आहे. वेगळ्या Cloudflare Worker मध्ये deploy करून GITHUB_TOKEN आणि किमान 32-character PUBLISH_KEY secrets लावा. नंतर `admin/config.json` मधील `worker_url` अपडेट करा. **Worker deploy/configure केलेला नाही.** Dalalnama चा existing Worker इथे वापरू नका.
 
 ## महत्त्वाच्या टीपा
-- लोगो: site मध्ये original branding च्या रंगांवर आधारित SVG adaptation आहे. पुरवलेली मूळ PNG exact ठेवायची असल्यास binary logo GitHub मधील assets folder मध्ये upload करून logo path update करावा.
+- लोगो: वापरकर्त्याने दिलेल्या मूळ PNG मधून बनवलेली 280px transparent, optimized PNG `assets/logo-original-hd.png` म्हणून वेबसाइट, footer आणि Admin मध्ये वापरली आहे. मूळ मोठ्या फाइलचा आकार बदललेला आहे; ब्रँडची चिन्हे बदललेली नाहीत.
 - Live stream चालू नसताना YouTube embed unavailable दाखवू शकते; channel link fallback दिला आहे.
 - बातम्या स्वतःहून तयार/कॉपी केलेल्या नाहीत. पहिले प्रकाशन Admin मधून करा.
 - TV9 मराठी हे design inspiration आहे; content, logos, branding, आणि code स्वतंत्र आहेत.
