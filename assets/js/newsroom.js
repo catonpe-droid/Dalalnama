@@ -16,7 +16,7 @@
    for(const item of layout.menu){
      if(typeof item!=='string'||placed.has(item)||item==='जनतेचा सवाल')continue;
      let node=map.get(item);
-     if(!node){node=document.createElement('a');node.textContent=item;node.href=SITE+'?category='+encodeURIComponent(item);node.dataset.nav=item;}
+     if(!node){node=document.createElement('a');node.textContent=item;node.href=SITE+'?category='+encodeURIComponent((window.DALALNAMA_CATEGORY_SLUGS||{})[item]||item);node.dataset.nav=item;}
      if(item==='मुखपृष्ठ'){node.href=SITE;node.dataset.nav='all';node.classList.add('home');placed.add('all');}
      nav.insertBefore(node,button);placed.add(item);
    }
@@ -32,7 +32,7 @@
     if(typeof item!=='string'||!item.trim()||added.has(item))continue;
     const node=currentSub.get(item)||document.createElement('a');
     node.dataset.nav=item;node.textContent=item;
-    if(!currentSub.has(item))node.href=SITE+'?category='+encodeURIComponent(item);
+    if(!currentSub.has(item))node.href=SITE+'?category='+encodeURIComponent((window.DALALNAMA_CATEGORY_SLUGS||{})[item]||item);
     submenu.append(node);added.add(item);
   }
  }
