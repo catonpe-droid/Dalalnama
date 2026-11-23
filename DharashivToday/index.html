@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="mr" data-page="home" data-story="" data-category="">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>धाराशिव टुडे | जिल्ह्याचा आवाज... जनतेची बातमी!</title>
+<meta name="description" content="धाराशिव जिल्ह्यातील ताज्या बातम्या, राजकारण, शेती, विकास, शिक्षण, नोकरी, पर्यटन, क्रीडा आणि संपादकीय.">
+<meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#0b2344">
+<meta property="og:type" content="website"><meta property="og:title" content="धाराशिव टुडे | जिल्ह्याचा आवाज"><meta property="og:description" content="धाराशिव जिल्ह्याच्या बातम्या एका ठिकाणी"><meta property="og:image" content="https://dalalnama.com/DharashivToday/assets/logo.svg"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/DharashivToday/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/DharashivToday/assets/site.css?v=1">
+</head>
+<body>
+<div class="utility"><div class="shell utility-inner"><span id="todayDate">सोमवार, २३ नोव्हेंबर २०२६</span><span class="utility-right"><span class="live-mini"><i></i> जिल्हा LIVE अपडेट्स</span><a href="https://www.youtube.com/@dharashivlive" rel="noopener" target="_blank">▶ YouTube</a><a href="/DharashivToday/admin/">Admin</a></span></div></div>
+<div class="shell masthead"><a class="logo" href="/DharashivToday/" title="धाराशिव टुडे"><img src="/DharashivToday/assets/logo.svg" alt="धाराशिव टुडे — जिल्ह्याचा आवाज... जनतेची बातमी!"></a>
+<div class="masthead-right"><div class="edition"><span>DHARASHIV DISTRICT NEWS</span><strong>आपला जिल्हा. आपला आवाज.</strong></div><a class="watch-btn" href="https://www.youtube.com/@dharashivlive/live" target="_blank" rel="noopener"><b class="blink"></b> LIVE TV पाहा <span>↗</span></a></div></div>
+<nav class="main-nav" aria-label="मुख्य विभाग"><div class="shell nav-inner"><button class="mobile-menu" id="menuToggle" aria-expanded="false" aria-controls="navLinks">☰ <span>मेनू</span></button><div class="nav-links" id="navLinks"></div><button class="search-toggle" id="searchToggle" aria-label="बातमी शोधा">⌕</button></div></nav>
+<div class="search-panel" id="searchPanel" hidden><div class="shell"><label for="searchInput">बातमी शोधा</label><div class="search-row"><input id="searchInput" type="search" placeholder="बातमी, तालुका, विभाग किंवा लेखक शोधा..."><button id="searchClear">पुसा</button></div></div></div>
+<div class="ticker"><div class="shell ticker-inner"><span class="ticker-label">ब्रेकिंग <i></i></span><div class="ticker-scroll"><span id="tickerNews">धाराशिव टुडेमध्ये आपले स्वागत आहे — जिल्ह्यातील महत्त्वाच्या घडामोडी येथे पाहा.</span></div><span class="ticker-date">LIVE</span></div></div>
+<main class="shell" id="main">
+<div class="breadcrumb" id="breadcrumb" hidden></div>
+<section id="homeSections">
+<div class="news-head"><div><span class="overline">DHARASHIV TODAY • TOP STORIES</span><h1>मुख्य बातम्या <span>आणि घडामोडी</span></h1></div><a class="section-more" href="?category=ताज्या%20बातम्या">सर्व बातम्या <b>↗</b></a></div>
+<section class="hero-grid" id="heroGrid" aria-label="मुख्य बातम्या">
+<div class="empty-hero"><span class="empty-icon">📰</span><h2>तुमच्या जिल्ह्याच्या बातम्या येथे झळकतील</h2><p>Admin Panel मधून पहिली बातमी प्रकाशित करा.</p><a href="/DharashivToday/admin/">बातमी प्रकाशित करा ↗</a></div></section>
+<div class="home-split"><div class="content-col"><section class="news-section"><div class="section-title"><h2>ताज्या बातम्या</h2><span>अधिक वाचा <b>→</b></span></div><div id="latestGrid" class="news-grid"></div></section><section class="news-section"><div class="section-title"><h2>जिल्ह्यातील घडामोडी</h2><span>संपूर्ण धाराशिव</span></div><div id="districtGrid" class="district-grid"></div></section><section class="news-section"><div class="section-title"><h2>शेती, विकास आणि शिक्षण</h2><span>आपल्या जीवनाशी जोडलेल्या बातम्या</span></div><div class="news-grid" id="focusGrid"></div></section></div>
+<aside class="sidebar"><section class="side-card live-card"><div class="side-heading"><span>🔴</span> धाराशिव LIVE</div><div class="video-wrap"><iframe id="liveEmbed" title="धाराशिव लाईव्ह YouTube channel live stream" src="https://www.youtube.com/embed/live_stream?channel=UCgXmATfMB5qHTrwDBlcZNpA" allow="autoplay;encrypted-media;picture-in-picture;web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe></div><div class="live-copy"><strong>धाराशिव लाईव्ह</strong><p>चॅनेलवर थेट प्रसारण सुरू असेल तर येथे आपोआप दिसेल. अन्य वेळी चॅनेल उघडा.</p><a class="youtube-link" target="_blank" rel="noopener" href="https://www.youtube.com/@dharashivlive/live">YouTube वर LIVE पाहा ↗</a></div></section><section class="side-card"><div class="side-heading">विशेष बातम्या</div><div id="specialList" class="side-news"></div></section><section class="side-card editorial-side"><div class="side-heading">जिल्ह्याचा आवाज</div><p>गावापासून जिल्ह्यापर्यंतच्या प्रश्नांना वाचा फोडणारे स्थानिक डिजिटल वृत्तमाध्यम.</p><div class="side-tagline">जिल्ह्याचा आवाज...<br> जनतेची बातमी!</div></section></aside></div>
+<section class="category-band" id="categoryBand"></section>
+<section class="youtube-wide"><div><span class="overline">WATCH • SHARE • SUBSCRIBE</span><h2>बातम्या आता व्हिडिओतही</h2><p>धाराशिव लाईव्ह YouTube चॅनेलवरील थेट प्रसारण आणि व्हिडिओ पाहा.</p><a href="https://www.youtube.com/@dharashivlive" target="_blank" rel="noopener">▶ चॅनेलला भेट द्या</a></div><span class="yt-graphic">▶</span></section>
+</section>
+<section id="listingSections" hidden><div class="news-head"><div><span class="overline">DHARASHIV TODAY • NEWS</span><h1 id="listingHeading"></h1></div></div><div class="listing-layout"><div id="listingGrid" class="news-grid"></div><aside class="side-card"><div class="side-heading">विभाग निवडा</div><div id="listingLinks" class="mini-menu"></div></aside></div></section>
+<section id="articleSection" hidden><div id="articleMount"></div></section>
+</main>
+<footer class="footer"><div class="shell footer-grid"><div class="footer-brand"><img src="/DharashivToday/assets/logo.svg" alt="धाराशिव टुडे"><p>जिल्ह्याचा आवाज... जनतेची बातमी!</p><small>स्वतंत्र मराठी डिजिटल न्यूज पोर्टल</small></div><div><h3>बातम्यांचे विभाग</h3><div id="footerCategories" class="footer-links"></div></div><div><h3>आपल्या भागातील बातम्या</h3><p>धाराशिव • तुळजापूर • कळंब • भूम • परंडा • वाशी • उमरगा • लोहारा</p><h3>सोशल चॅनेल</h3><a href="https://www.youtube.com/@dharashivlive" target="_blank" rel="noopener">▶ धाराशिव लाईव्ह — YouTube</a></div></div><div class="shell footer-bottom"><span>© <span id="footerYear">2026</span> धाराशिव टुडे. सर्व हक्क राखीव.</span><span>बातमी पाठवताना अचूक माहिती व स्रोत तपासणे आवश्यक.</span></div></footer>
+<script src="/DharashivToday/assets/site.js?v=1" defer></script>
+</body></html>
