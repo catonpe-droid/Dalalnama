@@ -5,7 +5,24 @@
 <meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=8" rel="stylesheet"></head><body>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=9" rel="stylesheet"></head><body class="admin-locked">
+<section class="admin-login-overlay" id="admin-login-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
+  <div class="admin-login-card">
+    <div class="admin-login-logo"><span>दलाल</span>नामा</div>
+    <div class="admin-login-caption">NEWS ADMIN STUDIO</div>
+    <h1 id="admin-login-title">Admin Login</h1>
+    <p class="admin-login-description">बातमी व्यवस्थापन सुरू करण्यासाठी लॉगिन करा.</p>
+    <form id="admin-login-form" autocomplete="off">
+      <label for="admin-login-username">Username</label>
+      <input id="admin-login-username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Username" required>
+      <label for="admin-login-password">Password</label>
+      <input id="admin-login-password" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+      <p id="admin-login-feedback" class="admin-login-feedback" role="alert" aria-live="polite"></p>
+      <button type="submit">Login <span aria-hidden="true">→</span></button>
+    </form>
+    <a class="admin-login-home" href="../">← मुख्य वेबसाइटवर जा</a>
+  </div>
+</section>
 <header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
 <div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
 <aside class="admin-navigation" aria-label="Admin sections">
@@ -164,6 +181,7 @@
 </main>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
+<script src="./admin-login.js?v=1" defer></script>
 <script src="./admin.js?v=13" defer></script>
 <script src="./admin-pro.js?v=6" defer></script>
 </body></html>
