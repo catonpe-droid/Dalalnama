@@ -13,7 +13,7 @@
  $('todayDate').textContent=new Intl.DateTimeFormat('mr-IN',{day:'numeric',month:'long',year:'numeric',weekday:'long',timeZone:'Asia/Kolkata'}).format(new Date());
  $('footerYear').textContent=new Date().getFullYear();
  const visible=()=>stories.filter(p=>p&&p.slug&&p.title&&p.published!==false&&p.status!=='draft').sort((a,b)=>String(b.date||b.updated||'').localeCompare(String(a.date||a.updated||'')));
- const image=p=>/^assets\/(?:uploads|branding)\/[a-zA-Z0-9_.-]+\.(?:png|jpg|jpeg|webp)$/i.test(String(p.image||''))?ROOT+p.image:'';
+ const image=p=>{const raw=String(p.image||'');if(/^assets\/(?:uploads|branding)\/[a-zA-Z0-9_.-]+\.(?:png|jpg|jpeg|webp)$/i.test(raw))return ROOT+raw;try{const u=new URL(raw);if(u.protocol==='https:'&&u.hostname==='dharashivlive.com'&&u.pathname.startsWith('/wp-content/uploads/')&&/\.(png|jpg|jpeg|webp)$/i.test(u.pathname))return u.href}catch{}return ''};
  const cover=p=>{const src=image(p);return '<span class="thumb">'+(src?'<img loading="lazy" src="'+esc(src)+'" alt="'+esc(p.title)+'">':'<span class="placeholder">धाराशिव टुडे</span>')+'</span>'};
  const info=p=>'<div class="post-mini-meta">'+esc(dateFmt(p.date))+'</div>';
  const card=p=>'<article class="news-card"><a href="'+storyUrl(p)+'">'+cover(p)+'</a><div class="category">'+esc(p.category||'बातमी')+'</div><h3><a href="'+storyUrl(p)+'">'+esc(p.title)+'</a></h3>'+(p.summary?'<p>'+esc(p.summary).slice(0,118)+'</p>':'')+info(p)+'</article>';
@@ -21,7 +21,7 @@
  const inSearch=p=>!query||[p.title,p.summary,p.category,p.author,...(p.tags||[])].join(' ').toLocaleLowerCase('mr-IN').includes(query.toLocaleLowerCase('mr-IN'));
  function nav(){
   const menu=Array.isArray(layout.menu)&&layout.menu.length?layout.menu:categories;
-  $('navLinks').innerHTML=menu.map((cat,i)=>'<a data-category="'+esc(cat)+'" href="'+(i===0?ROOT:ROOT+'?category='+encodeURIComponent(cat))+'">'+(i===0?'⌂':esc(cat))+'</a>').join('');
+  $('navLinks').innerHTML=menu.map((cat,i)=>'<a data-category="'+esc(cat)+'" href="'+(i===0?ROOT:ROOT+'?category='+encodeURIComponent(cat))+'">'+(i===0?'<svg class="nav-home-icon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#d60012" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M10 21v-7h4v7"/></svg>':esc(cat))+'</a>').join('');
   $('footerCategories').innerHTML=menu.slice(1).map(t=>'<a href="'+ROOT+'?category='+encodeURIComponent(t)+'">'+esc(t)+'</a>').join('');
   $('listingLinks').innerHTML=menu.slice(1).map(t=>'<a href="'+ROOT+'?category='+encodeURIComponent(t)+'">'+esc(t)+'</a>').join('');
  }
@@ -37,7 +37,7 @@
   $('headlineBrief').innerHTML=feat.slice(1,5).map(x=>'<article class="brief-card"><h3><a href="'+storyUrl(x)+'">'+esc(x.title)+'</a></h3><a href="'+storyUrl(x)+'">'+cover(x)+'</a></article>').join('')||'<div class="brief-empty">जिल्ह्यातील आणखी महत्त्वाच्या बातम्या येथे दिसतील.</div>';
   const special=list.filter(x=>x.featured||x.category==='विशेष बातम्या'||x.category==='विशेष लेख');
   $('specialList').innerHTML=special.slice(0,3).map(x=>'<article class="special-card"><a href="'+storyUrl(x)+'">'+cover(x)+'</a><div class="tag">'+esc(x.category||'विशेष')+'</div><h3><a href="'+storyUrl(x)+'">'+esc(x.title)+'</a></h3></article>').join('')||'<div class="brief-empty">विशेष बातम्या येथे प्रसिद्ध होतील.</div>';
-  $('latestGrid').innerHTML=list.slice(0,9).map(card).join('')||'<div class="empty-results">Admin मधून बातम्या प्रकाशित झाल्यावर येथे दिसतील.</div>';
+  $('latestGrid').innerHTML=list.slice(0,15).map(card).join('')||'<div class="empty-results">Admin मधून बातम्या प्रकाशित झाल्यावर येथे दिसतील.</div>';
   $('districtGrid').innerHTML=(settings.districts||district).map(x=>'<a href="'+ROOT+'?q='+encodeURIComponent(x)+'">'+esc(x)+' →</a>').join('');
   $('categoryBand').innerHTML=['राजकारण','शेती','विकास','शिक्षण'].map(cat=>'<div class="category-box"><h3>'+cat+'</h3>'+(list.filter(p=>p.category===cat).slice(0,4).map(p=>'<a href="'+storyUrl(p)+'">'+esc(p.title)+'</a>').join('')||'<p>बातम्या लवकरच.</p>')+'</div>').join('');
  }
@@ -69,7 +69,7 @@
   document.title=(p.seoTitle||p.title)+' | धाराशिव टुडे';
   const body=Array.isArray(p.body)?p.body.join('\n\n'):String(p.body||'');
   const html=p.bodyHtml?cleanHtml(p.bodyHtml):body.split(/\n\s*\n/).filter(Boolean).map(par=>'<p>'+esc(par).replace(/\n/g,'<br>')+'</p>').join('');
-  $('articleMount').innerHTML='<div class="article-layout"><article class="article-main"><span class="category">'+esc(p.category||'बातमी')+'</span><h1>'+esc(p.title)+'</h1><p class="article-intro">'+esc(p.summary||'')+'</p>'+info(p)+(image(p)?'<img class="article-cover" src="'+esc(image(p))+'" alt="'+esc(p.title)+'">':'')+'<div class="article-body">'+html+'</div><div class="article-actions"><a href="https://wa.me/?text='+encodeURIComponent(p.title+' '+location.href)+'" target="_blank" rel="noopener">WhatsApp शेअर करा</a><button id="copyLink">लिंक कॉपी करा</button><a href="'+ROOT+'">मुख्यपृष्ठ</a></div></article><aside class="article-sidebar"><div class="section-heading"><h2>आणखी बातम्या</h2><span></span></div>'+list.filter(x=>x.slug!==slug).slice(0,9).map(x=>'<a href="'+storyUrl(x)+'">'+esc(x.title)+'</a>').join('')+'</aside></div>';
+  $('articleMount').innerHTML='<div class="article-layout"><article class="article-main"><span class="category">'+esc(p.category||'बातमी')+'</span><h1>'+esc(p.title)+'</h1><p class="article-intro">'+esc(p.summary||'')+'</p>'+info(p)+(image(p)?'<img class="article-cover" src="'+esc(image(p))+'" alt="'+esc(p.title)+'">':'')+'<div class="article-body">'+html+'</div>'+(p.sourceUrl&&/^https:\/\/dharashivlive\.com\//.test(p.sourceUrl)?'<p class="source-credit">स्रोत : <a target="_blank" rel="noopener noreferrer" href="'+esc(p.sourceUrl)+'">धाराशिव लाईव्ह — मूळ बातमी</a> · '+esc(dateFmt(p.date))+'</p>':'')+'<div class="article-actions"><a href="https://wa.me/?text='+encodeURIComponent(p.title+' '+location.href)+'" target="_blank" rel="noopener">WhatsApp शेअर करा</a><button id="copyLink">लिंक कॉपी करा</button><a href="'+ROOT+'">मुख्यपृष्ठ</a></div></article><aside class="article-sidebar"><div class="section-heading"><h2>आणखी बातम्या</h2><span></span></div>'+list.filter(x=>x.slug!==slug).slice(0,9).map(x=>'<a href="'+storyUrl(x)+'">'+esc(x.title)+'</a>').join('')+'</aside></div>';
   $('copyLink')?.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);$('copyLink').textContent='कॉपी झाले'}catch{}});
  }
  function render(){
