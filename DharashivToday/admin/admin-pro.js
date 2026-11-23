@@ -197,7 +197,7 @@ function renderCustomization(o){
  const a=o.appearance||{},s=o.site||{},social=s.social||{};
  const set=(id,value,defaultValue='')=>{const el=$(id);if(el)el.value=value??defaultValue};
  brandLogoPath=/^assets\/branding\/[a-z0-9_.-]+\.(png|jpg|jpeg|webp)$/i.test(a.logoPath||'')?a.logoPath:'';
- $('brand-logo-preview').src=brandLogoPath?SITE+brandLogoPath:SITE+'assets/logo.svg';
+ $('brand-logo-preview').src=brandLogoPath?SITE+brandLogoPath:SITE+'assets/logo-original-hd.png';
  set('theme-preset',a.themePreset,'classic');set('news-density',a.density,'normal');
  set('font-scale',String(a.fontScale??1));set('logo-width',String(a.logoWidth??340));
  $('logo-width-label').textContent=$('logo-width').value;
