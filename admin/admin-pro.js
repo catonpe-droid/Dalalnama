@@ -177,7 +177,7 @@ function renderMedia(){
 async function uploadMedia(){
  const file=$('media-file').files[0];
  if(!file)return CMS.status('Media Library मध्ये JPG, PNG किंवा WebP फोटो निवडा.','error');
- if(!CMS.hasToken())return CMS.status('फोटो Upload करण्यासाठी GitHub token जोडणे आवश्यक आहे.','error');
+ if(!CMS.hasToken())return CMS.status('फोटो Upload करण्यासाठी Server Access Token जोडणे आवश्यक आहे.','error');
  const button=$('media-upload');button.disabled=true;
  CMS.status('Media Library: फोटो अपलोड होत आहे…');
  try{
@@ -189,7 +189,7 @@ async function uploadMedia(){
   updated.unshift({path,alt:file.name.slice(0,110),created:new Date().toISOString()});
   await CMS.saveMedia(updated,sha);
   extraMedia=updated;$('media-file').value='';renderMedia();
-  CMS.status('✅ फोटो Media Library मध्ये अपलोड झाला. GitHub Pages पुन्हा प्रकाशित झाल्यावर लिंक Live होईल.','success');
+  CMS.status('✅ फोटो Media Library मध्ये जतन झाला. Server वर अपडेट पूर्ण झाल्यावर लिंक Live होईल.','success');
  }catch(e){CMS.status('Media Upload: '+e.message,'error')}
  finally{button.disabled=false}
 }
@@ -260,7 +260,7 @@ function init(){
  $('upload-brand-logo').addEventListener('click',async()=>{
   const file=$('brand-logo-file').files[0];
   if(!file)return CMS.status('अपलोड करण्यासाठी HD Logo निवडा.','error');
-  if(!CMS.hasToken())return CMS.status('लोगो बदलण्यासाठी GitHub token जोडणे आवश्यक आहे.','error');
+  if(!CMS.hasToken())return CMS.status('लोगो बदलण्यासाठी Server Access Token जोडणे आवश्यक आहे.','error');
   const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':file.type==='image/jpeg'?'jpg':'';
   if(!ext)return CMS.status('PNG, JPG किंवा WebP लोगो निवडा.','error');
   const button=$('upload-brand-logo');button.disabled=true;

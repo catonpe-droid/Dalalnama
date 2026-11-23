@@ -34,7 +34,7 @@
     return btoa(result);
   }
   async function github(path,method='GET',payload=null){
-    if(method!=='GET'&&!connected())throw Error('प्रकाशनासाठी GitHub token किंवा सुरक्षित Key Link आवश्यक आहे.');
+    if(method!=='GET'&&!connected())throw Error('प्रकाशनासाठी Server Access Token किंवा सुरक्षित Key Link आवश्यक आहे.');
     const headers={'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
     if(state.token)headers.Authorization='Bearer '+state.token;
     if(payload)headers['Content-Type']='application/json';
@@ -58,16 +58,16 @@
       if(response.status===401){
         if(workerMode&&data.error==='Invalid publishing key')
           throw Error('Cloudflare PUBLISH_KEY जुळत नाही. गुप्त Bookmark मधील Key तपासा.');
-        if(workerMode)throw Error('Cloudflare Worker मधील GITHUB_TOKEN GitHub ने नाकारला. Token परवानगी तपासा.');
-        throw Error('GitHub token चुकीचा किंवा कालबाह्य झाला आहे.');
+        if(workerMode)throw Error('Server ने प्रकाशन जोडणी नाकारली. प्रकाशन Token ची परवानगी तपासा.');
+        throw Error('Server Access Token चुकीचा किंवा कालबाह्य झाला आहे.');
       }
-      if(response.status===403)throw Error(workerMode?'Cloudflare Worker/GitHub Secret ची परवानगी तपासा.':'GitHub repository साठी Contents: Read and write परवानगी तपासा.');
-      if(response.status===404)throw Error('GitHub मध्ये फाइल किंवा Repository सापडली नाही.');
-      if(response.status===409||response.status===422)throw Error('GitHub वर एकाच वेळी बदल झाला किंवा Slug/फाइल आधीच अस्तित्वात आहे. Refresh करा.');
+      if(response.status===403)throw Error(workerMode?'Server Secret ची परवानगी तपासा.':'Server Publishing Token साठी Contents: Read and write परवानगी तपासा.');
+      if(response.status===404)throw Error('Server वर फाइल किंवा Repository सापडली नाही.');
+      if(response.status===409||response.status===422)throw Error('Server वर एकाच वेळी बदल झाला किंवा Slug/फाइल आधीच अस्तित्वात आहे. Refresh करा.');
       // Worker responses describe the cause in "error", not GitHub's "message".
       // Using the HTTP status alone previously hid the real cause as "GitHub: 502".
       const detail=String(data.error||data.message||response.status).slice(0,240);
-      throw Error((workerMode?'Cloudflare Worker: ':'GitHub: ')+detail);
+      throw Error((workerMode?'Cloudflare Worker: ':'Server: ')+detail);
     }
     return data;
   }
@@ -183,7 +183,7 @@
       state.selected.clear();renderList();renderLayout();
       if(state.activeSlug&&state.news.some(a=>a.slug===state.activeSlug))openPost(state.activeSlug);
       else reset();
-      message(state.news.length+' बातम्या लोड झाल्या. '+(connected()?'✅ सुरक्षित Publishing जोडणी तयार.':'संपादनासाठी GitHub token किंवा Key Link जोडा.'),connected()?'success':'');
+      message(state.news.length+' बातम्या लोड झाल्या. '+(connected()?'✅ सुरक्षित Publishing जोडणी तयार.':'संपादनासाठी Server Access Token किंवा Key Link जोडा.'),connected()?'success':'');
       window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:state.news,layout:state.layout}}));
     return true;
     }catch(e){state.ready=false;lastLoadError=String(e.message||e);message('लोड करता आले नाही: '+lastLoadError,'error');return false}
@@ -218,7 +218,7 @@
     if(!confirm('वेबसाइटवरील मेनू आणि Breaking News अपडेट करायचे?'))return;
     setBusy(true);try{
       const r=await writeJSON('data/layout.json',next,state.layoutSha,'Update Dalalnama menus, breaking news and featured layout');
-      state.layout=next;state.layoutSha=r.content.sha;renderLayout();message('✅ वेबसाइटचा Layout GitHub मध्ये जतन झाला. GitHub Pages पुढे प्रकाशित करेल.','success');
+      state.layout=next;state.layoutSha=r.content.sha;renderLayout();message('✅ वेबसाइटचा Layout Server वर जतन झाला. Server अपडेट झाल्यावर Live दिसेल.','success');
     }catch(e){message(e.message,'error')}finally{setBusy(false)}
   }
   function makeAutoSlug(){
@@ -306,21 +306,21 @@
       }
       $('result').classList.remove('hidden');
       $('result').replaceChildren();
-      const strong=document.createElement('strong');strong.textContent=mode==='draft'?'📝 Draft जतन झाला':'✅ बातमी GitHub मध्ये जतन झाली';
+      const strong=document.createElement('strong');strong.textContent=mode==='draft'?'📝 Draft जतन झाला':'✅ बातमी Server वर जतन झाली';
       const link=document.createElement('a');link.href=mode==='draft'?SITE:publicURL(slug);link.target='_blank';link.rel='noopener';
       link.textContent=mode==='draft'?'Draft — Live URL प्रकाशनानंतर दिसेल':publicURL(slug);
       $('result').append(strong,document.createElement('br'),link);
       state.selected.clear();openPost(slug);$('result').classList.remove('hidden');
       $('result').append(strong,document.createElement('br'),link);
-      message('✅ '+(mode==='draft'?'Draft जतन झाला':'बातमी जतन झाली. GitHub Pages build झाल्यावर Live दिसेल.'),'success');
+      message('✅ '+(mode==='draft'?'Draft जतन झाला':'बातमी जतन झाली. Server वर अपडेट पूर्ण झाल्यावर Live दिसेल.'),'success');
     }catch(e){message('जतन अयशस्वी: '+e.message,'error')}finally{setBusy(false)}
   }
   async function deleteSlugs(slugs){
     if(state.busy||!slugs.length)return;
-    if(!connected())return message('Delete साठी Publishing Key Link किंवा GitHub token आवश्यक आहे.','error');
+    if(!connected())return message('Delete साठी Publishing Key Link किंवा Server Access Token आवश्यक आहे.','error');
     const chosen=[...new Set(slugs)].filter(slug=>state.news.some(x=>x.slug===slug));
     if(!chosen.length)return;
-    if(!confirm(chosen.length+' बातम्या कायमच्या वेबसाइटवरून काढायच्या? ही कृती पुढील Build नंतर सार्वजनिक साइटवरही लागू होईल.'))return;
+    if(!confirm(chosen.length+' बातम्या कायमच्या वेबसाइटवरून काढायच्या? ही कृती Server अपडेट झाल्यानंतर वेबसाइटवर लागू होईल.'))return;
     const typed=prompt('चुकून Delete होऊ नये म्हणून DELETE टाइप करा ('+chosen.length+' बातम्या):');
     if(typed!=='DELETE')return message('Delete रद्द केले.');
     setBusy(true);message(chosen.length+' बातम्या हटवत आहे…');
@@ -337,7 +337,7 @@
       window.dispatchEvent(new CustomEvent('dalal:news-updated',{detail:{news:next,layout:state.layout}}));
       state.selected.clear();const deletedActive=excluded.has(state.activeSlug);state.activeSlug='';
       if(deletedActive)reset();renderList();
-      message('✅ '+chosen.length+' बातम्या GitHub मधून काढल्या. GitHub Pages Build झाल्यावर त्या सार्वजनिक साइटवर दिसणार नाहीत.','success');
+      message('✅ '+chosen.length+' बातम्या Server वरून काढल्या. Server अपडेट झाल्यानंतर त्या सार्वजनिक साइटवर दिसणार नाहीत.','success');
     }catch(e){message('Delete अयशस्वी: '+e.message,'error')}finally{setBusy(false)}
   }
   function preview(){
@@ -356,8 +356,8 @@
     $('make-private-link')?.addEventListener('click',async()=>{
       const input=$('private-link-key');
       const secret=input?.value.trim()||'';
-      if(secret.startsWith('github_pat_')||secret.startsWith('ghp_'))return message('GitHub Token नव्हे! Cloudflare मधील वेगळी PUBLISH_KEY वापरा.','error');
-      if(secret.length<32)return message('Cloudflare PUBLISH_KEY किमान ३२ अक्षरांची असली पाहिजे. GitHub Token येथे टाकू नका.','error');
+      if(secret.startsWith('github_pat_')||secret.startsWith('ghp_'))return message('प्रकाशन Token नव्हे! Cloudflare मधील वेगळी PUBLISH_KEY वापरा.','error');
+      if(secret.length<32)return message('Cloudflare PUBLISH_KEY किमान ३२ अक्षरांची असली पाहिजे. Server Access Token येथे टाकू नका.','error');
       const privateURL=location.origin+location.pathname+'#key='+encodeURIComponent(secret);
       try{
         await navigator.clipboard.writeText(privateURL);
@@ -369,13 +369,13 @@
     });
     $('connect').addEventListener('click',async()=>{
       const token=$('token').value.trim();
-      if(!/^(github_pat_|ghp_)[A-Za-z0-9_]+$/.test(token))return message('वैध GitHub fine-grained token वापरा.','error');
+      if(!/^(github_pat_|ghp_)[A-Za-z0-9_]+$/.test(token))return message('वैध Server Publishing Token वापरा.','error');
       const previous=state.token;
       state.token=token;
       const verified=await load(); // A bad or expired token must not be accepted.
       if(!verified){state.token=previous;return;}
       $('token').value='';
-      message('✅ GitHub जोडणी पडताळली. Published / Draft आणि Delete करता येईल.','success');
+      message('✅ Server जोडणी पडताळली. बातमी प्रकाशित, मसुदा आणि Delete करता येईल.','success');
     });
     $('disconnect').addEventListener('click',()=>{
       state.token='';workerMode=false;publishKey='';workerURL='';$('token').value='';

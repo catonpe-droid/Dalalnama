@@ -16,29 +16,29 @@
 <button class="tab" data-target="media-panel" type="button">▧ <span>Media Library</span></button>
 <div class="admin-nav-caption">WEBSITE CONTROL</div>
 <button class="tab" data-target="layout-panel" type="button">⚙ <span>Appearance & Layout</span></button>
-<a class="admin-nav-link" href="https://github.com/catonpe-droid/Dalalnama/actions" target="_blank" rel="noopener">↗ <span>Deployment History</span></a>
+<a class="admin-nav-link" href="https://github.com/catonpe-droid/Dalalnama/actions" target="_blank" rel="noopener">↗ <span>Server Updates</span></a>
 <div class="admin-nav-foot">काळा • लाल • पिवळा<br><span>Independent News CMS</span></div>
 </aside>
 <main class="wrap">
 <div class="heading"><div><h1>बातमी व्यवस्थापन</h1><p>बातम्या, मसुदे, फोटो, Custom URL आणि वेबसाइटचा लेआउट.</p></div><div class="notice" id="status" role="status" aria-live="polite">प्रकाशन जोडणी आवश्यक आहे.</div></div>
 <section class="card admin-onboarding" style="padding:13px 17px;margin:0 0 14px;border-left:4px solid #d1a10a;background:#fffdf4">
   <strong>🔒 Admin सुरक्षा व Cloudflare</strong>
-  <p style="margin:5px 0 0;font-size:14px">ही सध्या GitHub Pages वरील सार्वजनिक Admin UI आहे. Editing साठी लागणारा GitHub token <strong>फक्त तुमच्या स्वतःच्या ब्राउझरमध्ये</strong> टाका; WhatsApp किंवा ChatGPT मध्ये पाठवू नका. Cloudflare Access अजून स्वतंत्रपणे सक्रिय करायचा आहे. <a href="https://github.com/catonpe-droid/Dalalnama/blob/main/docs/CLOUDFLARE-ADMIN.md" target="_blank" rel="noopener noreferrer" style="color:#a30d19;text-decoration:underline">Cloudflare सेटअप सूचना</a>.</p>
+  <p style="margin:5px 0 0;font-size:14px">हा Admin ऑनलाइन Server वर उपलब्ध आहे. संपादनासाठी लागणारा Access Token <strong>फक्त तुमच्या स्वतःच्या ब्राउझरमध्ये</strong> टाका; WhatsApp किंवा ChatGPT मध्ये पाठवू नका. Cloudflare Access अजून स्वतंत्रपणे सक्रिय करायचा आहे. <a href="https://github.com/catonpe-droid/Dalalnama/blob/main/docs/CLOUDFLARE-ADMIN.md" target="_blank" rel="noopener noreferrer" style="color:#a30d19;text-decoration:underline">Cloudflare सेटअप सूचना</a>.</p>
  </section>
 <section class="card connect admin-onboarding">
- <div><b>🔐 स्वतंत्र GitHub Publishing</b><p>फक्त Dalalnama repository साठी <strong>Contents: Read and write</strong> परवानगी असलेला GitHub fine-grained token या पानावर वापरा. Token फक्त उघडलेल्या टॅबच्या memory मध्ये राहील; तो वेबसाइटवर जतन होणार नाही. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color:#b30b19;text-decoration:underline;font-weight:800">GitHub token तयार करा ↗</a></p></div>
- <div class="connect-fields"><input id="token" type="password" spellcheck="false" autocomplete="off" placeholder="Paste GitHub fine-grained token"><button id="connect" type="button" class="btn primary">Connect</button><button id="disconnect" type="button" class="btn">Disconnect</button></div>
+ <div><b>🔐 स्वतंत्र Server Publishing</b><p>फक्त Dalalnama repository साठी <strong>Contents: Read and write</strong> परवानगी असलेला Server Publishing Access Token या पानावर वापरा. Token फक्त उघडलेल्या टॅबच्या memory मध्ये राहील; तो वेबसाइटवर जतन होणार नाही. <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" style="color:#b30b19;text-decoration:underline;font-weight:800">Publishing Token तयार करा ↗</a></p></div>
+ <div class="connect-fields"><input id="token" type="password" spellcheck="false" autocomplete="off" placeholder="Paste Server Publishing Access Token"><button id="connect" type="button" class="btn primary">Connect</button><button id="disconnect" type="button" class="btn">Disconnect</button></div>
 </section>
 <section class="card connect secret-link-setup admin-onboarding" aria-label="गुप्त Admin Key Link" style="margin:0 0 15px;padding:15px 17px">
   <div>
     <b>🔗 लोकहितसारखी गुप्त Key Link</b>
-    <p>Cloudflare Worker मध्ये <code>PUBLISH_KEY</code> आणि <code>GITHUB_TOKEN</code> Secrets सेट केल्यानंतर तुमची स्वतंत्र <code>#key=</code> लिंक येथे तयार करा. लिंक Bookmark करा — रोज लांब GitHub Token पेस्ट करण्याची गरज नाही. गुप्त लिंक कोणालाही पाठवू नका.</p>
+    <p>Cloudflare Worker मध्ये <code>PUBLISH_KEY</code> आणि <code>GITHUB_TOKEN</code> Secrets सेट केल्यानंतर तुमची स्वतंत्र <code>#key=</code> लिंक येथे तयार करा. लिंक Bookmark करा — रोज लांब Publishing Token पेस्ट करण्याची गरज नाही. गुप्त लिंक कोणालाही पाठवू नका.</p>
   </div>
   <div class="connect-fields" style="align-items:center">
     <input id="private-link-key" type="password" spellcheck="false" autocomplete="off" aria-label="Cloudflare Publishing Key" placeholder="Cloudflare PUBLISH_KEY (32+ characters)">
     <button id="make-private-link" class="btn" type="button">🔐 Key Link कॉपी करा</button>
   </div>
-  <small>गुप्त Key फक्त या ब्राउझरमध्ये लिंक तयार करण्यासाठी वापरली जाते; वेबसाइटवर जतन होत नाही. GitHub Token इथे टाकू नका.</small>
+  <small>गुप्त Key फक्त या ब्राउझरमध्ये लिंक तयार करण्यासाठी वापरली जाते; वेबसाइटवर जतन होत नाही. Publishing Token इथे टाकू नका.</small>
 </section>
 <nav class="tabs" aria-label="Studio shortcuts">
 <button class="tab" data-target="dashboard-panel" type="button">▦ Dashboard</button>
@@ -115,7 +115,7 @@
 <div class="panel-head"><h2>▧ Media Library</h2><span id="media-count" class="counter">0</span></div><div class="panel-body">
 <div class="media-head"><p>मुख्य फोटो, गॅलरी आणि बातमीतील चित्रे निवडा. वेबसाइटवरील उपलब्ध फोटो येथे दिसतील.</p>
 <div class="media-actions"><input id="media-search" type="search" placeholder="फोटो / Slug शोधा"><input id="media-file" type="file" accept="image/jpeg,image/png,image/webp"><button id="media-upload" class="btn primary" type="button">Upload Image</button></div></div>
-<div id="media-grid" class="media-grid"></div><p class="aside-hint">कव्हर म्हणून निवडा किंवा लेखनात फोटो घाला. नवीन Upload साठी GitHub publishing जोडणी आवश्यक आहे.</p>
+<div id="media-grid" class="media-grid"></div><p class="aside-hint">कव्हर म्हणून निवडा किंवा लेखनात फोटो घाला. नवीन Upload साठी Server publishing जोडणी आवश्यक आहे.</p>
 </div></section>
 <section id="layout-panel" class="card layout-panel hidden"><div class="panel-head"><h2>⚙️ वेबसाइट व्यवस्थापन</h2></div><div class="panel-body">
  <p>मुख्य मेनू, उपविभाग, ब्रेकिंग न्यूज व मुख्य बातम्या बदलू शकता. प्रत्येक ओळ म्हणजे एक entry.</p>
@@ -164,6 +164,6 @@
 </main>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-<script src="./admin.js?v=12" defer></script>
-<script src="./admin-pro.js?v=5" defer></script>
+<script src="./admin.js?v=13" defer></script>
+<script src="./admin-pro.js?v=6" defer></script>
 </body></html>
