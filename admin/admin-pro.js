@@ -14,7 +14,7 @@ function cleanHtml(html){
  const output=document.createElement('div');
  function build(source,parent){
   for(const node of [...source.childNodes]){
-   if(node.nodeType===Node.TEXT_NODE){parent.append(document.createTextNode(node.textContent||''));continue}
+   if(node.nodeType===Node.TEXT_NODE){parent.append(document.createTextNode((node.textContent||'').replace(/[\u00a0\u202f\u2007]/g,' ')));continue}
    if(node.nodeType!==Node.ELEMENT_NODE)continue;
    if(refuse.has(node.tagName))continue;
    if(!allow.has(node.tagName)){build(node,parent);continue}
@@ -39,7 +39,7 @@ function cleanHtml(html){
 }
 function plainText(){
  if(quill&&!plain){
-  const body=quill.getText().trim().replace(/\n{3,}/g,'\n\n');
+  const body=quill.getText().trim().replace(/[\u00a0\u202f\u2007]/g,' ').replace(/\n{3,}/g,'\n\n');
   $('body').value=body.replace(/\n(?!\n)/g,'\n\n');
  }
  const count=$('body').value.trim().split(/\s+/).filter(Boolean).length;
