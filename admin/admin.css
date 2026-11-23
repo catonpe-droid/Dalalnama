@@ -145,3 +145,38 @@ main.wrap{width:calc(100% - 258px);max-width:1740px;margin:0 20px 0 238px;paddin
 /* Signed-in editorial view: show the newsroom, not one-time Cloudflare/GitHub setup.
    Keep the setup available when no authenticated #key= bookmark is present. */
 body.admin-key-verified .admin-onboarding{display:none!important}
+
+
+/* Dalalnama editor paste containment 2026-11-23 */
+#rich-editor,
+#rich-editor .ql-container,
+#rich-editor .ql-editor,
+.dn-admin-preview-rich,
+.preview-dialog #preview-content {
+  min-width:0;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+#rich-editor .ql-editor img,
+.dn-admin-preview-rich img,
+.preview-dialog #preview-content img {
+  display:block;
+  width:auto;
+  max-width:100%;
+  height:auto;
+  max-height:70vh;
+  object-fit:contain;
+  margin:12px auto;
+}
+#rich-editor .ql-editor :is(p,h1,h2,h3,li,a,blockquote),
+.preview-dialog #preview-content :is(p,h1,h2,h3,li,a,blockquote){
+  overflow-wrap:anywhere;
+}
+#rich-editor .ql-editor pre,
+.preview-dialog #preview-content pre {
+  max-width:100%;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.cover-preview {object-fit:contain;}
