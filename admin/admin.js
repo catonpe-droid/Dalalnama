@@ -230,12 +230,17 @@
     if(!file)return null;
     if(!/^image\/(png|jpeg|webp)$/.test(file.type))throw Error('फोटो PNG, JPG किंवा WebP असावा.');
     if(file.size>15*1024*1024)throw Error('फोटो जास्तीत जास्त 15 MB असावा.');
+    // Keep the complete uploaded picture. 1200x630 is ONLY for social previews,
+    // never for the saved news photo; center-cropping here irreversibly lost details.
     const bitmap=await createImageBitmap(file);
-    const canvas=document.createElement('canvas');canvas.width=1200;canvas.height=630;
-    const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,1200,630);
-    const ratio=Math.max(1200/bitmap.width,630/bitmap.height);
-    const width=bitmap.width*ratio,height=bitmap.height*ratio;
-    ctx.drawImage(bitmap,(1200-width)/2,(630-height)/2,width,height);
+    const scale=Math.min(1,1600/bitmap.width,1200/bitmap.height);
+    const canvas=document.createElement('canvas');
+    canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+    canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+    const ctx=canvas.getContext('2d');
+    if(!ctx)throw Error('फोटो तयार करण्याची सुविधा उपलब्ध नाही.');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);
     bitmap.close?.();
     const blob=await new Promise((resolve,reject)=>canvas.toBlob(x=>x?resolve(x):reject(Error('फोटो तयार झाला नाही.')),'image/jpeg',.84));
     const bytes=new Uint8Array(await blob.arrayBuffer());let binary='';

@@ -3,7 +3,7 @@
 Each image is a branded illustration, not an event photograph."""
 import base64, io, json, os, re, textwrap
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageFilter
 
 root = Path(__file__).resolve().parent.parent
 site = root / 'site'
@@ -94,7 +94,14 @@ for story in news:
  with Image.open(source) as original:
   photo=ImageOps.exif_transpose(original)
   if photo.mode not in ('RGB','RGBA'): photo=photo.convert('RGB')
-  preview=ImageOps.fit(photo.convert('RGB'),(1200,630),method=Image.Resampling.LANCZOS,centering=(0.5,0.45))
+  # The link preview stays 1200x630, but the source image is NEVER cropped.
+  full=photo.convert('RGB')
+  blurred=ImageOps.fit(full,(1200,630),method=Image.Resampling.LANCZOS)
+  blurred=blurred.filter(ImageFilter.GaussianBlur(24))
+  background=Image.blend(blurred,Image.new('RGB',(1200,630),'#f6f5f2'),0.40)
+  fitted=ImageOps.contain(full,(1200,630),method=Image.Resampling.LANCZOS)
+  background.paste(fitted,((1200-fitted.width)//2,(630-fitted.height)//2))
+  preview=background
   preview.save(share_dir/(slug+'.jpg'),format='JPEG',quality=88,optimize=True,progressive=True,subsampling=0)
   share_count+=1
 print(f'Generated {share_count} article-specific OG photo JPEGs (1200x630)')
