@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#171717"><title>दलालनामा | News Admin Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=9" rel="stylesheet"></head><body class="admin-locked">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet"><link href="./admin.css?v=10" rel="stylesheet"></head><body class="admin-locked">
 <section class="admin-login-overlay" id="admin-login-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-login-title">
   <div class="admin-login-card">
     <div class="admin-login-logo"><span>दलाल</span>नामा</div>
@@ -24,7 +24,7 @@
   </div>
 </section>
 <header class="top"><a class="brand" href="../"><strong>दलाल<span>नामा</span></strong><small>NEWS ADMIN STUDIO</small></a>
-<div class="top-actions"><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
+<div class="top-actions"><button id="admin-change-password" type="button" class="btn" title="Admin Login पासवर्ड बदला">🔑 Change Password</button><a class="btn" href="../" target="_blank" rel="noopener">🌐 Website</a><button id="refresh" type="button" class="btn">↻ Refresh</button><button id="new-top" type="button" class="btn primary">+ नवीन बातमी</button></div></header>
 <aside class="admin-navigation" aria-label="Admin sections">
 <div class="admin-nav-brand"><span>DN</span><div><strong>DALALNAMA</strong><small>EDITORIAL DESK</small></div></div>
 <div class="admin-nav-caption">CONTENT MANAGEMENT</div>
@@ -179,9 +179,24 @@
 <div class="actions"><button id="save-layout" type="button" class="btn primary">💾 Save & Publish Appearance</button><a class="btn" href="../" target="_blank" rel="noopener">👁 View Website</a></div>
  </div></section>
 </main>
+<dialog id="admin-change-dialog" class="admin-change-dialog" aria-labelledby="admin-change-title">
+  <form id="admin-change-form" autocomplete="off">
+    <h2 id="admin-change-title">🔑 Change Password</h2>
+    <p>सध्याचा पासवर्ड टाकून नवीन पासवर्ड सेट करा.</p>
+    <label for="admin-current-password">Current Password</label>
+    <input id="admin-current-password" type="password" autocomplete="current-password" required>
+    <label for="admin-new-password">New Password</label>
+    <input id="admin-new-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+    <label for="admin-confirm-password">Confirm New Password</label>
+    <input id="admin-confirm-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+    <p id="admin-change-message" class="admin-change-message" role="alert" aria-live="polite"></p>
+    <div class="admin-change-actions"><button type="button" id="admin-change-close" class="btn">Cancel</button><button type="submit" class="btn primary">Save Password</button></div>
+    <small>हा पासवर्ड फक्त या ब्राउझरच्या Login विंडोसाठी बदलेल. इतर डिव्हाइसवरील Login किंवा Server Publishing Key बदलणार नाही.</small>
+  </form>
+</dialog>
 <dialog id="preview-dialog" class="preview-dialog"><div class="dialog-head"><h2 id="preview-title"></h2><button class="btn mini" type="button" id="close-preview">✕</button></div><div id="preview-content"></div></dialog>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js" defer></script>
-<script src="./admin-login.js?v=1" defer></script>
+<script src="./admin-login.js?v=2" defer></script>
 <script src="./admin.js?v=13" defer></script>
 <script src="./admin-pro.js?v=6" defer></script>
 </body></html>
