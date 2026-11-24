@@ -14,7 +14,7 @@
  $('footerYear').textContent=new Date().getFullYear();
  const visible=()=>stories.filter(p=>p&&p.slug&&p.title&&p.published!==false&&p.status!=='draft').sort((a,b)=>String(b.date||b.updated||'').localeCompare(String(a.date||a.updated||'')));
  const image=(p,full=false)=>{const raw=String((!full&&p.thumbImage)||p.image||'');if(/^assets\/(?:uploads|branding)\/[a-zA-Z0-9_.-]+\.(?:png|jpg|jpeg|webp)$/i.test(raw))return ROOT+raw;try{const u=new URL(raw);if(u.protocol==='https:'&&u.hostname==='dharashivlive.com'&&u.pathname.startsWith('/wp-content/uploads/')&&/\.(png|jpg|jpeg|webp)$/i.test(u.pathname))return u.href}catch{}return ''};
- const cover=p=>{const src=image(p);return '<span class="thumb">'+(src?'<img loading="lazy" decoding="async" src="'+esc(src)+'" alt="'+esc(p.title)+'">':'<span class="placeholder">धाराशिव टुडे</span>')+'</span>'};
+ const cover=p=>{const src=image(p,true);return '<span class="thumb">'+(src?'<img loading="lazy" decoding="async" src="'+esc(src)+'" alt="'+esc(p.title)+'">':'<span class="placeholder">धाराशिव टुडे</span>')+'</span>'};
  const info=p=>'<div class="post-mini-meta">'+esc(dateFmt(p.date))+'</div>';
  const card=p=>'<a class="news-card" href="'+storyUrl(p)+'">'+cover(p)+'<div class="category">'+esc(p.category||'बातमी')+'</div><h3>'+esc(p.title)+'</h3>'+(p.summary?'<p>'+esc(p.summary).slice(0,100)+'</p>':'')+info(p)+'</a>';
  const filter=(p,cat)=>!cat||cat==='मुख्यपृष्ठ'||cat==='ताज्या बातम्या'||p.category===cat||(cat==='विशेष बातम्या'&&(p.featured||p.category==='विशेष लेख'))||(cat==='जिल्हा'&&(p.category==='जिल्हा'||(p.tags||[]).some(t=>district.includes(t))));
