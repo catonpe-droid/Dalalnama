@@ -120,6 +120,9 @@ if(fs.existsSync(dtDir)){
  const dtNews=JSON.parse(fs.readFileSync(path.join(dtDir,'data/news.json'),'utf8')).filter(p=>p&&p.published!==false&&p.status!=='draft');
  const dtHtml=fs.readFileSync(path.join(dtDir,'index.html'),'utf8');
  const dtUrls=[dtSite];
+ for(const slug of ["about-us","contact-us","privacy-policy","terms-and-conditions","disclaimer","editorial-policy"]){
+  if(fs.existsSync(path.join(dtDir,slug,'index.html')))dtUrls.push(dtSite+slug+'/');
+ }
  for(const item of dtNews){
   const slug=String(item.slug||'');
   if(!/^[a-z0-9][a-z0-9_-]{2,95}$/i.test(slug))continue;
