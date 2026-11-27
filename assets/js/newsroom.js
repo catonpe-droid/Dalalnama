@@ -75,3 +75,31 @@
  const duplicate=[...document.querySelectorAll('#app > section.stories-section')].find(el=>el.querySelector('.section-title h2')?.textContent?.includes('संबंधित'));
  if(duplicate)duplicate.remove();
 })();
+
+// PUBLIC_TEXT_COPY_PROTECTION_V1 — UI deterrent only; never alters indexed content or share URLs.
+(function () {
+  'use strict';
+  if (/(?:^|\/)(?:admin(?:[-_][^/]*)?|editor|dashboard|login|cms)(?:\/|\.html?$|$)/i.test(location.pathname)) return;
+  if (document.getElementById('public-text-copy-protection')) return;
+  const style = document.createElement('style');
+  style.id = 'public-text-copy-protection';
+  style.textContent = 'body, body * {-webkit-user-select:none!important;user-select:none!important;} body input,body textarea,body select,body [contenteditable]:not([contenteditable="false"]),body [contenteditable]:not([contenteditable="false"]) *,body [role="textbox"],body [role="textbox"] *{-webkit-user-select:text!important;user-select:text!important;}';
+  document.head.appendChild(style);
+  const element = node => node && (node.nodeType === 1 ? node : node.parentElement);
+  const editable = node => {
+    const e = element(node);
+    return !!(e && (e.isContentEditable || e.closest('input,textarea,select,[role="textbox"]')));
+  };
+  const preventText = event => {
+    if (editable(event.target)) return;
+    event.preventDefault();
+  };
+  document.addEventListener('selectstart', preventText, true);
+  document.addEventListener('copy', preventText, true);
+  document.addEventListener('cut', preventText, true);
+  document.addEventListener('contextmenu', event => {
+    const e = element(event.target);
+    if (editable(e) || (e && e.closest('a,button,video,audio,iframe'))) return;
+    event.preventDefault();
+  }, true);
+})();
