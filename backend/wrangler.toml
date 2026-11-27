@@ -7,3 +7,13 @@ workers_dev = true
 #   PUBLISH_KEY  — separate strong random secret (32+ characters)
 #   GITHUB_TOKEN — GitHub fine-grained Contents Read and write for Dalalnama only
 # Cloudflare Worker route on workers.dev needs no DNS nameserver switch.
+
+keep_vars = true
+
+[[durable_objects.bindings]]
+name = "PAGE_VIEWS"
+class_name = "NewsPageViews"
+
+[[migrations]]
+tag = "pageviews-v1"
+new_sqlite_classes = ["NewsPageViews"]
